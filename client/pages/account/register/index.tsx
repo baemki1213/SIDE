@@ -1,5 +1,5 @@
 import * as S from "./styles";
 
-export default function register() {
+export default function RegisterPage() {
   return <S.Wrapper>register</S.Wrapper>;
 }

@@ -7,10 +7,10 @@ import {
 } from "@tanstack/react-query";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from "@/store";
+import { persistor, store } from "../store";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "@/styles/assets";
+import { lightTheme, darkTheme } from "../styles/assets";
 import { useState } from "react";
 
 const queryClient = new QueryClient();
