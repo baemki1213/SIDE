@@ -1,0 +1,29 @@
+require("dotenv").config();
+
+const session = require("express-session");
+const routeExpress = require("express");
+
+const userController = require("../controllers/user.ts");
+const usersController = require("../controllers/users.ts");
+const router = routeExpress.Router();
+
+router.use(
+  session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: true,
+      maxAge: 60000,
+    },
+  })
+);
+// router.get("/api/users/", userController.usersGet);
+router.post("/api/user/create", userController.registerApi);
+
+router.get("/", (req, res) => {
+  res.end("Hello world");
+});
+
+module.exports = router;
