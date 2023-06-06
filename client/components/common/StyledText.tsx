@@ -73,7 +73,7 @@ export default function StyledText({
   text,
   fontSize = "base",
   fontWeight = "medium",
-  fontColor = "black",
+  fontColor = "mainColor",
   numberOfLines,
   width = "auto",
   textDecoration = "none",
