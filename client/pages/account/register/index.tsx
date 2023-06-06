@@ -5,6 +5,7 @@ import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
 import TextInput from "@/components/common/TextInput";
 import SocialButtons from "@/components/account/SocialButtons";
+import StyledButton from "@/components/common/StyledButton";
 
 export default function RegisterPage() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -16,6 +17,9 @@ export default function RegisterPage() {
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     console.log(e.target.value);
+  };
+  const handleEmailVerifyClick = () => {
+    console.log("click verify");
   };
   return (
     <S.Container>
@@ -34,6 +38,11 @@ export default function RegisterPage() {
           onChange={handleOnChange}
           type="email"
           placeholder="이메일"
+        />
+        <StyledButton
+          text="이메일 인증하기"
+          onClick={handleEmailVerifyClick}
+          buttonType="disabled"
         />
         <TextInput
           name="password1"
