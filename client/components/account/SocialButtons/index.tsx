@@ -27,7 +27,6 @@ const ButtonsContainer = styled.div`
   display: flex;
   align-content: center;
   flex-direction: column;
-
   padding-bottom: 30px;
   border-bottom: 1px solid ${colors.grayEd};
 `;
