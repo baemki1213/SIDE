@@ -4,7 +4,12 @@ export const colors = {
   mainColor: "aliceblue",
   white: "#FFFFFF",
   black: "#000000",
+  black47: "rgb(47,52,56)",
   transparent: "transparent",
+  gray130: "rgb(130, 140, 148)",
+  grayDb: "#dbdbdb",
+  gray75: "#757575",
+  grayEd: "#ededed",
 };
 
 export const fontSize: {
