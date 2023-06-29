@@ -1,7 +1,10 @@
-import { ChangeEvent, HTMLInputTypeAttribute } from "react";
 import styled from "styled-components";
-import StyledText from "./StyledText";
+import { ChangeEvent, HTMLInputTypeAttribute } from "react";
+
 import { colors } from "@/styles/assets";
+
+import StyledText from "./StyledText";
+import Gap from "./Gap";
 
 interface IProps {
   value: string;
@@ -32,7 +35,12 @@ export default function TextInput({
           fontSize="xl"
         />
       )}
-      {infoText && <StyledText text={infoText} fontColor="gray130" />}
+      <Gap side={6} />
+      {infoText && (
+        <TextInfoWRapper>
+          <StyledText text={infoText} fontColor="gray130" />
+        </TextInfoWRapper>
+      )}
       <TextInputTextBox
         value={value}
         onChange={onChange}
@@ -54,4 +62,7 @@ const TextInputTextBox = styled.input`
   padding: 8px 15px 9px;
   border: 1px solid ${colors.grayDb};
   border-radius: 4px;
+`;
+const TextInfoWRapper = styled.div`
+  margin-bottom: 10px;
 `;
