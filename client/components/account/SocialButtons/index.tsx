@@ -1,9 +1,11 @@
 import styled from "styled-components";
+
+import { colors } from "@/styles/assets";
+
+import StyledText from "@/components/common/StyledText";
 import GoogleLoginButton from "./GoogleLoginButton";
 import KakaoLoginButton from "./KakaoLoginButton";
 import NaverLoginButton from "./NaverLoginButton";
-import StyledText from "@/components/common/StyledText";
-import { colors } from "@/styles/assets";
 
 export default function SocialButtons() {
   return (
@@ -27,12 +29,14 @@ const ButtonsContainer = styled.div`
   display: flex;
   align-content: center;
   flex-direction: column;
-  padding-bottom: 30px;
   border-bottom: 1px solid ${colors.grayEd};
+  padding-bottom: 30px;
+  margin: 30px 0;
 `;
 
 const ButtonsWrapper = styled.div`
   width: 357px;
   display: flex;
   justify-content: center;
+  margin-top: 15px;
 `;
