@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { ButtonHTMLAttributes, ReactNode } from "react";
 import {
   ButtonSizeKey,
   ButtonStyleKey,
@@ -13,6 +13,7 @@ interface IProps {
   children?: ReactNode;
   text?: string;
   buttonType: ButtonStyleKey;
+  type?: "button" | "submit" | "reset";
   size?: ButtonSizeKey;
   width?: string;
   onClick(): void;
@@ -25,6 +26,7 @@ export default function StyledButton({
   children = null,
   text = "",
   buttonType = "primary",
+  type = "button",
   size = "regular",
   width = "100%",
   onClick = () => console.log(),
@@ -39,6 +41,7 @@ export default function StyledButton({
       onClick={onClick}
       disabled={buttonType === "disabled"}
       borderRadius={borderRadius}
+      type={type}
     >
       {children}
       {icon === "left" && <>let</>}
