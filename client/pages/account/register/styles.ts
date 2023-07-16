@@ -1,9 +1,25 @@
 import styled from "styled-components";
 
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
 const Wrapper = styled.div`
-  width: 100%;
-  height: 100vh;
-  background-color: blue;
+  width: 360px;
+  margin: 0 auto;
+  padding: 60px 0;
 `;
 
-export { Wrapper };
+const Form = styled.form`
+  width: 100%;
+  height: 100%;
+`;
+
+const SignInWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+const SignInTextButton = styled.button``;
+
+export { Container, Wrapper, Form, SignInWrapper, SignInTextButton };

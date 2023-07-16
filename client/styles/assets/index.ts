@@ -1,10 +1,22 @@
 import { DefaultTheme } from "styled-components";
 
 export const colors = {
-  mainColor: "aliceblue",
+  mainColor: "#0D0D0D",
+  mainWhite: "#F2F2F2",
+  gray26: "#262626",
+  gray59: "#595959",
+  gray8c: "#8c8c8c",
   white: "#FFFFFF",
   black: "#000000",
+  black47: "rgb(47,52,56)",
   transparent: "transparent",
+  gray130: "rgb(130, 140, 148)",
+  grayDb: "#dbdbdb",
+  gray75: "#757575",
+  grayEd: "#ededed",
+  grayDisabledBack: "rgb(247, 248, 250)",
+  grayDisabledColor: "rgb(194, 200,204)",
+  grayDisabledBorder: "rgb(218, 220,224)",
 };
 
 export const fontSize: {
