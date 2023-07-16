@@ -1,3 +1,3 @@
 # D
 
-Diary for us
+Markdown template
