@@ -7,7 +7,6 @@ import {
 } from "@reduxjs/toolkit";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import { authSlice } from "./authSlice";
-import counterReducer from "./countSlice";
 import {
   persistStore,
   persistReducer,
@@ -45,7 +44,6 @@ const persistConfig = {
 
 const reducer = (state: any, action: PayloadAction<any>) => {
   return combineReducers({
-    counter: counterReducer,
     [authSlice.name]: authSlice.reducer,
   })(state, action);
 };
