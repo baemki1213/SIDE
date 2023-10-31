@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import { randomInt } from "crypto";
 import nodemailer from "nodemailer";
 import {
   verifyEmailByToken,
@@ -7,6 +7,8 @@ import {
   isNicknameTaken,
   registerUser,
   saveVerificationToken,
+  isTokenExpired,
+  findCurrentEmail,
 } from "../models/user";
 
 const smtpTransport = nodemailer.createTransport({
@@ -48,8 +50,15 @@ const userController = {
 
   async sendVerificationEmail(req: any, res: any) {
     try {
+      // verified된 것 중에 이메일이 존재하는 경우에는 중복된 이메일 에러 전송.
       const { email } = req.body;
-      const token = crypto.randomBytes(32).toString("hex");
+      const isRegistered = await isEmailRegistered(email);
+      if (isRegistered) {
+        return res
+          .status(400)
+          .json({ message: "Verified email already registered." });
+      }
+      const token = randomInt(100000, 1000000);
 
       const tokenSaved = await saveVerificationToken(email, token);
       if (!tokenSaved)
@@ -78,11 +87,16 @@ const userController = {
     }
   },
 
-  async verifyEmail(req: { body: { code: string } }, res: any) {
-    const { code } = req.body;
+  async verifyEmail(req: { body: { email: string; code: number } }, res: any) {
+    const { email, code } = req.body;
 
     try {
-      const isVerified = await verifyEmailByToken(code);
+      const currentEmail = await findCurrentEmail(email, code);
+      const isExpired = isTokenExpired(currentEmail?.expiry_at);
+      if (isExpired) {
+        return res.status(400).send("Expired token");
+      }
+      const isVerified = await verifyEmailByToken(email, code);
 
       if (!isVerified) {
         return res.status(400).send("Invalid token");

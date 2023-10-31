@@ -8,6 +8,7 @@ import {
   createUserSQL,
   verifyEmailByTokenSQL,
   saveVerificationTokenSQL,
+  findCurrentEmailSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
 
@@ -41,23 +42,33 @@ const registerUser = async ({
 
 const saveVerificationToken = async (
   email: string,
-  token: string
+  token: number
 ): Promise<boolean> => {
-  const expiryAt = moment().add(1, "hours").toDate(); // 현재 시간으로부터 1시간 뒤
+  const expiryAt = moment().add(3, "minutes").toDate();
 
   const [result] = await (
     await connection
   ).query<any>(saveVerificationTokenSQL, [email, token, expiryAt]);
-  return result.affectedRows === 1;
-};
-
-const verifyEmailByToken = async (token: string) => {
-  const [result] = await (
-    await connection
-  ).query<any>(verifyEmailByTokenSQL, [token]);
   return result.affectedRows > 0;
 };
 
+const verifyEmailByToken = async (email: string, token: number) => {
+  const [result] = await (
+    await connection
+  ).query<any>(verifyEmailByTokenSQL, [email, token]);
+  return result.affectedRows > 0;
+};
+
+const findCurrentEmail = async (email: string, token: number) => {
+  const [result] = await (
+    await connection
+  ).query<any>(findCurrentEmailSQL, [email, token]);
+  return result[0];
+};
+
+const isTokenExpired = (expiryAt: string) => {
+  return moment(expiryAt).isBefore(moment());
+};
 const hashPassword = async (password: string): Promise<string> => {
   const saltRounds = 10;
   return bcrypt.hash(password, saltRounds);
@@ -73,6 +84,8 @@ const comparePassword = async (
 export {
   isEmailRegistered,
   isNicknameTaken,
+  isTokenExpired,
+  findCurrentEmail,
   registerUser,
   saveVerificationToken,
   verifyEmailByToken,
