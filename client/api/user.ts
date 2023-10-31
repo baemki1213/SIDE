@@ -1,10 +1,12 @@
 import { requestWithoutAuth } from "@/utils/Axios-utils";
 
 interface ICreateProps {
-  data: { username: string; password: string };
+  email: string;
+  password: string;
+  nickname: string;
 }
 
-export const createUser = async ({ data }: ICreateProps) => {
+export const createUser = async (data: ICreateProps) => {
   return await requestWithoutAuth({
     method: "post",
     url: "/user/create/",

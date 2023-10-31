@@ -1,4 +1,5 @@
 import { ChangeEvent, useState } from "react";
+import Link from "next/link";
 
 import * as S from "./styles";
 
@@ -8,6 +9,8 @@ import SocialButtons from "@/components/account/SocialButtons";
 import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
 
+import { createUser } from "@/api";
+
 export default function RegisterPage() {
   const [registerInfo, setRegisterInfo] = useState({
     email: "",
@@ -15,22 +18,26 @@ export default function RegisterPage() {
     password2: "",
     nickname: "",
   });
+  const { email, password, nickname } = registerInfo;
+
   const handleOnChange = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
-    console.log(e.target.value);
+    e.preventDefault();
+    setRegisterInfo({ ...registerInfo, [e.target.name]: e.target.value });
   };
   const handleEmailVerifyClick = () => {
     console.log("click verify");
   };
   const handleSignUpClick = () => {
-    console.log("click sign up");
+    createUser({ email, password, nickname });
   };
+
   return (
     <S.Container>
       <S.Wrapper>
         <StyledText
-          text="회원가입"
+          text="Sign up"
           fontColor="black47"
           fontWeight="bold"
           fontSize="xl"
@@ -40,62 +47,62 @@ export default function RegisterPage() {
 
         <S.Form>
           <TextInput
-            labelText="이메일"
+            labelText="Email"
             name="email"
             value={registerInfo.email}
             onChange={handleOnChange}
             type="email"
-            placeholder="이메일"
+            placeholder="Email"
           />
           <Gap side={12} />
           <StyledButton
-            text="이메일 인증하기"
+            text="Verify Email"
             onClick={handleEmailVerifyClick}
             buttonType="disabled"
           />
           <Gap side={30} />
           <TextInput
-            labelText="비밀번호"
-            infoText="영문, 숫자를 포함한 8자리 이상의 비밀번호를 입력해주세요."
-            name="password1"
+            labelText="Password"
+            infoText="Please enter a password of at least 8 characters, including letters and numbers"
+            name="password"
             value={registerInfo.password}
             onChange={handleOnChange}
             type="password"
-            placeholder="비밀번호"
+            placeholder="Password"
           />
           <Gap side={30} />
           <TextInput
-            labelText="비밀번호 확인"
+            labelText="Confirm password"
             name="password2"
-            value={registerInfo.password}
+            value={registerInfo.password2}
             onChange={handleOnChange}
             type="password"
-            placeholder="비밀번호 확인"
+            placeholder="Confirm password"
           />
           <Gap side={30} />
           <TextInput
-            labelText="닉네임"
-            infoText="다른 유저와 겹치지 않도록 입력해주세요."
+            labelText="Nickname"
+            infoText="Please enter a password that does not overlap with other users"
             name="nickname"
             value={registerInfo.nickname}
             onChange={handleOnChange}
             type="text"
-            placeholder="별명 (2~15자)"
+            placeholder="Nickname (2~15 character)"
           />
           <Gap side={30} />
           <StyledButton
             type="button"
-            text="회원가입하기"
+            text="Sign up"
             onClick={handleSignUpClick}
             buttonType="primary"
           />
           <Gap side={30} />
           <S.SignInWrapper>
-            <StyledText text="이미 아이디가 있으신가요?" />
+            <StyledText text="Do you already have an account?" />
             <Gap side={10} />
-            <S.SignInTextButton>
-              <StyledText text="로그인" textDecoration="underline" />
-            </S.SignInTextButton>
+            <Link href={"/account/login/"}>
+              <StyledText text="Login" textDecoration="underline" />
+            </Link>
           </S.SignInWrapper>
         </S.Form>
       </S.Wrapper>

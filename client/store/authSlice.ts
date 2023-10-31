@@ -4,11 +4,11 @@ import { RootState } from "./index";
 
 // Type for our state
 export interface AuthState {
-  authState: boolean;
+  isLogin: boolean;
 }
 // Initial state
 const initialState: AuthState = {
-  authState: false,
+  isLogin: false,
 };
 // Actual Slice
 export const authSlice = createSlice({
@@ -16,12 +16,12 @@ export const authSlice = createSlice({
   initialState,
   reducers: {
     // Action to set the authentication status
-    setAuthState(state, action) {
-      state.authState = action.payload;
+    setIsLogin(state, action) {
+      state.isLogin = action.payload;
     },
   },
 
-  extraReducers: (builder) => {
+  extraReducers: builder => {
     builder.addCase(HYDRATE, (state, action) => {
       return {
         ...state,
@@ -30,6 +30,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setAuthState } = authSlice.actions;
-export const selectAuthState = (state: RootState) => state.auth.authState;
+export const { setIsLogin } = authSlice.actions;
+export const selectAuthState = (state: RootState) => state.auth;
 export default authSlice.reducer;
