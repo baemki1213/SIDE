@@ -6,8 +6,8 @@ import {
   countEmailSQL,
   countNicknameSQL,
   createUserSQL,
-  verifyEmailByTokenSQL,
-  saveVerificationTokenSQL,
+  verifyEmailByCodeSQL,
+  saveVerificationCodeSQL,
   findCurrentEmailSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
@@ -40,33 +40,33 @@ const registerUser = async ({
   await (await connection).query(createUserSQL, [email, password, nickname]);
 };
 
-const saveVerificationToken = async (
+const saveVerificationCode = async (
   email: string,
-  token: number
+  code: number
 ): Promise<boolean> => {
   const expiryAt = moment().add(3, "minutes").toDate();
 
   const [result] = await (
     await connection
-  ).query<any>(saveVerificationTokenSQL, [email, token, expiryAt]);
+  ).query<any>(saveVerificationCodeSQL, [email, code, expiryAt]);
   return result.affectedRows > 0;
 };
 
-const verifyEmailByToken = async (email: string, token: number) => {
+const verifyEmailByCode = async (email: string, code: number) => {
   const [result] = await (
     await connection
-  ).query<any>(verifyEmailByTokenSQL, [email, token]);
+  ).query<any>(verifyEmailByCodeSQL, [email, code]);
   return result.affectedRows > 0;
 };
 
-const findCurrentEmail = async (email: string, token: number) => {
+const findCurrentEmail = async (email: string, code: number) => {
   const [result] = await (
     await connection
-  ).query<any>(findCurrentEmailSQL, [email, token]);
+  ).query<any>(findCurrentEmailSQL, [email, code]);
   return result[0];
 };
 
-const isTokenExpired = (expiryAt: string) => {
+const isCodeExpired = (expiryAt: string) => {
   return moment(expiryAt).isBefore(moment());
 };
 const hashPassword = async (password: string): Promise<string> => {
@@ -84,11 +84,11 @@ const comparePassword = async (
 export {
   isEmailRegistered,
   isNicknameTaken,
-  isTokenExpired,
+  isCodeExpired,
   findCurrentEmail,
   registerUser,
-  saveVerificationToken,
-  verifyEmailByToken,
+  saveVerificationCode,
+  verifyEmailByCode,
   hashPassword,
   comparePassword,
 };

@@ -1,13 +1,13 @@
 import { randomInt } from "crypto";
 import nodemailer from "nodemailer";
 import {
-  verifyEmailByToken,
+  verifyEmailByCode,
   hashPassword,
   isEmailRegistered,
   isNicknameTaken,
   registerUser,
-  saveVerificationToken,
-  isTokenExpired,
+  saveVerificationCode,
+  isCodeExpired,
   findCurrentEmail,
 } from "../models/user";
 
@@ -58,19 +58,19 @@ const userController = {
           .status(400)
           .json({ message: "Verified email already registered." });
       }
-      const token = randomInt(100000, 1000000);
+      const code = randomInt(100000, 1000000);
 
-      const tokenSaved = await saveVerificationToken(email, token);
-      if (!tokenSaved)
+      const codeSaved = await saveVerificationCode(email, code);
+      if (!codeSaved)
         return res
           .status(500)
-          .json({ message: "Failed to save verification token" });
+          .json({ message: "Failed to save verification code" });
 
       const mailOptions = {
         from: process.env.GOOGLE_USER,
         to: email,
         subject: "Email Verification",
-        text: `Copy and paste the code ${token}`,
+        text: `Copy and paste the code ${code}`,
       };
 
       smtpTransport.sendMail(mailOptions, (error: any, info: any) => {
@@ -92,14 +92,14 @@ const userController = {
 
     try {
       const currentEmail = await findCurrentEmail(email, code);
-      const isExpired = isTokenExpired(currentEmail?.expiry_at);
+      const isExpired = isCodeExpired(currentEmail?.expiry_at);
       if (isExpired) {
-        return res.status(400).send("Expired token");
+        return res.status(400).send("Expired code");
       }
-      const isVerified = await verifyEmailByToken(email, code);
+      const isVerified = await verifyEmailByCode(email, code);
 
       if (!isVerified) {
-        return res.status(400).send("Invalid token");
+        return res.status(400).send("Invalid code");
       }
       res.status(200).send("Email verified successfully!");
     } catch (error) {

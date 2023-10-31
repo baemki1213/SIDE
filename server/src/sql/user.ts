@@ -8,20 +8,20 @@ const createUserSQL =
   "INSERT INTO users (email, password, nickname) VALUES (?, ?, ?)";
 
 // email verify
-const saveVerificationTokenSQL =
-  "INSERT INTO email_verifications (email, token, created_at, expiry_at) VALUES (?, ?, NOW(), ?) ON DUPLICATE KEY UPDATE token = VALUES(token), created_at = NOW(), expiry_at = VALUES(expiry_at)";
+const saveVerificationCodeSQL =
+  "INSERT INTO email_verifications (email, code, created_at, expiry_at) VALUES (?, ?, NOW(), ?) ON DUPLICATE KEY UPDATE code = VALUES(code), created_at = NOW(), expiry_at = VALUES(expiry_at)";
 
-const verifyEmailByTokenSQL =
-  "UPDATE email_verifications SET verified = TRUE WHERE email = ? AND token = ?";
+const verifyEmailByCodeSQL =
+  "UPDATE email_verifications SET verified = TRUE WHERE email = ? AND code = ?";
 
 const findCurrentEmailSQL =
-  "SELECT expiry_at FROM email_verifications WHERE email = ? AND token = ?";
+  "SELECT expiry_at FROM email_verifications WHERE email = ? AND code = ?";
 
 export {
   createUserSQL,
   countEmailSQL,
   countNicknameSQL,
-  saveVerificationTokenSQL,
-  verifyEmailByTokenSQL,
+  saveVerificationCodeSQL,
+  verifyEmailByCodeSQL,
   findCurrentEmailSQL,
 };
