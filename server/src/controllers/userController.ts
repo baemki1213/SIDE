@@ -1,104 +1,98 @@
-const crypto = require("crypto");
-
+import crypto from "crypto";
+import nodemailer from "nodemailer";
 import {
+  verifyEmailByToken,
   hashPassword,
   isEmailRegistered,
   isNicknameTaken,
   registerUser,
   saveVerificationToken,
-  updateEmailVerificationStatus,
-  verifyToken,
 } from "../models/user";
-
-const nodemailer = require("nodemailer");
 
 const smtpTransport = nodemailer.createTransport({
   service: "Gmail",
+  secure: true,
   auth: {
     user: process.env.GOOGLE_USER,
     pass: process.env.GOOGLE_PASS,
   },
 });
 
-const register = async (req, res) => {
-  try {
-    const { email, password, nickname } = req.body;
-    const emailExists = await isEmailRegistered(email);
-    if (emailExists)
-      return res.status(409).json({ message: "Email already registered." });
+const userController = {
+  async register(req: any, res: any) {
+    try {
+      const { email, password, nickname } = req.body;
 
-    const nicknameExists = await isNicknameTaken(nickname);
-    if (nicknameExists)
-      return res.status(409).json({ message: "Nickname already in use." });
+      const emailExists = await isEmailRegistered(email);
+      if (emailExists)
+        return res.status(409).json({ message: "Email already registered." });
 
-    const hashedPassword = await hashPassword(password);
+      const nicknameExists = await isNicknameTaken(nickname);
+      if (nicknameExists)
+        return res.status(409).json({ message: "Nickname already in use." });
 
-    const userId = await registerUser({
-      email,
-      password: hashedPassword,
-      nickname,
-    });
-    res.status(201).json({ message: "Registration successful", userId });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.toString() });
-  }
-};
+      const hashedPassword = await hashPassword(password);
 
-const sendVerificationEmail = async (req, res) => {
-  try {
-    const { email } = req.body;
-    const token = crypto.randomBytes(20).toString("hex");
-
-    const tokenSaved = await saveVerificationToken(email, token);
-    if (!tokenSaved) {
-      return res
+      const userId = await registerUser({
+        email,
+        password: hashedPassword,
+        nickname,
+      });
+      res.status(201).json({ message: "Registration successful", userId });
+    } catch (error: any) {
+      res
         .status(500)
-        .json({ message: "Failed to save verification token" });
+        .json({ message: "Server error", error: error.toString() });
     }
+  },
 
-    const mailOptions = {
-      from: process.env.GOOGLE_USER,
-      to: email,
-      subject: "Email Verification",
-      text: `Click the following link to verify your email: http://localhost:3000/api/user/verify-email?token=${token}`,
-    };
-    smtpTransport.sendMail(mailOptions, (error, info) => {
-      if (error) {
+  async sendVerificationEmail(req: any, res: any) {
+    try {
+      const { email } = req.body;
+      const token = crypto.randomBytes(32).toString("hex");
+
+      const tokenSaved = await saveVerificationToken(email, token);
+      if (!tokenSaved)
         return res
           .status(500)
-          .json({ message: "Email send failed", error: error.toString() });
-      }
-      res.status(200).json({ message: "Email sent successfully", info });
-    });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.toString() });
-  }
-};
+          .json({ message: "Failed to save verification token" });
 
-const verifyEmail = async (req, res) => {
-  try {
-    const { email, token } = req.body;
-    const isTokenValid = await verifyToken(email, token);
+      const mailOptions = {
+        from: process.env.GOOGLE_USER,
+        to: email,
+        subject: "Email Verification",
+        text: `Copy and paste the code ${token}`,
+      };
 
-    if (!isTokenValid) {
-      return res
-        .status(400)
-        .json({ message: "Invalid or expired verification token" });
-    }
-
-    const isStatusUpdated = await updateEmailVerificationStatus(email);
-    if (!isStatusUpdated) {
-      return res
+      smtpTransport.sendMail(mailOptions, (error: any, info: any) => {
+        if (error)
+          return res
+            .status(500)
+            .json({ message: "Email send failed", error: error.toString() });
+        res.status(200).json({ message: "Email sent successfully", info });
+      });
+    } catch (error: any) {
+      res
         .status(500)
-        .json({ message: "Failed to update email verification status" });
+        .json({ message: "Server error", error: error.toString() });
     }
+  },
 
-    // TODO: Any other post-verification actions 필요하면 하기.
+  async verifyEmail(req: { body: { code: string } }, res: any) {
+    const { code } = req.body;
 
-    res.status(200).json({ message: "Email successfully verified" });
-  } catch (error) {
-    res.status(500).json({ message: "Server error", error: error.toString() });
-  }
+    try {
+      const isVerified = await verifyEmailByToken(code);
+
+      if (!isVerified) {
+        return res.status(400).send("Invalid token");
+      }
+      res.status(200).send("Email verified successfully!");
+    } catch (error) {
+      console.error(error);
+      res.status(500).send("Server error");
+    }
+  },
 };
 
-export { register, sendVerificationEmail, verifyEmail };
+export default userController;

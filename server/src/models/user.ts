@@ -1,58 +1,73 @@
-const bcrypt = require("bcrypt");
+import bcrypt from "bcrypt";
+import { RowDataPacket } from "mysql2";
+import moment from "moment";
 
 import {
   countEmailSQL,
   countNicknameSQL,
   createUserSQL,
+  verifyEmailByTokenSQL,
   saveVerificationTokenSQL,
-  updateEmailVerificationStatusSQL,
-  verifyTokenSQL,
 } from "../sql/user";
+import connection from "../config/db.config";
 
-const isEmailRegistered = async (email: string) => {
-  // email을 count 하고 등록되어있는지 아닌지 boolean 리턴
-  const [rows] = await connection.query(countEmailSQL, [email]);
+interface User extends RowDataPacket {
+  count: number;
+}
+
+const isEmailRegistered = async (email: string): Promise<boolean> => {
+  const [rows] = await (await connection).query<User[]>(countEmailSQL, [email]);
   return rows[0].count > 0;
 };
 
-const isNicknameTaken = async (nickname: string) => {
-  const [rows] = await connection.query(countNicknameSQL, [nickname]);
+const isNicknameTaken = async (nickname: string): Promise<boolean> => {
+  const [rows] = await (
+    await connection
+  ).query<User[]>(countNicknameSQL, [nickname]);
   return rows[0].count > 0;
 };
 
-const registerUser = async ({ email, password, nickname }) => {
-  await connection.query(createUserSQL, [email, password, nickname]);
+const registerUser = async ({
+  email,
+  password,
+  nickname,
+}: {
+  email: string;
+  password: string;
+  nickname: string;
+}): Promise<void> => {
+  await (await connection).query(createUserSQL, [email, password, nickname]);
 };
 
-const saveVerificationToken = async (email, token) => {
-  const [rows] = await connection.query(saveVerificationTokenSQL, [
-    email,
-    token,
-  ]);
-  return rows.affectedRows === 1;
+const saveVerificationToken = async (
+  email: string,
+  token: string
+): Promise<boolean> => {
+  const expiryAt = moment().add(1, "hours").toDate(); // 현재 시간으로부터 1시간 뒤
+
+  const [result] = await (
+    await connection
+  ).query<any>(saveVerificationTokenSQL, [email, token, expiryAt]);
+  return result.affectedRows === 1;
 };
 
-const verifyToken = async (email, token) => {
-  const [rows] = await connection.query(verifyTokenSQL, [email, token]);
-  return rows.length > 0;
+const verifyEmailByToken = async (token: string) => {
+  const [result] = await (
+    await connection
+  ).query<any>(verifyEmailByTokenSQL, [token]);
+  return result.affectedRows > 0;
 };
 
-const updateEmailVerificationStatus = async (email: string) => {
-  const [rows] = await connection.query(updateEmailVerificationStatusSQL, [
-    true,
-    email,
-  ]);
-  return rows.affectedRows === 1;
+const hashPassword = async (password: string): Promise<string> => {
+  const saltRounds = 10;
+  return bcrypt.hash(password, saltRounds);
 };
 
-const hashPassword = async (password: string) => {
-  const saltRounds = 10; // 비밀번호를 암호화할 때 사용할 salt의 라운드 수
-  const hashedPassword = await bcrypt.hash(password, saltRounds);
-  return hashedPassword;
-};
-const comparePassword = async (password, hashedPassword) => {
-  const isMatch = await bcrypt.compare(password, hashedPassword);
-  return isMatch;
+const comparePassword = async (
+  password: string,
+  hashedPassword: string
+): Promise<boolean> => {
+  return bcrypt.compare(password, hashedPassword);
 };
 
 export {
@@ -60,8 +75,7 @@ export {
   isNicknameTaken,
   registerUser,
   saveVerificationToken,
-  verifyToken,
-  updateEmailVerificationStatus,
+  verifyEmailByToken,
   hashPassword,
   comparePassword,
 };

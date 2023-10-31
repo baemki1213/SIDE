@@ -1,25 +1,23 @@
-const countEmailSQL = "SELECT COUNT(*) AS count FROM users WHERE email = ?";
+// register user
+const countEmailSQL = "SELECT COUNT(*) AS count FROM user WHERE email = ?";
 
 const countNicknameSQL =
-  "SELECT COUNT(*) AS count FROM users WHERE nickname = ?";
+  "SELECT COUNT(*) AS count FROM user WHERE nickname = ?";
 
 const createUserSQL =
-  "INSERT INTO users (email, password, nickname) VALUES (?, ?, ?)";
+  "INSERT INTO user (email, password, nickname) VALUES (?, ?, ?)";
 
+// email verify
 const saveVerificationTokenSQL =
-  "INSERT INTO email_verifications (email, token) VALUES (?, ?)";
+  "INSERT INTO email_verifications (email, token, created_at, expiry_at) VALUES (?, ?, NOW(), ?) ON DUPLICATE KEY UPDATE token = VALUES(token)";
 
-const verifyTokenSQL =
-  "SELECT * FROM email_verifications WHERE email = ? AND token = ?";
-
-const updateEmailVerificationStatusSQL =
-  "UPDATE users SET is_email_verified = ? WHERE email = ?";
+const verifyEmailByTokenSQL =
+  "UPDATE email_verifications SET verified = TRUE WHERE token = ?";
 
 export {
   createUserSQL,
   countEmailSQL,
   countNicknameSQL,
   saveVerificationTokenSQL,
-  verifyTokenSQL,
-  updateEmailVerificationStatusSQL,
+  verifyEmailByTokenSQL,
 };

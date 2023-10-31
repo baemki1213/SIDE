@@ -1,11 +1,13 @@
-import {
-  register,
-  sendVerificationEmail,
-  verifyEmail,
-} from "../controllers/userController";
+import express, { Router } from "express";
+import userController from "../controllers/userController";
 
-router.post("/register", register);
-router.post("/send-verification-email", sendVerificationEmail);
-router.get("/verify-email", verifyEmail);
+const userRouter: Router = express.Router();
 
-module.exports = router;
+userRouter.post("/register", userController.register);
+userRouter.post(
+  "/send-verification-email",
+  userController.sendVerificationEmail
+);
+userRouter.post("/verify-email", userController.verifyEmail);
+
+export default userRouter;

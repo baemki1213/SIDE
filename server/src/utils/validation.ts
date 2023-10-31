@@ -7,7 +7,7 @@ const validatePassword = (password: string) => {
   const re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/;
   return re.test(password);
 };
-const validateNickname = nickname => {
+const validateNickname = (nickname: string) => {
   const re = /^[a-zA-Z0-9가-힣]{2,10}$/;
   return re.test(nickname);
 };

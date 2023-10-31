@@ -1,12 +1,14 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+import express, { Application } from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
 
-const express = require("express");
-const app = express();
-const routes = require("./routes/index.ts");
-const userRoutes = require("./routes/userRoutes");
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import routes from "./routes/index";
+import userRoutes from "./routes/userRoutes";
 
+dotenv.config();
+
+const app: Application = express();
 const corsOptions = {
   origin: "http://localhost:3000",
 };
@@ -17,7 +19,7 @@ app.use(bodyParser.json());
 app.use(routes);
 app.use("/api/user", userRoutes);
 
-const PORT = process.env.SERVER_PORT;
+const PORT: string | number = process.env.SERVER_PORT || 3000;
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}.`);

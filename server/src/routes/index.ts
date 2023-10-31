@@ -1,14 +1,14 @@
-require("dotenv").config();
+import dotenv from "dotenv";
+import express, { Request, Response, Router } from "express";
+import session from "express-session";
 
-const session = require("express-session");
-const routeExpress = require("express");
+dotenv.config();
 
-const usersController = require("../controllers/users.ts");
-const router = routeExpress.Router();
+const router: Router = express.Router();
 
 router.use(
   session({
-    secret: process.env.SESSION_SECRET,
+    secret: process.env.SESSION_SECRET as string,
     resave: false,
     saveUninitialized: true,
     cookie: {
@@ -19,8 +19,8 @@ router.use(
   })
 );
 
-router.get("/", (req, res) => {
+router.get("/", (req: Request, res: Response) => {
   res.end("Hello world");
 });
 
-module.exports = router;
+export default router;
