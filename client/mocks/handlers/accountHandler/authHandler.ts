@@ -42,6 +42,30 @@ const authHandlers = [
       });
     }
   ),
+  // nickname check
+  http.post(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/check-nickname/`,
+    async ({ request }: any) => {
+      const { nickname } = await request.json();
+      console.log(nickname, "mock nickname");
+      if (nickname === "valid") {
+        return HttpResponse.json({
+          status: 200,
+          data: { message: "사용 가능한 닉네임입니다." },
+        });
+      }
+      if (nickname === "existed") {
+        return HttpResponse.json({
+          status: 409,
+          data: { message: "닉네임이 이미 사용 중입니다." },
+        });
+      }
+      return HttpResponse.json({
+        status: 500,
+        data: { message: "Server error" },
+      });
+    }
+  ),
 ];
 
 export { authHandlers };

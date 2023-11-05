@@ -96,5 +96,16 @@ describe("Register page", () => {
     expect(emailContainerTitle).not.toBeInTheDocument();
   });
 
-  test("email verify code expired", () => {});
+  test("nickname check", async () => {
+    render(<RegisterPage />);
+
+    const nickNameInput = screen.getByLabelText("nickname");
+    fireEvent.change(nickNameInput, { target: { value: "valid" } });
+
+    await waitFor(() => {
+      const nickNameButton = screen.getByRole("button", { name: "중복확인" });
+      expect(nickNameButton).toBeInTheDocument();
+      fireEvent.click(nickNameButton);
+    });
+  });
 });

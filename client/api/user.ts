@@ -9,7 +9,7 @@ interface ICreateProps {
 export const createUser = async (data: ICreateProps) => {
   return await requestWithoutAuth({
     method: "post",
-    url: "/user/create/",
+    url: "/user/register/",
     data,
   });
 };
@@ -29,6 +29,14 @@ export const verifyEmailCode = async (data: {
   return await requestWithoutAuth({
     method: "post",
     url: "/user/verify-email/",
+    data,
+  });
+};
+
+export const checkNickname = async (data: { nickname: string }) => {
+  return await requestWithoutAuth({
+    method: "post",
+    url: "/user/check-nickname/",
     data,
   });
 };

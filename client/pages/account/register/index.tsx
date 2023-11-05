@@ -2,6 +2,7 @@ import { ChangeEvent, useState } from "react";
 import Link from "next/link";
 
 import { useEmailValidation } from "@/hooks/account/register/useEmailValidation";
+import usePasswordValidation from "@/hooks/account/register/usePasswordValidation";
 
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
@@ -12,8 +13,8 @@ import Gap from "@/components/common/Gap";
 import EmailVerifyContainer from "@/components/account/Register/EmailVerifyContainer";
 
 import { createUser } from "@/api";
-import { sendVerificationEmail } from "@/api/user";
-import usePasswordValidation from "@/hooks/account/register/usePasswordValidation";
+import { checkNickname, sendVerificationEmail } from "@/api/user";
+import { useNicknameValidation } from "@/hooks/account/register/useNicknameValidation";
 
 export default function RegisterPage() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -22,38 +23,117 @@ export default function RegisterPage() {
     password2: "",
     nickname: "",
   });
+  const [errorMessage, setErrorMessage] = useState({
+    email: "",
+    password: "",
+    password2: "",
+    nickname: "",
+  });
   const { email, password, password2, nickname } = registerInfo;
-  const { isValid: emailIsValid } = useEmailValidation(email);
+  const { isValid: emailIsValid, setIsValid: setEmailIsValid } =
+    useEmailValidation(email);
   const { isPassword1Valid, isPassword2Valid } = usePasswordValidation(
     password,
     password2
   );
+  const { isValid: isNicknameValid, setIsValid: setIsNicknameValid } =
+    useNicknameValidation(nickname);
+  const [isCheckedNickname, setIsCheckedNickname] = useState(false);
   const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
   const [isVerifiedEmailCode, setIsVerifiedEmailCode] = useState(false);
 
   const verifyButtonIsDisabled = !emailIsValid || isVerificationEmailSent;
 
   const signUpButtonIsValid =
-    isVerifiedEmailCode || isPassword1Valid || isPassword2Valid;
+    isVerifiedEmailCode &&
+    isPassword1Valid &&
+    isPassword2Valid &&
+    isCheckedNickname;
 
   const handleOnChange = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
   ) => {
     e.preventDefault();
-    setRegisterInfo({ ...registerInfo, [e.target.name]: e.target.value });
+    switch (e.target.name) {
+      case "nickname":
+        setRegisterInfo({
+          ...registerInfo,
+          [e.target.name]: e.target.value.slice(0, 10),
+        });
+      default:
+        setRegisterInfo({ ...registerInfo, [e.target.name]: e.target.value });
+    }
+    setErrorMessage({ ...errorMessage, [e.target.name]: "" });
   };
 
-  const handleEmailVerifyClick = () => {
-    sendVerificationEmail({ email });
-    setIsVerificationEmailSent(true);
+  const handleEmailVerifyClick = async () => {
+    if (email) {
+      try {
+        const result = await sendVerificationEmail({ email });
+        switch (result.status) {
+          case 200:
+            return setIsVerificationEmailSent(true);
+        }
+      } catch (error: any) {
+        switch (error.response.status) {
+          case 400:
+            setErrorMessage({
+              ...errorMessage,
+              email: error.response.data.message,
+            });
+            setEmailIsValid(false);
+            return;
+          case 500:
+            return setErrorMessage({
+              ...errorMessage,
+              email: error.response.data.message,
+            });
+        }
+      }
+    }
   };
 
-  const handleSignUpClick = () => {
-    createUser({ email, password, nickname });
+  const handleSignUpClick = async () => {
+    try {
+      const result = await createUser({ email, password, nickname });
+      switch (result.status) {
+        case 200:
+        // alert success modal 띄우기
+        // 확인 누르면 로그인 페이지로 이동.
+      }
+    } catch (error) {
+      // server error로 회원가입이 불가능하다고 alert
+      throw error;
+    }
   };
 
-  const handleNickNameCheck = () => {
-    console.log(nickname);
+  const handleNickNameCheck = async () => {
+    if (nickname) {
+      try {
+        const result = await checkNickname({ nickname });
+        switch (result.status) {
+          case 200:
+            return setIsCheckedNickname(true);
+        }
+      } catch (error: any) {
+        switch (error.response.status) {
+          case 409:
+            setIsNicknameValid(false);
+            setIsCheckedNickname(false);
+            setErrorMessage({
+              ...errorMessage,
+              nickname: error.response.data.message,
+            });
+          case 500:
+            setIsNicknameValid(false);
+            setIsCheckedNickname(false);
+            setErrorMessage({
+              ...errorMessage,
+              nickname: error.response.data.message,
+            });
+        }
+      }
+    }
   };
 
   return (
@@ -66,7 +146,8 @@ export default function RegisterPage() {
           fontSize="xl"
         />
 
-        <SocialButtons />
+        {/* <SocialButtons /> */}
+        <Gap side={30} />
 
         <S.Form>
           <TextInput
@@ -77,6 +158,8 @@ export default function RegisterPage() {
             onChange={handleOnChange}
             type="email"
             placeholder="example@email.com"
+            errorMessage={errorMessage.email}
+            isValid={email ? emailIsValid : true}
           />
           <Gap side={12} />
           <StyledButton
@@ -120,13 +203,16 @@ export default function RegisterPage() {
             value={nickname}
             onChange={handleOnChange}
             type="text"
+            isValid={nickname ? isNicknameValid : true}
+            errorMessage={errorMessage.nickname}
             placeholder="닉네임 (2~10자)"
             buttonComponent={
               <StyledButton
-                width="48px"
-                buttonType={"primary"}
+                width="80px"
+                buttonType={isCheckedNickname ? "disabled" : "primary"}
+                disabled={isCheckedNickname}
                 onClick={handleNickNameCheck}
-                text="확인"
+                text={isCheckedNickname ? "OK!" : "중복확인"}
                 size="small"
               />
             }

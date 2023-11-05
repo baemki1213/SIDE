@@ -8,5 +8,5 @@ export function useEmailValidation(email: string) {
     setIsValid(emailValidationRegex.test(email));
   }, [email]);
 
-  return { isValid };
+  return { isValid, setIsValid };
 }

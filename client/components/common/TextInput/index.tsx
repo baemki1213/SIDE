@@ -66,7 +66,10 @@ export default function TextInput({
         )}
       </S.InputWrapper>
       {!isValid && errorMessage && (
-        <StyledText text={errorMessage} fontColor="redFF" />
+        <>
+          <Gap side={10} />
+          <StyledText text={errorMessage} fontColor="redFF" fontSize="sm" />
+        </>
       )}
     </S.TextInputContainer>
   );

@@ -11,10 +11,10 @@ import { createNumRegex } from "@/utils/validations/account";
 import StyledText from "@/components/common/StyledText";
 import StyledButton from "@/components/common/StyledButton";
 import TextInput from "@/components/common/TextInput";
-import { sendVerificationEmail, verifyEmailCode } from "@/api/user";
 import Gap from "@/components/common/Gap";
 
 import * as S from "./styles";
+import { sendVerificationEmail, verifyEmailCode } from "@/api/user";
 
 interface IProps {
   email: string;
