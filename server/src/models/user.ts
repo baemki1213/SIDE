@@ -44,7 +44,7 @@ const saveVerificationCode = async (
   email: string,
   code: number
 ): Promise<boolean> => {
-  const expiryAt = moment().add(3, "minutes").toDate();
+  const expiryAt = moment().add(1, "minutes").toDate();
 
   const [result] = await (
     await connection
