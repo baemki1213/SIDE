@@ -41,7 +41,7 @@ const userController = {
 
       const userId = await registerUser({
         email,
-        password: hashedPassword,
+        hashed_password: hashedPassword,
         nickname,
       });
       res.status(201).json({ message: "등록에 성공하였습니다", userId });
@@ -107,8 +107,23 @@ const userController = {
       }
       res.status(200).send("이메일이 성공적으로 인증되었습니다!");
     } catch (error) {
-      console.error(error);
       res.status(500).send("Server error");
+    }
+  },
+
+  async checkNickname(req: { body: { nickname: string } }, res: any) {
+    const { nickname } = req.body;
+    try {
+      const nicknameExists = await isNicknameTaken(nickname);
+      if (nicknameExists)
+        return res
+          .status(409)
+          .json({ message: "닉네임이 이미 사용 중입니다." });
+      return res.status(200).json({ message: "사용 가능한 닉네임입니다." });
+    } catch (error: any) {
+      res
+        .status(500)
+        .json({ message: "Server error", error: error.toString() });
     }
   },
 };

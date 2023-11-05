@@ -30,14 +30,16 @@ const isNicknameTaken = async (nickname: string): Promise<boolean> => {
 
 const registerUser = async ({
   email,
-  password,
+  hashed_password,
   nickname,
 }: {
   email: string;
-  password: string;
+  hashed_password: string;
   nickname: string;
 }): Promise<void> => {
-  await (await connection).query(createUserSQL, [email, password, nickname]);
+  await (
+    await connection
+  ).query(createUserSQL, [email, hashed_password, nickname]);
 };
 
 const saveVerificationCode = async (

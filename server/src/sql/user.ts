@@ -5,7 +5,7 @@ const countNicknameSQL =
   "SELECT COUNT(*) AS count FROM users WHERE nickname = ?";
 
 const createUserSQL =
-  "INSERT INTO users (email, password, nickname) VALUES (?, ?, ?)";
+  "INSERT INTO users (email, hashed_password, nickname) VALUES (?, ?, ?)";
 
 // email verify
 const saveVerificationCodeSQL =
