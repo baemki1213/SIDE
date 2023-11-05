@@ -1,3 +1,13 @@
+import * as S from "./styles";
+
+import LoginTitle from "@/components/account/Login/LoginTitle";
+
 export default function login() {
-  return <>login</>;
+  return (
+    <S.Container>
+      <S.Wrapper>
+        <LoginTitle />
+      </S.Wrapper>
+    </S.Container>
+  );
 }

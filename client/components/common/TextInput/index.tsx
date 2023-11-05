@@ -4,6 +4,7 @@ import * as S from "./styles";
 import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
 
 interface IProps {
+  disabled?: boolean;
   value: string;
   onChange: (e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>) => void;
   name: string;
@@ -14,9 +15,11 @@ interface IProps {
   regex?: RegExp; // 정규식 추가
   errorMessage?: string; // 에러 메시지 추가
   buttonComponent?: React.ReactNode; // 버튼 컴포넌트 추가
+  maxLength?: number;
 }
 
 export default function TextInput({
+  disabled = false,
   value,
   onChange,
   name,
@@ -27,6 +30,7 @@ export default function TextInput({
   regex,
   errorMessage,
   buttonComponent,
+  maxLength,
 }: IProps) {
   const [isValid, setIsValid] = useState(true);
 
@@ -50,7 +54,7 @@ export default function TextInput({
           fontSize="xl"
         />
       )}
-      <Gap side={6} />
+      <Gap side={12} />
       {infoText && (
         <S.TextInfoWRapper>
           <StyledText text={infoText} fontColor="gray130" />
@@ -58,6 +62,7 @@ export default function TextInput({
       )}
       <S.InputWrapper>
         <S.TextInputTextBox
+          disabled={disabled}
           value={value}
           onChange={handleInputChange}
           name={name}
@@ -65,6 +70,7 @@ export default function TextInput({
           type={type}
           placeholder={placeholder}
           isValid={isValid}
+          maxLength={maxLength}
         />
         {buttonComponent && (
           <S.ButtonWrapper>{buttonComponent}</S.ButtonWrapper>

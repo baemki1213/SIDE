@@ -7,7 +7,7 @@ const authHandlers = [
     () => {
       return HttpResponse.json({
         status: 200,
-        data: { message: "success" },
+        data: { message: "이메일을 성공적으로 보냈습니다" },
       });
     }
   ),
@@ -20,19 +20,19 @@ const authHandlers = [
       if (code === 111111) {
         return HttpResponse.json({
           status: 400,
-          data: { message: "Expired code" },
+          data: { message: "만료된 코드입니다." },
         });
       }
       if (code === 222222) {
         return HttpResponse.json({
           status: 400,
-          data: { message: "Invalid code" },
+          data: { message: "잘못된 코드입니다." },
         });
       }
       if (code === 123456) {
         return HttpResponse.json({
           status: 200,
-          data: { message: "Email verified successfully!" },
+          data: { message: "이메일이 성공적으로 인증되었습니다!" },
         });
       }
 

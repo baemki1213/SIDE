@@ -22,6 +22,7 @@ export const InputWrapper = styled.div`
   display: flex;
   align-items: center;
 `;
+
 export const ButtonWrapper = styled.div`
   margin-left: 8px;
 `;

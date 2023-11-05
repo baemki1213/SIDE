@@ -72,7 +72,10 @@ describe("Register page", () => {
       "이메일로 전송된 인증코드를 입력해주세요."
     );
     expect(emailContainerTitle).toBeInTheDocument();
-
+    const verifyInfoText = screen.getByText("이메일을 받지 못하셨나요?");
+    expect(verifyInfoText).toBeInTheDocument();
+    const reSendText = screen.getByText("이메일 재전송하기");
+    expect(reSendText).toBeInTheDocument();
     await waitFor(() => {
       const verifyCodeInput =
         screen.getByPlaceholderText("인증코드 6자리 입력");
@@ -82,10 +85,15 @@ describe("Register page", () => {
       const emailConfirmBtn = screen.getByRole("button", { name: "확인" });
       fireEvent.click(emailConfirmBtn);
     });
-    const verifyInfoText = screen.getByText("이메일을 받지 못하셨나요?");
-    expect(verifyInfoText).toBeInTheDocument();
-    const reSendText = screen.getByText("이메일 재전송하기");
-    expect(reSendText).toBeInTheDocument();
+
+    // 이메일 인증 완료로 바뀜.
+    const emailVerifiedButton = await screen.getByRole("button", {
+      name: "이메일 인증 완료",
+    });
+    expect(emailVerifiedButton).toBeInTheDocument();
+    expect(emailVerifiedButton).toBeDisabled();
+    // 인증 container 없어짐.
+    expect(emailContainerTitle).not.toBeInTheDocument();
   });
 
   test("email verify code expired", () => {});
