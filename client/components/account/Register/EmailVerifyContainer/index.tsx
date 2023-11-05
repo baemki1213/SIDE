@@ -6,13 +6,15 @@ import {
   useState,
 } from "react";
 
-import * as S from "./styles";
+import { createNumRegex } from "@/utils/validations/account";
+
 import StyledText from "@/components/common/StyledText";
 import StyledButton from "@/components/common/StyledButton";
 import TextInput from "@/components/common/TextInput";
-
 import { sendVerificationEmail, verifyEmailCode } from "@/api/user";
 import Gap from "@/components/common/Gap";
+
+import * as S from "./styles";
 
 interface IProps {
   email: string;
@@ -29,7 +31,7 @@ export default function EmailVerifyContainer({
   const [isValid, setIsValid] = useState(false);
   const [verifyCode, setVerifyCode] = useState("");
   const [time, setTime] = useState(TIMER_DURATION); // 1분
-  const numRegex = new RegExp(`^\\d{${CODE_LENGTH}}$`);
+  const numRegex = createNumRegex(CODE_LENGTH);
 
   useEffect(() => {
     const countdown = setInterval(() => {
