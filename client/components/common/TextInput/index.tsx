@@ -13,6 +13,7 @@ interface IProps {
   infoText?: string;
   labelText?: string;
   regex?: RegExp; // 정규식 추가
+  isValid?: boolean;
   errorMessage?: string; // 에러 메시지 추가
   buttonComponent?: React.ReactNode; // 버튼 컴포넌트 추가
   maxLength?: number;
@@ -27,23 +28,11 @@ export default function TextInput({
   placeholder,
   infoText,
   labelText,
-  regex,
+  isValid = true,
   errorMessage,
   buttonComponent,
   maxLength,
 }: IProps) {
-  const [isValid, setIsValid] = useState(true);
-
-  const handleInputChange = (
-    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
-  ) => {
-    onChange(e);
-
-    if (regex) {
-      setIsValid(regex.test(e.target.value));
-    }
-  };
-
   return (
     <S.TextInputContainer>
       {labelText && (
@@ -64,7 +53,7 @@ export default function TextInput({
         <S.TextInputTextBox
           disabled={disabled}
           value={value}
-          onChange={handleInputChange}
+          onChange={onChange}
           name={name}
           aria-label={name}
           type={type}
