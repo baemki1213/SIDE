@@ -27,11 +27,15 @@ const userController = {
 
       const emailExists = await isEmailRegistered(email);
       if (emailExists)
-        return res.status(409).json({ message: "Email already registered." });
+        return res
+          .status(409)
+          .json({ message: "이메일이 이미 등록되었습니다." });
 
       const nicknameExists = await isNicknameTaken(nickname);
       if (nicknameExists)
-        return res.status(409).json({ message: "Nickname already in use." });
+        return res
+          .status(409)
+          .json({ message: "닉네임이 이미 사용 중입니다." });
 
       const hashedPassword = await hashPassword(password);
 
@@ -40,7 +44,7 @@ const userController = {
         password: hashedPassword,
         nickname,
       });
-      res.status(201).json({ message: "Registration successful", userId });
+      res.status(201).json({ message: "등록에 성공하였습니다", userId });
     } catch (error: any) {
       res
         .status(500)
@@ -50,13 +54,10 @@ const userController = {
 
   async sendVerificationEmail(req: any, res: any) {
     try {
-      // verified된 것 중에 이메일이 존재하는 경우에는 중복된 이메일 에러 전송.
       const { email } = req.body;
       const isRegistered = await isEmailRegistered(email);
       if (isRegistered) {
-        return res
-          .status(400)
-          .json({ message: "Verified email already registered." });
+        return res.status(400).json({ message: "이미 등록된 이메일입니다." });
       }
       const code = randomInt(100000, 1000000);
 
@@ -64,21 +65,24 @@ const userController = {
       if (!codeSaved)
         return res
           .status(500)
-          .json({ message: "Failed to save verification code" });
+          .json({ message: "인증 코드 저장에 실패했습니다" });
 
       const mailOptions = {
         from: process.env.GOOGLE_USER,
         to: email,
-        subject: "Email Verification",
-        text: `Copy and paste the code ${code}`,
+        subject: "이메일 인증",
+        text: `코드를 복사하여 붙여넣으세요: ${code}`,
       };
 
       smtpTransport.sendMail(mailOptions, (error: any, info: any) => {
         if (error)
-          return res
-            .status(500)
-            .json({ message: "Email send failed", error: error.toString() });
-        res.status(200).json({ message: "Email sent successfully", info });
+          return res.status(500).json({
+            message: "이메일 전송에 실패했습니다",
+            error: error.toString(),
+          });
+        return res
+          .status(200)
+          .json({ message: "이메일을 성공적으로 보냈습니다", info });
       });
     } catch (error: any) {
       res
@@ -94,14 +98,14 @@ const userController = {
       const currentEmail = await findCurrentEmail(email, code);
       const isExpired = isCodeExpired(currentEmail?.expiry_at);
       if (isExpired) {
-        return res.status(400).send("Expired code");
+        return res.status(400).send("만료된 코드입니다.");
       }
       const isVerified = await verifyEmailByCode(email, code);
 
       if (!isVerified) {
-        return res.status(400).send("Invalid code");
+        return res.status(400).send("잘못된 코드입니다.");
       }
-      res.status(200).send("Email verified successfully!");
+      res.status(200).send("이메일이 성공적으로 인증되었습니다!");
     } catch (error) {
       console.error(error);
       res.status(500).send("Server error");
