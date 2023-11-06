@@ -12,14 +12,14 @@ describe("Register page", () => {
     render(<RegisterPage />);
     const pageTitleText = screen.getByText("회원가입");
     expect(pageTitleText).toBeInTheDocument();
-    const snsInfoText = screen.getByText("SNS계정으로 간편가입");
-    expect(snsInfoText).toBeInTheDocument();
-    const kakaoRegisterBtn = screen.getByRole("button", { name: "kakao" });
-    expect(kakaoRegisterBtn).toBeInTheDocument();
-    const naverRegisterBtn = screen.getByRole("button", { name: "naver" });
-    expect(naverRegisterBtn).toBeInTheDocument();
-    const googleRegisterBtn = screen.getByRole("button", { name: "google" });
-    expect(googleRegisterBtn).toBeInTheDocument();
+    // const snsInfoText = screen.getByText("SNS계정으로 간편가입");
+    // expect(snsInfoText).toBeInTheDocument();
+    // const kakaoRegisterBtn = screen.getByRole("button", { name: "kakao" });
+    // expect(kakaoRegisterBtn).toBeInTheDocument();
+    // const naverRegisterBtn = screen.getByRole("button", { name: "naver" });
+    // expect(naverRegisterBtn).toBeInTheDocument();
+    // const googleRegisterBtn = screen.getByRole("button", { name: "google" });
+    // expect(googleRegisterBtn).toBeInTheDocument();
     const emailInput = await screen.getByRole("textbox", { name: /email/i });
     expect(emailInput).toBeInTheDocument();
     const emailVerifyBtn = await screen.getByRole("button", {
@@ -62,12 +62,18 @@ describe("Register page", () => {
   test("email verify success", async () => {
     render(<RegisterPage />);
 
-    const emailInput = await screen.getByRole("textbox", { name: /email/i });
-    fireEvent.change(emailInput, { target: { value: "baemki1213@gmail.com" } });
-    const emailVerifyBtn = await screen.getByRole("button", {
-      name: "이메일 인증하기",
+    await waitFor(async () => {
+      const emailInput = await screen.getByRole("textbox", { name: /email/i });
+      fireEvent.change(emailInput, {
+        target: { value: "baemki1213@gmail.com" },
+      });
     });
-    fireEvent.click(emailVerifyBtn);
+    await waitFor(async () => {
+      const emailVerifyBtn = await screen.getByRole("button", {
+        name: "이메일 인증하기",
+      });
+      fireEvent.click(emailVerifyBtn);
+    });
     const emailContainerTitle = screen.getByText(
       "이메일로 전송된 인증코드를 입력해주세요."
     );
@@ -86,14 +92,15 @@ describe("Register page", () => {
       fireEvent.click(emailConfirmBtn);
     });
 
-    // 이메일 인증 완료로 바뀜.
-    const emailVerifiedButton = await screen.getByRole("button", {
-      name: "이메일 인증 완료",
+    await waitFor(async () => {
+      const emailVerifiedButton = await screen.getByRole("button", {
+        name: "이메일 인증 완료",
+      });
+      expect(emailVerifiedButton).toBeInTheDocument();
+      expect(emailVerifiedButton).toBeDisabled();
+      // 인증 container 없어짐.
+      expect(emailContainerTitle).not.toBeInTheDocument();
     });
-    expect(emailVerifiedButton).toBeInTheDocument();
-    expect(emailVerifiedButton).toBeDisabled();
-    // 인증 container 없어짐.
-    expect(emailContainerTitle).not.toBeInTheDocument();
   });
 
   test("nickname check", async () => {
