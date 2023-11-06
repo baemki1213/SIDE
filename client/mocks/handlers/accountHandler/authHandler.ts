@@ -47,7 +47,6 @@ const authHandlers = [
     `${process.env.NEXT_PUBLIC_API_URL}/user/check-nickname/`,
     async ({ request }: any) => {
       const { nickname } = await request.json();
-      console.log(nickname, "mock nickname");
       if (nickname === "valid") {
         return HttpResponse.json({
           status: 200,
