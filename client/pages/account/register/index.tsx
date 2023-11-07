@@ -4,6 +4,10 @@ import Link from "next/link";
 import useEmailValidation from "@/hooks/account/register/formValidation/useEmailValidation";
 import usePasswordValidation from "@/hooks/account/register/formValidation/usePasswordValidation";
 import useNicknameValidation from "@/hooks/account/register/formValidation/useNicknameValidation";
+import {
+  useEmailVerification,
+  useNicknameVerification,
+} from "@/hooks/account/register/authentication";
 
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
@@ -14,8 +18,6 @@ import Gap from "@/components/common/Gap";
 import EmailVerifyContainer from "@/components/account/Register/EmailVerifyContainer";
 
 import { createUser } from "@/api";
-import { checkNickname } from "@/api/user";
-import { useEmailVerification } from "@/hooks/account/register/authentication/useEmailVerification";
 
 export default function RegisterPage() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -40,22 +42,22 @@ export default function RegisterPage() {
   );
   const { isValid: isNicknameValid, setIsValid: setIsNicknameValid } =
     useNicknameValidation(nickname);
-  const [isCheckedNickname, setIsCheckedNickname] = useState(false);
+
   const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
   const [isVerifiedEmailCode, setIsVerifiedEmailCode] = useState(false);
 
   const verifyButtonIsDisabled = !emailIsValid || isVerificationEmailSent;
 
-  const signUpButtonIsValid =
-    isVerifiedEmailCode &&
-    isPassword1Valid &&
-    isPassword2Valid &&
-    isCheckedNickname;
   const { verifyEmail, isLoading: isVerifyEmailLoading } = useEmailVerification(
     setIsVerificationEmailSent,
     setErrorMessage,
     setEmailIsValid
   );
+  const {
+    verifyName,
+    isSuccess: nicknameIsSuccess,
+    isError,
+  } = useNicknameVerification(setIsNicknameValid, setErrorMessage);
 
   const handleEmailVerifyClick = () => {
     if (email) {
@@ -81,7 +83,6 @@ export default function RegisterPage() {
 
   const handleSignUpClick = async () => {
     try {
-      true;
       const result = await createUser({ email, password, nickname });
       switch (result.status) {
         case 200:
@@ -95,37 +96,18 @@ export default function RegisterPage() {
   };
 
   const handleNickNameCheck = async () => {
-    true;
     if (nickname) {
-      try {
-        const result = await checkNickname({ nickname });
-        switch (result.status) {
-          case 200:
-            return setIsCheckedNickname(true);
-        }
-      } catch (error: any) {
-        switch (error.response.status) {
-          case 409:
-            setIsNicknameValid(false);
-            setIsCheckedNickname(false);
-            setErrorMessage({
-              ...errorMessage,
-              nickname: error.response.data.message,
-            });
-          case 500:
-            setIsNicknameValid(false);
-            setIsCheckedNickname(false);
-            setErrorMessage({
-              ...errorMessage,
-              nickname: error.response.data.message,
-            });
-        }
-      } finally {
-        false;
-      }
+      verifyName({ nickname });
     }
   };
+  const signUpButtonIsValid =
+    isVerifiedEmailCode &&
+    isPassword1Valid &&
+    isPassword2Valid &&
+    nicknameIsSuccess;
+
   const isLoading = isVerifyEmailLoading;
+
   if (isLoading) return <>...loading</>;
   return (
     <S.Container>
@@ -194,16 +176,17 @@ export default function RegisterPage() {
             value={nickname}
             onChange={handleOnChange}
             type="text"
-            isValid={nickname ? isNicknameValid : true}
+            disabled={nicknameIsSuccess}
+            isValid={nickname ? isNicknameValid || nicknameIsSuccess : true}
             errorMessage={errorMessage.nickname}
             placeholder="닉네임 (2~10자)"
             buttonComponent={
               <StyledButton
                 width="80px"
-                buttonType={isCheckedNickname ? "disabled" : "primary"}
-                disabled={isCheckedNickname}
+                buttonType={nicknameIsSuccess ? "disabled" : "primary"}
+                disabled={nicknameIsSuccess}
                 onClick={handleNickNameCheck}
-                text={isCheckedNickname ? "OK!" : "중복확인"}
+                text={nicknameIsSuccess ? "OK!" : "중복확인"}
                 size="small"
               />
             }

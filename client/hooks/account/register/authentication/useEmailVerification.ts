@@ -47,6 +47,7 @@ export const useEmailVerification = (
           ...previousErrorMessage,
           email: message,
         }));
+        setEmailIsValid(false);
       }
     },
   });
