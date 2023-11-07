@@ -1,8 +1,9 @@
 import { ChangeEvent, useState } from "react";
 import Link from "next/link";
 
-import { useEmailValidation } from "@/hooks/account/register/useEmailValidation";
-import usePasswordValidation from "@/hooks/account/register/usePasswordValidation";
+import useEmailValidation from "@/hooks/account/register/formValidation/useEmailValidation";
+import usePasswordValidation from "@/hooks/account/register/formValidation/usePasswordValidation";
+import useNicknameValidation from "@/hooks/account/register/formValidation/useNicknameValidation";
 
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
@@ -14,7 +15,6 @@ import EmailVerifyContainer from "@/components/account/Register/EmailVerifyConta
 
 import { createUser } from "@/api";
 import { checkNickname, sendVerificationEmail } from "@/api/user";
-import { useNicknameValidation } from "@/hooks/account/register/useNicknameValidation";
 
 export default function RegisterPage() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -30,6 +30,7 @@ export default function RegisterPage() {
     nickname: "",
   });
   const { email, password, password2, nickname } = registerInfo;
+  const [isLoading, setIsLoading] = useState(false);
   const { isValid: emailIsValid, setIsValid: setEmailIsValid } =
     useEmailValidation(email);
   const { isPassword1Valid, isPassword2Valid } = usePasswordValidation(
@@ -68,6 +69,7 @@ export default function RegisterPage() {
 
   const handleEmailVerifyClick = async () => {
     if (email) {
+      setIsLoading(true);
       try {
         const result = await sendVerificationEmail({ email });
         switch (result.status) {
@@ -89,12 +91,15 @@ export default function RegisterPage() {
               email: error.response.data.message,
             });
         }
+      } finally {
+        setIsLoading(false);
       }
     }
   };
 
   const handleSignUpClick = async () => {
     try {
+      setIsLoading(true);
       const result = await createUser({ email, password, nickname });
       switch (result.status) {
         case 200:
@@ -104,10 +109,13 @@ export default function RegisterPage() {
     } catch (error) {
       // server error로 회원가입이 불가능하다고 alert
       throw error;
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleNickNameCheck = async () => {
+    setIsLoading(true);
     if (nickname) {
       try {
         const result = await checkNickname({ nickname });
@@ -132,10 +140,13 @@ export default function RegisterPage() {
               nickname: error.response.data.message,
             });
         }
+      } finally {
+        setIsLoading(false);
       }
     }
   };
 
+  if (isLoading) return <>...loading</>;
   return (
     <S.Container>
       <S.Wrapper>
