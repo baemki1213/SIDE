@@ -14,7 +14,8 @@ import Gap from "@/components/common/Gap";
 import EmailVerifyContainer from "@/components/account/Register/EmailVerifyContainer";
 
 import { createUser } from "@/api";
-import { checkNickname, sendVerificationEmail } from "@/api/user";
+import { checkNickname } from "@/api/user";
+import { useEmailVerification } from "@/hooks/account/register/authentication/useEmailVerification";
 
 export default function RegisterPage() {
   const [registerInfo, setRegisterInfo] = useState({
@@ -30,7 +31,7 @@ export default function RegisterPage() {
     nickname: "",
   });
   const { email, password, password2, nickname } = registerInfo;
-  const [isLoading, setIsLoading] = useState(false);
+
   const { isValid: emailIsValid, setIsValid: setEmailIsValid } =
     useEmailValidation(email);
   const { isPassword1Valid, isPassword2Valid } = usePasswordValidation(
@@ -50,6 +51,17 @@ export default function RegisterPage() {
     isPassword1Valid &&
     isPassword2Valid &&
     isCheckedNickname;
+  const { verifyEmail, isLoading: isVerifyEmailLoading } = useEmailVerification(
+    setIsVerificationEmailSent,
+    setErrorMessage,
+    setEmailIsValid
+  );
+
+  const handleEmailVerifyClick = () => {
+    if (email) {
+      verifyEmail({ email });
+    }
+  };
 
   const handleOnChange = (
     e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -67,39 +79,9 @@ export default function RegisterPage() {
     setErrorMessage({ ...errorMessage, [e.target.name]: "" });
   };
 
-  const handleEmailVerifyClick = async () => {
-    if (email) {
-      setIsLoading(true);
-      try {
-        const result = await sendVerificationEmail({ email });
-        switch (result.status) {
-          case 200:
-            return setIsVerificationEmailSent(true);
-        }
-      } catch (error: any) {
-        switch (error.response.status) {
-          case 400:
-            setErrorMessage({
-              ...errorMessage,
-              email: error.response.data.message,
-            });
-            setEmailIsValid(false);
-            return;
-          case 500:
-            return setErrorMessage({
-              ...errorMessage,
-              email: error.response.data.message,
-            });
-        }
-      } finally {
-        setIsLoading(false);
-      }
-    }
-  };
-
   const handleSignUpClick = async () => {
     try {
-      setIsLoading(true);
+      true;
       const result = await createUser({ email, password, nickname });
       switch (result.status) {
         case 200:
@@ -109,13 +91,11 @@ export default function RegisterPage() {
     } catch (error) {
       // server error로 회원가입이 불가능하다고 alert
       throw error;
-    } finally {
-      setIsLoading(false);
     }
   };
 
   const handleNickNameCheck = async () => {
-    setIsLoading(true);
+    true;
     if (nickname) {
       try {
         const result = await checkNickname({ nickname });
@@ -141,11 +121,11 @@ export default function RegisterPage() {
             });
         }
       } finally {
-        setIsLoading(false);
+        false;
       }
     }
   };
-
+  const isLoading = isVerifyEmailLoading;
   if (isLoading) return <>...loading</>;
   return (
     <S.Container>
