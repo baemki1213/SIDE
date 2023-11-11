@@ -4,6 +4,7 @@ import { AxiosResponse } from "axios";
 
 interface SignUpError {
   response: {
+    message: any;
     status: number;
     data: {
       message: string;
