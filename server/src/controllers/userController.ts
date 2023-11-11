@@ -44,7 +44,7 @@ const userController = {
         hashed_password: hashedPassword,
         nickname,
       });
-      res.status(201).json({ message: "등록에 성공하였습니다", userId });
+      return res.status(201).json({ message: "등록에 성공하였습니다", userId });
     } catch (error: any) {
       res
         .status(500)
