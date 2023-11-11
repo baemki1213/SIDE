@@ -3,7 +3,7 @@ import * as S from "./styles";
 interface IProps {
   size?: string;
 }
-const LoadingIndicator = ({ size }: IProps) => {
+export const FullPageLoadingIndicator = ({ size }: IProps) => {
   return (
     <S.FullPageSpinnerContainer>
       <S.Spinner size={size} />
@@ -11,4 +11,6 @@ const LoadingIndicator = ({ size }: IProps) => {
   );
 };
 
-export default LoadingIndicator;
+export const ComponentLoadingIndicator = ({ size }: IProps) => {
+  return <S.Spinner size={size} />;
+};

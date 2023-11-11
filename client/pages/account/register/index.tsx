@@ -8,18 +8,23 @@ import {
   useEmailVerification,
   useNicknameVerification,
 } from "@/hooks/account/register/authentication";
+import { useSignUp } from "@/hooks/account/register/authentication/useSignUp";
 
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
 import TextInput from "@/components/common/TextInput";
-import SocialButtons from "@/components/account/SocialButtons";
+// import SocialButtons from "@/components/account/SocialButtons";
 import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
 import EmailVerifyContainer from "@/components/account/Register/EmailVerifyContainer";
-
-import { createUser } from "@/api";
+import Modal from "@/components/common/Modal";
+import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
+import ModalContent from "@/components/account/Register/ModalContent";
+import { useRouter } from "next/router";
 
 export default function RegisterPage() {
+  const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerInfo, setRegisterInfo] = useState({
     email: "",
     password: "",
@@ -33,7 +38,6 @@ export default function RegisterPage() {
     nickname: "",
   });
   const { email, password, password2, nickname } = registerInfo;
-
   const { isValid: emailIsValid, setIsValid: setEmailIsValid } =
     useEmailValidation(email);
   const { isPassword1Valid, isPassword2Valid } = usePasswordValidation(
@@ -45,7 +49,6 @@ export default function RegisterPage() {
 
   const [isVerificationEmailSent, setIsVerificationEmailSent] = useState(false);
   const [isVerifiedEmailCode, setIsVerifiedEmailCode] = useState(false);
-
   const verifyButtonIsDisabled = !emailIsValid || isVerificationEmailSent;
 
   const { verifyEmail, isLoading: isVerifyEmailLoading } = useEmailVerification(
@@ -56,8 +59,15 @@ export default function RegisterPage() {
   const {
     verifyName,
     isSuccess: nicknameIsSuccess,
-    isError,
+    isLoading: nicknameIsLoading,
   } = useNicknameVerification(setIsNicknameValid, setErrorMessage);
+  const {
+    createUserMutate,
+    isLoading: signUpIsLoading,
+    isSuccess: signUpIsSuccess,
+    isError: signUpIsError,
+    error: signUpError,
+  } = useSignUp(setIsModalOpen);
 
   const handleEmailVerifyClick = () => {
     if (email) {
@@ -82,17 +92,7 @@ export default function RegisterPage() {
   };
 
   const handleSignUpClick = async () => {
-    try {
-      const result = await createUser({ email, password, nickname });
-      switch (result.status) {
-        case 200:
-        // alert success modal 띄우기
-        // 확인 누르면 로그인 페이지로 이동.
-      }
-    } catch (error) {
-      // server error로 회원가입이 불가능하다고 alert
-      throw error;
-    }
+    createUserMutate({ email, password, nickname });
   };
 
   const handleNickNameCheck = async () => {
@@ -100,17 +100,52 @@ export default function RegisterPage() {
       verifyName({ nickname });
     }
   };
+  const handleHide = () => {
+    setIsModalOpen(false);
+  };
+  const modalConfirmHandler = () => {
+    if (signUpIsLoading) {
+      return undefined;
+    }
+    if (signUpIsError) {
+      return handleHide;
+    }
+    if (signUpIsSuccess) {
+      return router.push("/account/login");
+    }
+  };
+  const modalText = () => {
+    if (signUpIsSuccess) {
+      return "회원가입이 완료되었습니다!";
+    }
+    if (signUpIsError) {
+      return `오류 발생 : ${signUpError?.response.message}`;
+    } else {
+      return "";
+    }
+  };
   const signUpButtonIsValid =
     isVerifiedEmailCode &&
     isPassword1Valid &&
     isPassword2Valid &&
     nicknameIsSuccess;
+  const isLoading = isVerifyEmailLoading || nicknameIsLoading;
 
-  const isLoading = isVerifyEmailLoading;
-
-  if (isLoading) return <>...loading</>;
   return (
     <S.Container>
+      {isLoading && <FullPageLoadingIndicator size="30px" />}
+      <Modal
+        isShowing={isModalOpen}
+        hide={handleHide}
+        confirmHandler={modalConfirmHandler}
+      >
+        <ModalContent
+          isError={signUpIsError}
+          isLoading={signUpIsLoading}
+          isSuccess={signUpIsSuccess}
+          text={modalText()}
+        />
+      </Modal>
       <S.Wrapper>
         <StyledText
           text="회원가입"

@@ -15,6 +15,13 @@ export const ModalBackdrop = styled.div<{ isShowing: boolean }>`
 `;
 
 export const ModalContainer = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 320px;
+  height: 100px;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
@@ -23,8 +30,17 @@ export const ModalContainer = styled.div`
 `;
 
 export const CloseButton = styled.span`
-  float: right;
+  position: absolute;
+  top: 10px;
+  right: 10px;
   font-size: 1.5em;
   line-height: 1em;
   cursor: pointer;
+`;
+
+export const ModalFooter = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding-top: 15px;
 `;
