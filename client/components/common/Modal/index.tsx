@@ -7,13 +7,17 @@ interface IProps {
   children: React.ReactNode;
 }
 
-const Modal: FC<IProps> = ({ isShowing, hide, children }: IProps) => (
-  <S.ModalBackdrop isShowing={isShowing} onClick={hide}>
-    <S.ModalContainer onClick={e => e.stopPropagation()}>
-      <S.CloseButton onClick={hide}>&times;</S.CloseButton>
-      {children}
-    </S.ModalContainer>
-  </S.ModalBackdrop>
-);
+const Modal: FC<IProps> = ({ isShowing, hide, children }: IProps) => {
+  if (!isShowing) return null;
+  else
+    return (
+      <S.ModalBackdrop isShowing={isShowing} onClick={hide}>
+        <S.ModalContainer onClick={e => e.stopPropagation()}>
+          <S.CloseButton onClick={hide}>&times;</S.CloseButton>
+          {children}
+        </S.ModalContainer>
+      </S.ModalBackdrop>
+    );
+};
 
 export default Modal;
