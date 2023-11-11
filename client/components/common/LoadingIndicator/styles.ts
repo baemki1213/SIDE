@@ -13,8 +13,8 @@ const rotate = keyframes`
 
 // 스피너 컴포넌트 스타일링
 export const Spinner = styled.div<{ size?: string }>`
-  border: 5px solid ${colors.grayEd}; /* Light grey */
-  border-top: 5px solid ${colors.mainColor}; /* Blue color */
+  border: 5px solid ${colors.grayEd};
+  border-top: 5px solid ${colors.mainColor};
   border-radius: 50%;
   width: ${({ size }) => size || "50px"};
   height: ${({ size }) => size || "50px"};
@@ -30,6 +30,6 @@ export const FullPageSpinnerContainer = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(255, 255, 255, 0.7); // 반투명 배경
-  z-index: 9999; // 최상단에 위치
+  background-color: rgba(255, 255, 255, 0.7);
+  z-index: 9999;
 `;
