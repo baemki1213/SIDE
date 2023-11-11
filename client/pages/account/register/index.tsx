@@ -16,10 +16,10 @@ import TextInput from "@/components/common/TextInput";
 // import SocialButtons from "@/components/account/SocialButtons";
 import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
-import EmailVerifyContainer from "@/components/account/Register/EmailVerifyContainer";
+import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
 import Modal from "@/components/common/Modal";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
-import ModalContent from "@/components/account/Register/ModalContent";
+import ModalContent from "@/components/account/register/ModalContent";
 import { useRouter } from "next/router";
 
 export default function RegisterPage() {

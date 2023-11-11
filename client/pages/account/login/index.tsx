@@ -1,6 +1,6 @@
 import * as S from "./styles";
 
-import LoginTitle from "@/components/account/Login/LoginTitle";
+import LoginTitle from "@/components/account/login/LoginTitle";
 
 export default function login() {
   return (
