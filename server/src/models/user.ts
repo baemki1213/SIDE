@@ -6,8 +6,9 @@ import {
   countEmailSQL,
   countNicknameSQL,
   createUserSQL,
-  verifyEmailByTokenSQL,
-  saveVerificationTokenSQL,
+  verifyEmailByCodeSQL,
+  saveVerificationCodeSQL,
+  findCurrentEmailSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
 
@@ -29,35 +30,47 @@ const isNicknameTaken = async (nickname: string): Promise<boolean> => {
 
 const registerUser = async ({
   email,
-  password,
+  hashed_password,
   nickname,
 }: {
   email: string;
-  password: string;
+  hashed_password: string;
   nickname: string;
 }): Promise<void> => {
-  await (await connection).query(createUserSQL, [email, password, nickname]);
+  await (
+    await connection
+  ).query(createUserSQL, [email, hashed_password, nickname]);
 };
 
-const saveVerificationToken = async (
+const saveVerificationCode = async (
   email: string,
-  token: string
+  code: number
 ): Promise<boolean> => {
-  const expiryAt = moment().add(1, "hours").toDate(); // 현재 시간으로부터 1시간 뒤
+  const expiryAt = moment().add(1, "minutes").toDate();
 
   const [result] = await (
     await connection
-  ).query<any>(saveVerificationTokenSQL, [email, token, expiryAt]);
-  return result.affectedRows === 1;
-};
-
-const verifyEmailByToken = async (token: string) => {
-  const [result] = await (
-    await connection
-  ).query<any>(verifyEmailByTokenSQL, [token]);
+  ).query<any>(saveVerificationCodeSQL, [email, code, expiryAt]);
   return result.affectedRows > 0;
 };
 
+const verifyEmailByCode = async (email: string, code: number) => {
+  const [result] = await (
+    await connection
+  ).query<any>(verifyEmailByCodeSQL, [email, code]);
+  return result.affectedRows > 0;
+};
+
+const findCurrentEmail = async (email: string, code: number) => {
+  const [result] = await (
+    await connection
+  ).query<any>(findCurrentEmailSQL, [email, code]);
+  return result[0];
+};
+
+const isCodeExpired = (expiryAt: string) => {
+  return moment(expiryAt).isBefore(moment());
+};
 const hashPassword = async (password: string): Promise<string> => {
   const saltRounds = 10;
   return bcrypt.hash(password, saltRounds);
@@ -73,9 +86,11 @@ const comparePassword = async (
 export {
   isEmailRegistered,
   isNicknameTaken,
+  isCodeExpired,
+  findCurrentEmail,
   registerUser,
-  saveVerificationToken,
-  verifyEmailByToken,
+  saveVerificationCode,
+  verifyEmailByCode,
   hashPassword,
   comparePassword,
 };

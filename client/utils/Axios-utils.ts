@@ -27,8 +27,9 @@ export const requestWithoutAuth = async ({ ...options }: IRequestOptions) => {
   delete instance.defaults.headers.common.Authorization;
   instance.defaults.headers.common["Content-Type"] = "application/json";
 
-  const onSuccess = (res: AxiosResponse<any>) => res?.data;
+  const onSuccess = (res: AxiosResponse<any>) => res;
   const onError = (err: AxiosError<any>) => {
+    console.log(err);
     throw err;
   };
 

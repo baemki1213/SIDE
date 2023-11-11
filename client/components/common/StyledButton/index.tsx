@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ReactNode } from "react";
 import {
   ButtonSizeKey,
   ButtonStyleKey,
@@ -30,6 +30,7 @@ export default function StyledButton({
   size = "regular",
   width = "100%",
   onClick = () => console.log(),
+  disabled = false,
   borderRadius = "4px",
   icon,
 }: IProps) {
@@ -39,7 +40,7 @@ export default function StyledButton({
       buttonType={buttonType}
       size={size}
       onClick={onClick}
-      disabled={buttonType === "disabled"}
+      disabled={disabled}
       borderRadius={borderRadius}
       type={type}
     >
