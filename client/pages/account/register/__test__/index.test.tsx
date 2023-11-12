@@ -5,7 +5,7 @@ import {
   waitFor,
 } from "../../../../utils/test-utils";
 
-import RegisterPage from "../../../../pages/account/register";
+import RegisterPage from "../index";
 
 describe("Register page", () => {
   test("renders page correctly", async () => {
