@@ -2,6 +2,7 @@ import * as S from "./styles";
 
 interface IProps {
   size?: string;
+  width?: string;
 }
 export const FullPageLoadingIndicator = ({ size }: IProps) => {
   return (
@@ -12,5 +13,19 @@ export const FullPageLoadingIndicator = ({ size }: IProps) => {
 };
 
 export const ComponentLoadingIndicator = ({ size }: IProps) => {
-  return <S.Spinner size={size} />;
+  return (
+    <S.ComponentSpinnerContainer>
+      <S.Spinner size={size} />
+    </S.ComponentSpinnerContainer>
+  );
+};
+
+export const DotSpinner = ({ width, size }: IProps) => {
+  return (
+    <S.DotsSpinnerContainer width={width}>
+      <S.Dot size={size} />
+      <S.Dot size={size} />
+      <S.Dot size={size} />
+    </S.DotsSpinnerContainer>
+  );
 };

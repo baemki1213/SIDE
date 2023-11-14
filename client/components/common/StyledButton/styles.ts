@@ -8,6 +8,13 @@ import {
 } from "@/styles/assets/button";
 import { colors } from "@/styles/assets";
 
+export const LoadingContainer = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 export const Container = styled.button<{
   width: string;
   size: ButtonSizeKey;
