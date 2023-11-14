@@ -75,7 +75,7 @@ export default function StyledButton({
     >
       {isLoading ? (
         <S.LoadingContainer>
-          <DotSpinner width="40px" size="5px" />
+          <DotSpinner buttonType={buttonType} width="40px" size="5px" />
         </S.LoadingContainer>
       ) : (
         <IconButton iconPosition={iconPosition} icon={icon}>

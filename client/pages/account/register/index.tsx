@@ -18,7 +18,6 @@ import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
 import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
 import Modal from "@/components/common/Modal";
-import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
 import ModalContent from "@/components/account/register/ModalContent";
 import { useRouter } from "next/router";
 
@@ -129,11 +128,9 @@ export default function RegisterPage() {
     isPassword1Valid &&
     isPassword2Valid &&
     nicknameIsSuccess;
-  const isLoading = isVerifyEmailLoading || nicknameIsLoading;
 
   return (
     <S.Container>
-      {isLoading && <FullPageLoadingIndicator size="30px" />}
       <Modal
         isShowing={isModalOpen}
         hide={handleHide}
@@ -171,6 +168,7 @@ export default function RegisterPage() {
           />
           <Gap side={12} />
           <StyledButton
+            isLoading={isVerifyEmailLoading}
             text={isVerifiedEmailCode ? "이메일 인증 완료" : "이메일 인증하기"}
             onClick={handleEmailVerifyClick}
             buttonType={verifyButtonIsDisabled ? "disabled" : "primary"}
@@ -223,6 +221,7 @@ export default function RegisterPage() {
                 onClick={handleNickNameCheck}
                 text={nicknameIsSuccess ? "OK!" : "중복확인"}
                 size="small"
+                isLoading={nicknameIsLoading}
               />
             }
           />

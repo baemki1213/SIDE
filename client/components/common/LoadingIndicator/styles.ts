@@ -1,4 +1,5 @@
 import { colors } from "@/styles/assets";
+import { ButtonStyleKey } from "@/styles/assets/button";
 import styled, { keyframes } from "styled-components";
 
 const bounce = keyframes`
@@ -6,10 +7,15 @@ const bounce = keyframes`
   40% { transform: scale(1.0); }
 `;
 // 개별 점에 대한 스타일
-export const Dot = styled.div<{ size?: string }>`
+export const Dot = styled.div<{ size?: string; buttonType?: ButtonStyleKey }>`
   width: ${({ size }) => size || "8px"};
   height: ${({ size }) => size || "8px"};
-  background-color: ${colors.mainColor}; // 여기에 원하는 색상을 설정하세요.
+  background-color: ${({ buttonType }) =>
+    buttonType === "primary"
+      ? colors.grayEd
+      : buttonType === "secondary"
+      ? colors.mainColor
+      : colors.grayEd};
   border-radius: 50%;
   display: inline-block;
   animation: ${bounce} 1.4s infinite ease-in-out both;
