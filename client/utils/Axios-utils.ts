@@ -29,7 +29,6 @@ export const requestWithoutAuth = async ({ ...options }: IRequestOptions) => {
 
   const onSuccess = (res: AxiosResponse<any>) => res;
   const onError = (err: AxiosError<any>) => {
-    console.log(err);
     throw err;
   };
 
