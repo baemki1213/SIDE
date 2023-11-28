@@ -5,10 +5,12 @@ const authHandlers = [
   http.post(
     `${process.env.NEXT_PUBLIC_API_URL}/user/send-verification-email`,
     () => {
-      return HttpResponse.json({
-        status: 200,
-        data: { message: "이메일을 성공적으로 보냈습니다" },
-      });
+      return HttpResponse.json(
+        { message: "이메일을 성공적으로 보냈습니다" },
+        {
+          status: 200,
+        }
+      );
     }
   ),
   // verifyEmailCode
@@ -18,28 +20,36 @@ const authHandlers = [
       const { email, code } = await request.json();
 
       if (code === 111111) {
-        return HttpResponse.json({
-          status: 400,
-          data: { message: "만료된 코드입니다." },
-        });
+        return HttpResponse.json(
+          { message: "만료된 코드입니다." },
+          {
+            status: 400,
+          }
+        );
       }
       if (code === 222222) {
-        return HttpResponse.json({
-          status: 400,
-          data: { message: "잘못된 코드입니다." },
-        });
+        return HttpResponse.json(
+          { message: "잘못된 코드입니다." },
+          {
+            status: 400,
+          }
+        );
       }
       if (code === 123456) {
-        return HttpResponse.json({
-          status: 200,
-          data: { message: "이메일이 성공적으로 인증되었습니다!" },
-        });
+        return HttpResponse.json(
+          { message: "이메일이 성공적으로 인증되었습니다!" },
+          {
+            status: 200,
+          }
+        );
       }
 
-      return HttpResponse.json({
-        status: 500,
-        data: { message: "Server error" },
-      });
+      return HttpResponse.json(
+        { message: "Server error" },
+        {
+          status: 500,
+        }
+      );
     }
   ),
   // nickname check
@@ -48,21 +58,53 @@ const authHandlers = [
     async ({ request }: any) => {
       const { nickname } = await request.json();
       if (nickname === "valid") {
-        return HttpResponse.json({
-          status: 200,
-          data: { message: "사용 가능한 닉네임입니다." },
-        });
+        return HttpResponse.json(
+          { message: "사용 가능한 닉네임입니다." },
+          {
+            status: 200,
+          }
+        );
       }
       if (nickname === "existed") {
-        return HttpResponse.json({
-          status: 409,
-          data: { message: "닉네임이 이미 사용 중입니다." },
-        });
+        return HttpResponse.json(
+          { message: "닉네임이 이미 사용 중입니다." },
+          {
+            status: 409,
+          }
+        );
       }
-      return HttpResponse.json({
-        status: 500,
-        data: { message: "Server error" },
-      });
+      return HttpResponse.json(
+        { message: "Server error" },
+        {
+          status: 500,
+        }
+      );
+    }
+  ),
+  // login
+  http.post<any>(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/login/`,
+    async ({ request }: any) => {
+      const { password, email } = await request.json();
+      if (request.headers.get("x-use-mock-error")) {
+        return HttpResponse.json(
+          { message: "서버 에러...! 잠시후 다시 시도해주세요." },
+          {
+            status: 500,
+          }
+        );
+      }
+      if (email === "invalid@email.com" || password === "invalidPassword!@12") {
+        return HttpResponse.json(
+          { message: "아이디 혹은 비밀번호를 확인해주세요." },
+          {
+            status: 400,
+          }
+        );
+      }
+      if (email === "valid@email.com" && password === "1234Qwer!@") {
+        return HttpResponse.json({ email }, { status: 200 });
+      }
     }
   ),
 ];
