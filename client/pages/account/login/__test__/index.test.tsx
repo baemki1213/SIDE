@@ -18,6 +18,7 @@ jest.mock("../../../../store/toastSlice.ts", () => ({
 }));
 
 describe("Login page", () => {
+  const router = useRouter();
   mockConsoleError();
 
   afterEach(() => {
@@ -61,7 +62,6 @@ describe("Login page", () => {
     expect(passwordInput).toHaveValue("");
   });
   test("Should navigate main page on successful login", async () => {
-    const router = useRouter();
     render(<LoginPage />);
     const emailInput = screen.getByPlaceholderText("이메일");
     fireEvent.change(emailInput, { target: { value: "valid@email.com" } });
@@ -111,5 +111,18 @@ describe("Login page", () => {
     const signInButton = screen.getByRole("button", { name: "로그인" });
     fireEvent.click(signInButton);
     expect(signInButton).toBeDisabled();
+  });
+
+  test("Should push register page when sign up button click", async () => {
+    render(<LoginPage />);
+    const signUpButton = screen.getByRole("button", { name: "회원가입" });
+    fireEvent.click(signUpButton);
+    expect(router.push).toHaveBeenCalledWith("/account/register");
+  });
+  test("Should push reset page when password reset button click", async () => {
+    render(<LoginPage />);
+    const resetButton = screen.getByRole("button", { name: "비밀번호 재설정" });
+    fireEvent.click(resetButton);
+    expect(router.push).toHaveBeenCalledWith("/account/reset");
   });
 });
