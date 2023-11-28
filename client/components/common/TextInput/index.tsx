@@ -17,6 +17,7 @@ interface IProps {
   errorMessage?: string; // 에러 메시지 추가
   buttonComponent?: React.ReactNode; // 버튼 컴포넌트 추가
   maxLength?: number;
+  height?: number;
 }
 
 export default function TextInput({
@@ -32,6 +33,7 @@ export default function TextInput({
   errorMessage,
   buttonComponent,
   maxLength,
+  height,
 }: IProps) {
   return (
     <S.TextInputContainer>
@@ -60,6 +62,7 @@ export default function TextInput({
           placeholder={placeholder}
           isValid={isValid}
           maxLength={maxLength}
+          height={height}
         />
         {buttonComponent && (
           <S.ButtonWrapper>{buttonComponent}</S.ButtonWrapper>

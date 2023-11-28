@@ -2,7 +2,7 @@ import * as S from "./styles";
 
 import LoginTitle from "@/components/account/login/LoginTitle";
 
-export default function login() {
+export default function LoginPage() {
   return (
     <S.Container>
       <S.Wrapper>

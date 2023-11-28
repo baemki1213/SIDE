@@ -40,3 +40,11 @@ export const checkNickname = async (data: { nickname: string }) => {
     data,
   });
 };
+
+export const login = async (data: { email: string; password: string }) => {
+  return await requestWithoutAuth({
+    method: "post",
+    url: "/user/login/",
+    data,
+  });
+};

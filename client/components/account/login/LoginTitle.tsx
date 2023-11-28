@@ -4,7 +4,7 @@ import StyledText from "@/components/common/StyledText";
 
 export default function LoginTitle() {
   return (
-    <TitleContainer>
+    <TitleContainer data-testid="logo-container">
       <StyledText text="logo" fontSize="xl4" />
     </TitleContainer>
   );
