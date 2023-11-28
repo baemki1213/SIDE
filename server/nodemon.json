@@ -1,3 +1,6 @@
 {
-  "exec": "babel-node src/server.ts"
+  "watch": ["src/**/*.ts"],
+  "execMap": {
+    "ts": "node -r ts-node/register"
+  }
 }

@@ -7,7 +7,6 @@ import {
 } from "@reduxjs/toolkit";
 import { createWrapper, HYDRATE } from "next-redux-wrapper";
 import { authSlice } from "./authSlice";
-import counterReducer from "./countSlice";
 import {
   persistStore,
   persistReducer,
@@ -19,6 +18,8 @@ import {
   REGISTER,
 } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
+import { toastSlice } from "./toastSlice";
+
 const createNoopStorage = () => {
   return {
     getItem(_key: any) {
@@ -45,8 +46,8 @@ const persistConfig = {
 
 const reducer = (state: any, action: PayloadAction<any>) => {
   return combineReducers({
-    counter: counterReducer,
     [authSlice.name]: authSlice.reducer,
+    [toastSlice.name]: toastSlice.reducer,
   })(state, action);
 };
 const persistedReducer = persistReducer(persistConfig, reducer);

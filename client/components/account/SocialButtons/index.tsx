@@ -11,7 +11,7 @@ export default function SocialButtons() {
   return (
     <ButtonsContainer>
       <StyledText
-        text="SNS계정으로 간편하게 회원가입"
+        text="SNS계정으로 간편가입"
         fontColor="gray75"
         fontSize="xs"
         textAlign="center"

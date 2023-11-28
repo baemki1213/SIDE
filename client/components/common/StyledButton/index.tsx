@@ -1,4 +1,4 @@
-import { ButtonHTMLAttributes, ReactNode } from "react";
+import { ReactNode } from "react";
 import {
   ButtonSizeKey,
   ButtonStyleKey,
@@ -8,6 +8,7 @@ import {
 import * as S from "./styles";
 
 import StyledText from "../StyledText";
+import { DotSpinner } from "../LoadingIndicator";
 
 interface IProps {
   children?: ReactNode;
@@ -19,7 +20,14 @@ interface IProps {
   onClick(): void;
   disabled?: boolean;
   borderRadius?: string;
-  icon?: "right" | "left";
+  iconPosition?: "right" | "left";
+  icon?: ReactNode;
+  isLoading?: boolean;
+}
+interface IIconButtonProps {
+  iconPosition?: "left" | "right";
+  icon?: ReactNode;
+  children?: ReactNode;
 }
 
 export default function StyledButton({
@@ -30,31 +38,59 @@ export default function StyledButton({
   size = "regular",
   width = "100%",
   onClick = () => console.log(),
+  disabled = false,
   borderRadius = "4px",
+  iconPosition,
   icon,
+  isLoading = false,
 }: IProps) {
+  const IconButton = ({ iconPosition, icon, children }: IIconButtonProps) => {
+    if (iconPosition === "left") {
+      return (
+        <>
+          {icon}
+          {children}
+        </>
+      );
+    }
+    if (iconPosition === "right") {
+      return (
+        <>
+          {children}
+          {icon}
+        </>
+      );
+    }
+    return <>{children}</>;
+  };
   return (
     <S.Container
       width={width}
       buttonType={buttonType}
       size={size}
       onClick={onClick}
-      disabled={buttonType === "disabled"}
+      disabled={disabled}
       borderRadius={borderRadius}
       type={type}
     >
-      {children}
-      {icon === "left" && <>let</>}
-      {text && (
-        <StyledText
-          text={text}
-          fontColor={buttonStyle[buttonType].fontColor}
-          fontWeight={buttonSizeTheme[size].fontWeight}
-          fontSize={buttonSizeTheme[size].fontSize}
-          textAlign="center"
-        />
+      {isLoading ? (
+        <S.LoadingContainer>
+          <DotSpinner buttonType={buttonType} width="40px" size="5px" />
+        </S.LoadingContainer>
+      ) : (
+        <IconButton iconPosition={iconPosition} icon={icon}>
+          {children}
+          {text && (
+            <StyledText
+              text={text}
+              fontColor={buttonStyle[buttonType].fontColor}
+              fontWeight={buttonSizeTheme[size].fontWeight}
+              fontSize={buttonSizeTheme[size].fontSize}
+              textAlign="center"
+            />
+          )}
+        </IconButton>
       )}
-      {icon === "right" && <>right</>}
     </S.Container>
   );
 }
