@@ -18,7 +18,7 @@ export const useLogin = () => {
     >({
       mutationFn: login,
       onSuccess: async () => {
-        router.push("/main");
+        router.back();
         dispatch(showToast("환영합니당!"));
       },
       onError: err => {

@@ -71,7 +71,7 @@ describe("Login page", () => {
     fireEvent.click(signInButton);
     await waitFor(async () => {
       expect(showToast).toHaveBeenCalledWith("환영합니당!");
-      expect(router.push).toHaveBeenCalledWith("/main");
+      expect(router.back).toHaveBeenCalled();
     });
   });
   test("Should show error message on failed login", async () => {
