@@ -1,23 +1,34 @@
 import { HYDRATE } from "next-redux-wrapper";
 import { createSlice } from "@reduxjs/toolkit";
+
 import { RootState } from "./index";
+import { IUserInfo } from "@/types/user";
 
 // Type for our state
 export interface AuthState {
   isLogin: boolean;
+  userInfo: IUserInfo;
 }
 // Initial state
 const initialState: AuthState = {
   isLogin: false,
+  userInfo: { id: 0, email: "", nickname: "" },
 };
 // Actual Slice
 export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    // Action to set the authentication status
     setIsLogin(state, action) {
       state.isLogin = action.payload;
+    },
+    setUserInfo(state, action) {
+      state.userInfo = action.payload;
+    },
+    setLoginInfo(state, action) {
+      const { isLogin, userInfo } = action.payload;
+      state.isLogin = isLogin;
+      state.userInfo = userInfo;
     },
   },
 
@@ -30,6 +41,6 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setIsLogin } = authSlice.actions;
+export const { setIsLogin, setUserInfo, setLoginInfo } = authSlice.actions;
 export const selectAuthState = (state: RootState) => state.auth;
 export default authSlice.reducer;

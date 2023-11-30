@@ -4,7 +4,10 @@ import { AxiosResponse } from "axios";
 
 import { login } from "@/api/user";
 import { useAppDispatch } from "@/hooks/reduxHook";
+
 import { showToast } from "@/store/toastSlice";
+import { setLoginInfo } from "@/store/authSlice";
+import { IUserInfo } from "@/types/user";
 
 export const useLogin = () => {
   const dispatch = useAppDispatch();
@@ -17,9 +20,10 @@ export const useLogin = () => {
       { email: string; password: string }
     >({
       mutationFn: login,
-      onSuccess: async () => {
-        router.back();
+      onSuccess: async (res: { data: IUserInfo }) => {
+        dispatch(setLoginInfo({ isLogin: true, userInfo: res.data }));
         dispatch(showToast("환영합니당!"));
+        router.back();
       },
       onError: err => {
         dispatch(showToast(err.response.data.message));

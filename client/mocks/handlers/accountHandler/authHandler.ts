@@ -103,7 +103,10 @@ const authHandlers = [
         );
       }
       if (email === "valid@email.com" && password === "1234Qwer!@") {
-        return HttpResponse.json({ email }, { status: 200 });
+        return HttpResponse.json(
+          { id: 1, email, nickname: "validNickname" },
+          { status: 200 }
+        );
       }
     }
   ),

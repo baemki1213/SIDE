@@ -11,10 +11,21 @@ import LoginPage from "..";
 
 import { instance } from "@/api/Core";
 import { showToast } from "@/store/toastSlice";
+import { setLoginInfo } from "@/store/authSlice";
+import { useAppDispatch } from "@/hooks/reduxHook";
 
 jest.mock("../../../../store/toastSlice.ts", () => ({
   ...jest.requireActual("../../../../store/toastSlice.ts"),
   showToast: jest.fn(),
+}));
+
+jest.mock("../../../../hooks/reduxHook.ts", () => ({
+  ...jest.requireActual("../../../../hooks/reduxHook.ts"),
+  useAppDispatch: jest.fn(),
+}));
+jest.mock("../../../../store/authSlice.ts", () => ({
+  ...jest.requireActual("../../../../store/authSlice.ts"),
+  setLoginInfo: jest.fn(),
 }));
 
 describe("Login page", () => {
@@ -61,7 +72,10 @@ describe("Login page", () => {
     const passwordInput = screen.getByPlaceholderText("비밀번호");
     expect(passwordInput).toHaveValue("");
   });
-  test("Should navigate main page on successful login", async () => {
+  test("Should navigate back page on successful login and update login info", async () => {
+    const mockDispatch = jest.fn();
+    (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+
     render(<LoginPage />);
     const emailInput = screen.getByPlaceholderText("이메일");
     fireEvent.change(emailInput, { target: { value: "valid@email.com" } });
@@ -69,11 +83,22 @@ describe("Login page", () => {
     fireEvent.change(passwordInput, { target: { value: "1234Qwer!@" } });
     const signInButton = screen.getByRole("button", { name: "로그인" });
     fireEvent.click(signInButton);
-    await waitFor(async () => {
-      expect(showToast).toHaveBeenCalledWith("환영합니당!");
+    await waitFor(() => {
+      expect(mockDispatch).toHaveBeenCalledWith(
+        setLoginInfo({
+          isLogin: true,
+          userInfo: {
+            email: "valid@email.com",
+            id: 1,
+            nickname: "validNickname",
+          },
+        })
+      );
+      expect(mockDispatch).toHaveBeenCalledWith(showToast("환영합니당!"));
       expect(router.back).toHaveBeenCalled();
     });
   });
+
   test("Should show error message on failed login", async () => {
     render(<LoginPage />);
     const emailInput = screen.getByPlaceholderText("이메일");
