@@ -20,8 +20,17 @@ export const useLogin = () => {
       { email: string; password: string }
     >({
       mutationFn: login,
-      onSuccess: async (res: { data: IUserInfo }) => {
-        dispatch(setLoginInfo({ isLogin: true, userInfo: res.data }));
+      onSuccess: async (res: {
+        data: { user: IUserInfo; access_token: string; refresh_token: string };
+      }) => {
+        dispatch(
+          setLoginInfo({
+            isLogin: true,
+            userInfo: res.data.user,
+            access_token: res.data.access_token,
+            refresh_token: res.data.refresh_token,
+          })
+        );
         dispatch(showToast("환영합니당!"));
         router.back();
       },

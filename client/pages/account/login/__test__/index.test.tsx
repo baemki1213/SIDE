@@ -92,6 +92,8 @@ describe("Login page", () => {
             id: 1,
             nickname: "validNickname",
           },
+          access_token: "valid_access_token",
+          refresh_token: "valid_refresh_token",
         })
       );
       expect(mockDispatch).toHaveBeenCalledWith(showToast("환영합니당!"));
