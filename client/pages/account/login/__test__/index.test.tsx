@@ -98,6 +98,20 @@ describe("Login page", () => {
       expect(router.back).toHaveBeenCalled();
     });
   });
+  test("Should display unregistered message on failed login", async () => {
+    render(<LoginPage />);
+    const emailInput = screen.getByPlaceholderText("이메일");
+    fireEvent.change(emailInput, {
+      target: { value: "unregistered@email.com" },
+    });
+    const passwordInput = screen.getByPlaceholderText("비밀번호");
+    fireEvent.change(passwordInput, { target: { value: "1234Qwer!@" } });
+    const signInButton = screen.getByRole("button", { name: "로그인" });
+    fireEvent.click(signInButton);
+    await waitFor(() => {
+      expect(showToast).toHaveBeenCalledWith("없는 유저입니다.");
+    });
+  });
 
   test("Should show error message on failed login", async () => {
     render(<LoginPage />);
