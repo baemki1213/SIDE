@@ -31,8 +31,8 @@ export const useLogin = () => {
             refresh_token: res.data.refresh_token,
           })
         );
-        dispatch(showToast("환영합니당!"));
-        router.back();
+        dispatch(showToast("환영합니다."));
+        router.push("/main");
       },
       onError: err => {
         dispatch(showToast(err.response.data.message));

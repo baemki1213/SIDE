@@ -97,7 +97,7 @@ describe("Login page", () => {
         })
       );
       expect(mockDispatch).toHaveBeenCalledWith(showToast("환영합니당!"));
-      expect(router.back).toHaveBeenCalled();
+      expect(router.push).toHaveBeenCalledWith("/main");
     });
   });
   test("Should display unregistered message on failed login", async () => {
