@@ -11,4 +11,6 @@ userRouter.post(
 userRouter.post("/verify-email", userController.verifyEmail);
 userRouter.post("/check-nickname", userController.checkNickname);
 
+userRouter.post("/login", userController.login);
+
 export default userRouter;

@@ -9,6 +9,7 @@ import {
   verifyEmailByCodeSQL,
   saveVerificationCodeSQL,
   findCurrentEmailSQL,
+  findUserByEmailSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
 
@@ -82,6 +83,12 @@ const comparePassword = async (
 ): Promise<boolean> => {
   return bcrypt.compare(password, hashedPassword);
 };
+const findUserByEmail = async (email: string) => {
+  const [result] = await (
+    await connection
+  ).query<any>(findUserByEmailSQL, [email]);
+  return result[0];
+};
 
 export {
   isEmailRegistered,
@@ -93,4 +100,5 @@ export {
   verifyEmailByCode,
   hashPassword,
   comparePassword,
+  findUserByEmail,
 };
