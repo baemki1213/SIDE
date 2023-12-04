@@ -12,6 +12,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { ThemeProvider } from "styled-components";
 import { lightTheme, darkTheme } from "../styles/assets";
 import { useState } from "react";
+import { RouteProvider } from "@/context/RouteContext";
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,9 @@ export const AppProviders = ({ children }: any) => {
       <ReactQueryDevtools initialIsOpen={false} />
       <Provider store={store}>
         <PersistGate persistor={persistor}>
-          <ThemeProvider theme={theme}>{children}</ThemeProvider>
+          <ThemeProvider theme={theme}>
+            <RouteProvider>{children}</RouteProvider>
+          </ThemeProvider>
         </PersistGate>
       </Provider>
     </QueryClientProvider>

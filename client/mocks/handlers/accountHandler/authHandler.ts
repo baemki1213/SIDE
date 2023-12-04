@@ -98,12 +98,25 @@ const authHandlers = [
         return HttpResponse.json(
           { message: "아이디 혹은 비밀번호를 확인해주세요." },
           {
-            status: 400,
+            status: 401,
           }
         );
       }
+      if (email === "unregistered@email.com") {
+        return HttpResponse.json(
+          { message: "없는 유저입니다." },
+          { status: 404 }
+        );
+      }
       if (email === "valid@email.com" && password === "1234Qwer!@") {
-        return HttpResponse.json({ email }, { status: 200 });
+        return HttpResponse.json(
+          {
+            user: { id: 1, email, nickname: "validNickname" },
+            access_token: "valid_access_token",
+            refresh_token: "valid_refresh_token",
+          },
+          { status: 200 }
+        );
       }
     }
   ),

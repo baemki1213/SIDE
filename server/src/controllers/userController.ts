@@ -9,7 +9,13 @@ import {
   saveVerificationCode,
   isCodeExpired,
   findCurrentEmail,
+  findUserByEmail,
 } from "../models/user";
+import {
+  compareHashedPassword,
+  createAccessToken,
+  createAndSaveRefreshToken,
+} from "../models/auth";
 
 const smtpTransport = nodemailer.createTransport({
   service: "Gmail",
@@ -124,6 +130,42 @@ const userController = {
       res
         .status(500)
         .json({ message: "Server error", error: error.toString() });
+    }
+  },
+
+  async login(req: { body: { email: string; password: string } }, res: any) {
+    const { email, password: inputPassword } = req.body;
+
+    try {
+      const user = await findUserByEmail(email);
+
+      if (!user) {
+        return res.status(404).json({ message: "없는 유저입니다." });
+      }
+
+      const isMatch = await compareHashedPassword(
+        inputPassword,
+        user.hashed_password
+      );
+
+      if (isMatch) {
+        const { email, nickname, created_at } = user;
+        const accessToken = await createAccessToken(user.id);
+        const refreshToken = await createAndSaveRefreshToken(user.id);
+
+        return res.json({
+          message: "Login successful",
+          user: { email, nickname, created_at },
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+      } else {
+        res
+          .status(401)
+          .json({ message: "아이디 혹은 비밀번호를 확인해주세요." });
+      }
+    } catch (err) {
+      res.status(500).json({ message: "서버 에러, 잠시후 다시 시도해주세요." });
     }
   },
 };

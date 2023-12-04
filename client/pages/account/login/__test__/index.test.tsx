@@ -11,14 +11,34 @@ import LoginPage from "..";
 
 import { instance } from "@/api/Core";
 import { showToast } from "@/store/toastSlice";
+import { setLoginInfo } from "@/store/authSlice";
+import { useAppDispatch } from "@/hooks/reduxHook";
+import { useRoute } from "@/context/RouteContext";
 
 jest.mock("../../../../store/toastSlice.ts", () => ({
   ...jest.requireActual("../../../../store/toastSlice.ts"),
   showToast: jest.fn(),
 }));
 
+jest.mock("../../../../hooks/reduxHook.ts", () => ({
+  ...jest.requireActual("../../../../hooks/reduxHook.ts"),
+  useAppDispatch: jest.fn(),
+}));
+jest.mock("../../../../store/authSlice.ts", () => ({
+  ...jest.requireActual("../../../../store/authSlice.ts"),
+  setLoginInfo: jest.fn(),
+}));
+jest.mock("../../../../context/RouteContext.tsx", () => ({
+  ...jest.requireActual("../../../../context/RouteContext.tsx"),
+  useRoute: jest.fn(),
+}));
+
 describe("Login page", () => {
+  const router = useRouter();
   mockConsoleError();
+  (useRoute as jest.Mock).mockReturnValue({
+    previousPath: "/account/register",
+  });
 
   afterEach(() => {
     jest.clearAllMocks();
@@ -60,8 +80,10 @@ describe("Login page", () => {
     const passwordInput = screen.getByPlaceholderText("비밀번호");
     expect(passwordInput).toHaveValue("");
   });
-  test("Should navigate main page on successful login", async () => {
-    const router = useRouter();
+  test("Should navigate main page on successful login and update login info", async () => {
+    const mockDispatch = jest.fn();
+    (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+
     render(<LoginPage />);
     const emailInput = screen.getByPlaceholderText("이메일");
     fireEvent.change(emailInput, { target: { value: "valid@email.com" } });
@@ -69,11 +91,70 @@ describe("Login page", () => {
     fireEvent.change(passwordInput, { target: { value: "1234Qwer!@" } });
     const signInButton = screen.getByRole("button", { name: "로그인" });
     fireEvent.click(signInButton);
-    await waitFor(async () => {
-      expect(showToast).toHaveBeenCalledWith("환영합니당!");
+    await waitFor(() => {
+      expect(mockDispatch).toHaveBeenCalledWith(
+        setLoginInfo({
+          isLogin: true,
+          userInfo: {
+            email: "valid@email.com",
+            id: 1,
+            nickname: "validNickname",
+          },
+          access_token: "valid_access_token",
+          refresh_token: "valid_refresh_token",
+        })
+      );
+      expect(mockDispatch).toHaveBeenCalledWith(showToast("환영합니당!"));
       expect(router.push).toHaveBeenCalledWith("/main");
     });
   });
+
+  test("Should navigate prev page on successful login and update login info", async () => {
+    const mockDispatch = jest.fn();
+    (useRoute as jest.Mock).mockReturnValue({
+      previousPath: "/prev/page",
+    });
+    (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+
+    render(<LoginPage />);
+    const emailInput = screen.getByPlaceholderText("이메일");
+    fireEvent.change(emailInput, { target: { value: "valid@email.com" } });
+    const passwordInput = screen.getByPlaceholderText("비밀번호");
+    fireEvent.change(passwordInput, { target: { value: "1234Qwer!@" } });
+    const signInButton = screen.getByRole("button", { name: "로그인" });
+    fireEvent.click(signInButton);
+    await waitFor(() => {
+      expect(mockDispatch).toHaveBeenCalledWith(
+        setLoginInfo({
+          isLogin: true,
+          userInfo: {
+            email: "valid@email.com",
+            id: 1,
+            nickname: "validNickname",
+          },
+          access_token: "valid_access_token",
+          refresh_token: "valid_refresh_token",
+        })
+      );
+      expect(mockDispatch).toHaveBeenCalledWith(showToast("환영합니당!"));
+      expect(router.push).toHaveBeenCalledWith("/prev/page");
+    });
+  });
+  test("Should display unregistered message on failed login", async () => {
+    render(<LoginPage />);
+    const emailInput = screen.getByPlaceholderText("이메일");
+    fireEvent.change(emailInput, {
+      target: { value: "unregistered@email.com" },
+    });
+    const passwordInput = screen.getByPlaceholderText("비밀번호");
+    fireEvent.change(passwordInput, { target: { value: "1234Qwer!@" } });
+    const signInButton = screen.getByRole("button", { name: "로그인" });
+    fireEvent.click(signInButton);
+    await waitFor(() => {
+      expect(showToast).toHaveBeenCalledWith("없는 유저입니다.");
+    });
+  });
+
   test("Should show error message on failed login", async () => {
     render(<LoginPage />);
     const emailInput = screen.getByPlaceholderText("이메일");
@@ -111,5 +192,20 @@ describe("Login page", () => {
     const signInButton = screen.getByRole("button", { name: "로그인" });
     fireEvent.click(signInButton);
     expect(signInButton).toBeDisabled();
+  });
+
+  test("Should push register page when sign up button click", async () => {
+    render(<LoginPage />);
+    const signUpButton = screen.getByRole("button", { name: "회원가입" });
+    fireEvent.click(signUpButton);
+    expect(router.push).toHaveBeenCalledWith("/account/register");
+  });
+  test("Should push reset page when password reset button click", async () => {
+    render(<LoginPage />);
+    const resetButton = screen.getByRole("button", {
+      name: "비밀번호 재설정",
+    });
+    fireEvent.click(resetButton);
+    expect(router.push).toHaveBeenCalledWith("/account/reset");
   });
 });
