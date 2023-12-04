@@ -1,0 +1,57 @@
+import { useRouter } from "next/router";
+import { useMutation } from "@tanstack/react-query";
+import { AxiosResponse } from "axios";
+
+import { login } from "@/api/user";
+import { useAppDispatch } from "@/hooks/reduxHook";
+
+import { showToast } from "@/store/toastSlice";
+import { setLoginInfo } from "@/store/authSlice";
+import { IUserInfo } from "@/types/user";
+import { useRoute } from "@/context/RouteContext";
+
+export const useLogin = () => {
+  const dispatch = useAppDispatch();
+  const router = useRouter();
+  const { previousPath } = useRoute();
+
+  const { data, mutate, isLoading, isError, isSuccess, error, reset } =
+    useMutation<
+      AxiosResponse<any, any>,
+      any,
+      { email: string; password: string }
+    >({
+      mutationFn: login,
+      onSuccess: async (res: {
+        data: { user: IUserInfo; access_token: string; refresh_token: string };
+      }) => {
+        dispatch(
+          setLoginInfo({
+            isLogin: true,
+            userInfo: res.data.user,
+            access_token: res.data.access_token,
+            refresh_token: res.data.refresh_token,
+          })
+        );
+        dispatch(showToast("환영합니다."));
+
+        if (previousPath === "/account/register") {
+          router.push("/main");
+        } else {
+          router.push(previousPath || "/main");
+        }
+      },
+      onError: err => {
+        dispatch(showToast(err.response.data.message));
+      },
+    });
+  return {
+    mutate,
+    isLoading,
+    isSuccess,
+    isError,
+    error,
+    reset,
+    data,
+  };
+};

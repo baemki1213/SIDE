@@ -5,6 +5,7 @@ import bodyParser from "body-parser";
 
 import routes from "./routes/index";
 import userRoutes from "./routes/userRoutes";
+import authRoutes from "./routes/authRoutes";
 
 dotenv.config();
 
@@ -18,6 +19,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(routes);
 app.use("/api/user", userRoutes);
+app.use("/api/auth", authRoutes);
 
 const PORT: string | number = process.env.SERVER_PORT || 3000;
 

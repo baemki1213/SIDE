@@ -6,9 +6,12 @@ export const TextInputContainer = styled.div`
   flex-direction: column;
 `;
 
-export const TextInputTextBox = styled.input<{ isValid: boolean }>`
+export const TextInputTextBox = styled.input<{
+  isValid: boolean;
+  height?: number;
+}>`
   width: 100%;
-  height: 38px;
+  height: ${props => (props.height ? props.height : 38)}px;
   padding: 0 15px;
   border: 1px solid ${props => (props.isValid ? colors.grayDb : colors.redFF)};
   border-radius: 4px;

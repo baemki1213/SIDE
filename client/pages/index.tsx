@@ -1,8 +1,8 @@
 import styled from "styled-components";
+import { useSelector } from "react-redux";
 
 import { wrapper } from "@/store";
 import { selectAuthState, setIsLogin } from "@/store/authSlice";
-import { useSelector } from "react-redux";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "true") {
   import("../mocks").then(({ setUpMocks }) => {
