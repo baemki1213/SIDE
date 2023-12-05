@@ -30,7 +30,6 @@ export const useLogin = () => {
             isLogin: true,
             userInfo: res.data.user,
             access_token: res.data.access_token,
-            refresh_token: res.data.refresh_token,
           })
         );
         dispatch(showToast("환영합니다."));

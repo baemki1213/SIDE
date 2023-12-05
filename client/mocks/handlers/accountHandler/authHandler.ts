@@ -113,7 +113,6 @@ const authHandlers = [
           {
             user: { id: 1, email, nickname: "validNickname" },
             access_token: "valid_access_token",
-            refresh_token: "valid_refresh_token",
           },
           { status: 200 }
         );
