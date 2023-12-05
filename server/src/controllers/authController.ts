@@ -2,8 +2,6 @@ import { createAccessToken, findRefreshToken } from "../models/auth";
 
 const authController = {
   async issueAccessToken(req: any, res: any) {
-    console.log(req.cookies, "req!");
-
     const refreshToken = req.cookies.refresh_token;
     if (refreshToken == null)
       return res.status(401).send("리프레시 토큰이 없습니다.");

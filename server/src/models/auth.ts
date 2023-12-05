@@ -47,8 +47,10 @@ const authenticateAccessToken = (req: any, res: any, next: any) => {
 };
 
 const findRefreshToken = async (token: string) => {
-  const result: any = (await connection).query(findRefreshTokenSQL, [token]);
-  console.log(result, "find refresh token result");
+  const result: any = await (
+    await connection
+  ).query(findRefreshTokenSQL, [token]);
+
   return result[0];
 };
 
