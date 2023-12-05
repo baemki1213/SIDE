@@ -39,7 +39,6 @@ const authenticateAccessToken = (req: any, res: any, next: any) => {
     process.env.ACCESS_TOKEN_SECRET,
     (err: any, user: any) => {
       if (err) return res.status(403).send("유효하지 않은 액세스 토큰"); // 유효하지 않은 토큰
-      console.log(req, req.user);
       req.user = user;
       next();
     }
