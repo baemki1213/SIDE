@@ -152,12 +152,16 @@ const userController = {
         const { email, nickname, created_at } = user;
         const accessToken = await createAccessToken(user.id);
         const refreshToken = await createAndSaveRefreshToken(user.id);
-
+        res.cookie("refresh_token", refreshToken, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV !== "development", // HTTPS 환경에서만 쿠키 전송
+          maxAge: 7 * 24 * 60 * 60 * 1000, // 7일
+          path: "/",
+        });
         return res.json({
           message: "Login successful",
           user: { email, nickname, created_at },
           access_token: accessToken,
-          refresh_token: refreshToken,
         });
       } else {
         res
