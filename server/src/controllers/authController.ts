@@ -1,4 +1,5 @@
-import { createAccessToken, findRefreshToken } from "../models/auth";
+import { findRefreshToken } from "../models/auth";
+import { createAccessToken } from "../utils/auth";
 
 const authController = {
   async issueAccessToken(req: any, res: any) {

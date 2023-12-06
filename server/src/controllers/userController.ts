@@ -1,3 +1,5 @@
+import { Request } from "../types/Express";
+import { Response } from "express";
 import { randomInt } from "crypto";
 import nodemailer from "nodemailer";
 import {
@@ -10,12 +12,11 @@ import {
   isCodeExpired,
   findCurrentEmail,
   findUserByEmail,
+  findUserById,
 } from "../models/user";
-import {
-  compareHashedPassword,
-  createAccessToken,
-  createAndSaveRefreshToken,
-} from "../models/auth";
+import { createAndSaveRefreshToken } from "../models/auth";
+import { compareHashedPassword, createAccessToken } from "../utils/auth";
+import { User } from "../types/User";
 
 const smtpTransport = nodemailer.createTransport({
   service: "Gmail",
@@ -27,7 +28,7 @@ const smtpTransport = nodemailer.createTransport({
 });
 
 const userController = {
-  async register(req: any, res: any) {
+  async register(req: Request, res: Response) {
     try {
       const { email, password, nickname } = req.body;
 
@@ -58,7 +59,7 @@ const userController = {
     }
   },
 
-  async sendVerificationEmail(req: any, res: any) {
+  async sendVerificationEmail(req: Request, res: Response) {
     try {
       const { email } = req.body;
       const isRegistered = await isEmailRegistered(email);
@@ -97,7 +98,7 @@ const userController = {
     }
   },
 
-  async verifyEmail(req: { body: { email: string; code: number } }, res: any) {
+  async verifyEmail(req: Request, res: Response) {
     const { email, code } = req.body;
 
     try {
@@ -117,7 +118,7 @@ const userController = {
     }
   },
 
-  async checkNickname(req: { body: { nickname: string } }, res: any) {
+  async checkNickname(req: Request, res: Response) {
     const { nickname } = req.body;
     try {
       const nicknameExists = await isNicknameTaken(nickname);
@@ -133,7 +134,7 @@ const userController = {
     }
   },
 
-  async login(req: { body: { email: string; password: string } }, res: any) {
+  async login(req: Request, res: Response) {
     const { email, password: inputPassword } = req.body;
 
     try {
@@ -171,6 +172,30 @@ const userController = {
       }
     } catch (err) {
       res.status(500).json({ message: "서버 에러, 잠시후 다시 시도해주세요." });
+    }
+  },
+
+  async getUserInfo(req: Request, res: Response) {
+    try {
+      const userId = req.user?.id;
+
+      if (!userId) {
+        return res.status(400).json({ message: "사용자 ID가 없습니다." });
+      }
+
+      const user = await findUserById(userId);
+      // 보낼 데이터
+
+      if (!user) {
+        return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+      }
+      const { id, nickname, created_at } = user;
+
+      return res.json({ user: { id, nickname, created_at } });
+    } catch (error: any) {
+      return res
+        .status(500)
+        .json({ message: "Server error", error: error.toString() });
     }
   },
 };
