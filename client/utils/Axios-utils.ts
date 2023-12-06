@@ -24,10 +24,22 @@ export const requestWithAuth = async (
 };
 
 export const requestWithoutAuth = async ({ ...options }: IRequestOptions) => {
-  // delete instance.defaults.headers.common.Authorization;
+  delete instance.defaults.headers.common.Authorization;
   instance.defaults.headers.common["Content-Type"] = "application/json";
 
   const onSuccess = (res: AxiosResponse<any>) => res;
+  const onError = (err: AxiosError<any>) => {
+    throw err;
+  };
+
+  return await instance(options).then(onSuccess).catch(onError);
+};
+
+export const requestWithCookie = async ({ ...options }: IRequestOptions) => {
+  instance.defaults.withCredentials = true;
+  instance.defaults.headers.common["Content-Type"] = "application/json";
+
+  const onSuccess = (res: AxiosResponse<any>) => res?.data;
   const onError = (err: AxiosError<any>) => {
     throw err;
   };

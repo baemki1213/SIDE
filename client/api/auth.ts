@@ -1,7 +1,7 @@
-import { requestWithoutAuth } from "@/utils/Axios-utils";
+import { requestWithCookie } from "@/utils/Axios-utils";
 
 export const refreshToken = async (data: any) => {
-  return await requestWithoutAuth({
+  return await requestWithCookie({
     method: "post",
     url: "/auth/token/refresh",
     data,
