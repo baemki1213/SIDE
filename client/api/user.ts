@@ -1,4 +1,4 @@
-import { requestWithoutAuth } from "@/utils/Axios-utils";
+import { requestWithAuth, requestWithoutAuth } from "@/utils/Axios-utils";
 
 interface ICreateProps {
   email: string;
@@ -47,4 +47,16 @@ export const login = async (data: { email: string; password: string }) => {
     url: "/user/login/",
     data,
   });
+};
+
+export const getUserInfo = async (data: {}, token: string, dispatch: any) => {
+  return await requestWithAuth(
+    {
+      method: "get",
+      url: "/user/user-info/",
+      data,
+    },
+    token,
+    dispatch
+  );
 };

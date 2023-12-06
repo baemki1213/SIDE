@@ -1,5 +1,9 @@
+import { Dispatch } from "@reduxjs/toolkit";
 import { AxiosError, AxiosResponse } from "axios";
+
 import { instance } from "../api/Core";
+import { refreshToken } from "@/api/auth";
+import { setAccessToken } from "@/store/authSlice";
 
 interface IRequestOptions {
   method?: "get" | "post" | "patch" | "delete" | "put";
@@ -10,13 +14,22 @@ interface IRequestOptions {
 
 export const requestWithAuth = async (
   { ...options }: IRequestOptions,
-  token: string
+  token: string,
+  dispatch: Dispatch
 ) => {
   instance.defaults.headers.common.Authorization = `Bearer ${token}`;
   instance.defaults.headers.common["Content-Type"] = "application/json";
 
   const onSuccess = (res: AxiosResponse<any>) => res?.data;
   const onError = (err: AxiosError<any>) => {
+    if (err.response?.status === 401) {
+      try {
+        const newAccessToken = refreshToken({});
+        dispatch(setAccessToken(newAccessToken));
+      } catch (refreshError) {
+        throw refreshError;
+      }
+    }
     throw err;
   };
 
