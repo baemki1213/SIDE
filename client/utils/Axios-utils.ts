@@ -21,11 +21,19 @@ export const requestWithAuth = async (
   instance.defaults.headers.common["Content-Type"] = "application/json";
 
   const onSuccess = (res: AxiosResponse<any>) => res?.data;
-  const onError = (err: AxiosError<any>) => {
-    if (err.response?.status === 401) {
+  const onError = async (err: AxiosError<any>) => {
+    if (
+      (err.response?.status === 401 &&
+        err.response.data === "액세스 토큰이 존재하지 않습니다.") ||
+      (err.response?.status === 403 &&
+        err.response.data === "유효하지 않은 액세스 토큰")
+    ) {
       try {
-        const newAccessToken = refreshToken({});
-        dispatch(setAccessToken(newAccessToken));
+        const newAccessToken = await refreshToken({});
+
+        instance.defaults.headers.common.Authorization = `Bearer ${newAccessToken.access_token}`;
+        dispatch(setAccessToken(newAccessToken.access_token));
+        return await instance(options).then(onSuccess);
       } catch (refreshError) {
         throw refreshError;
       }
