@@ -11,12 +11,13 @@ const authController = {
       if (!refreshTokenData)
         return res.status(403).send("일치하는 토큰이 없습니다.");
       const now = new Date();
-      if (refreshTokenData.expiresAt < now) {
+      if (refreshTokenData[0].expiresAt < now) {
         return res
           .status(403)
           .json({ message: "리프레시 토큰이 만료되었습니다." });
       }
-      const accessToken = await createAccessToken(refreshTokenData.userId);
+
+      const accessToken = await createAccessToken(refreshTokenData[0].userId);
       return res.json({ access_token: accessToken });
     } catch (err) {
       res
