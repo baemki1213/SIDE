@@ -32,8 +32,8 @@ export const HeaderIcon = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 50px;
-  height: 50px;
+  width: 45px;
+  height: 45px;
   border-radius: 4px;
 
   &:hover {

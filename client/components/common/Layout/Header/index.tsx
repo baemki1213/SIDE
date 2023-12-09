@@ -1,10 +1,12 @@
+import Sidebar from "../Sidebar";
+
 import * as S from "./styles";
 
 const Header = () => {
   return (
     <S.HeaderContainer>
       <S.HeaderLeft>
-        <S.HeaderIcon>Sidebar</S.HeaderIcon>
+        <Sidebar />
       </S.HeaderLeft>
       <S.HeaderRight>
         <S.HeaderIcon>profile section</S.HeaderIcon>

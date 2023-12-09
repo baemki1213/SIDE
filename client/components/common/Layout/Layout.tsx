@@ -1,7 +1,6 @@
 import React from "react";
 import styled from "styled-components";
 import Header from "./Header";
-import Sidebar from "./Sidebar";
 
 interface Props {
   children: React.ReactNode;
@@ -10,7 +9,6 @@ interface Props {
 const Layout = ({ children }: Props) => {
   return (
     <LayoutContainer>
-      <Sidebar />
       <Header />
       <Content>{children}</Content>
     </LayoutContainer>
