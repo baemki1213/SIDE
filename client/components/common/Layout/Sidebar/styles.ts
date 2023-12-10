@@ -1,7 +1,51 @@
 import styled from "styled-components";
-import { FiMenu } from "react-icons/fi";
 
 import { colors } from "@/styles/assets";
+
+export const SidebarInner = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  max-height: 100%;
+`;
+export const SidebarBody = styled.div`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  margin-top: 50px;
+`;
+export const SidebarMenu = styled.button`
+  display: flex;
+  align-items: baseline;
+  padding: 0 20px;
+  :hover {
+    background-color: rgba(0, 0, 0, 0.1);
+  }
+`;
+
+export const SidebarFooter = styled.div`
+  margin-top: auto;
+  margin-bottom: 15px;
+  padding: 0 20px;
+`;
+
+export const SidebarTrigger = styled.div`
+  width: 20px;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99;
+`;
+
+export const SidebarIcon = styled.header<{
+  isClickOpen: boolean;
+}>`
+  position: relative;
+  left: ${({ isClickOpen }) => (isClickOpen ? "180px" : "0")};
+  transition: left 0.3s ease;
+  z-index: 122;
+`;
 
 export const SidebarContainer = styled.div<{
   isClickOpen: boolean;
@@ -26,29 +70,4 @@ export const SidebarContainer = styled.div<{
     rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
-`;
-
-export const SidebarInner = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 50px 20px;
-`;
-
-export const SidebarTrigger = styled.div`
-  width: 20px;
-  height: 100vh;
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 99;
-`;
-
-export const SidebarIcon = styled.header<{
-  isClickOpen: boolean;
-}>`
-  position: relative;
-  left: ${({ isClickOpen }) => (isClickOpen ? "180px" : "0")};
-  transition: left 0.3s ease;
-  z-index: 122;
 `;

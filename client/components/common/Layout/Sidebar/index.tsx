@@ -1,9 +1,19 @@
 import { useState } from "react";
-
-import * as S from "./styles";
+import {
+  FaMapMarkerAlt,
+  FaRobot,
+  FaGlobe,
+  FaHistory,
+  FaStar,
+  FaRandom,
+} from "react-icons/fa";
 
 import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
 import StyledText from "../../StyledText";
+import StyledTextButton from "../../StyledTextButton";
+
+import * as S from "./styles";
+import Gap from "../../Gap";
 
 const Sidebar = () => {
   const [isClickOpen, setIsClickOpen] = useState(false);
@@ -16,6 +26,9 @@ const Sidebar = () => {
     if (!isClickOpen) {
       setIsHoverOpen(true);
     }
+  };
+  const handleLogout = () => {
+    console.log("logout");
   };
 
   return (
@@ -40,12 +53,46 @@ const Sidebar = () => {
         isClickOpen={isClickOpen}
       >
         <S.SidebarInner>
-          <StyledText text="주변 맛집 구경하기" />
-          <StyledText text="주변 맛집 AI 추천" />
-          <StyledText text="주변 맛집 월드컵 만들기" />
-          <StyledText text="내가 갔었던 맛집" />
-          <StyledText text="다른 사람들이 고른 주변 맛집" />
-          <StyledText text="주변 맛집 랜덤 추천" />
+          <S.SidebarBody>
+            <S.SidebarMenu>
+              <FaMapMarkerAlt />
+              <Gap side={5} />
+              <StyledText text="장소 찾기" />
+            </S.SidebarMenu>
+            <S.SidebarMenu>
+              <FaRobot />
+              <Gap side={5} />
+              <StyledText text="AI 추천" />
+            </S.SidebarMenu>
+            <S.SidebarMenu>
+              <FaGlobe />
+              <Gap side={5} />
+              <StyledText text="월드컵 만들기" />
+            </S.SidebarMenu>
+            <S.SidebarMenu>
+              <FaHistory />
+              <Gap side={5} />
+              <StyledText text="내 방문 기록" />
+            </S.SidebarMenu>
+            <S.SidebarMenu>
+              <FaStar />
+              <Gap side={5} />
+              <StyledText text="인기있는 장소" />
+            </S.SidebarMenu>
+            <S.SidebarMenu>
+              <FaRandom />
+              <Gap side={5} />
+              <StyledText text="랜덤 추천" />
+            </S.SidebarMenu>
+          </S.SidebarBody>
+
+          <S.SidebarFooter>
+            <StyledTextButton
+              buttonType="button"
+              styleProps={{ text: "로그아웃" }}
+              handleClick={handleLogout}
+            />
+          </S.SidebarFooter>
         </S.SidebarInner>
       </S.SidebarContainer>
     </>
