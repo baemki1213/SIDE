@@ -3,6 +3,7 @@ import { useState } from "react";
 import * as S from "./styles";
 
 import { HeaderIcon } from "../Header/styles";
+import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
 
 const Sidebar = () => {
   const [isClickOpen, setIsClickOpen] = useState(false);
@@ -20,7 +21,9 @@ const Sidebar = () => {
   return (
     <>
       <S.SidebarIcon isHoverOpen={isHoverOpen} isClickOpen={isClickOpen}>
-        <HeaderIcon onClick={clickToggleSidebar}>icon</HeaderIcon>
+        <HeaderIcon onClick={clickToggleSidebar}>
+          <StyledBurgerIcon isOpen={isClickOpen} />
+        </HeaderIcon>
       </S.SidebarIcon>
       <S.SidebarTrigger
         onMouseEnter={() => setIsHoverOpen(true)}

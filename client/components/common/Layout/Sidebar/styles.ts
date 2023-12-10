@@ -1,5 +1,7 @@
-import { colors } from "@/styles/assets";
 import styled from "styled-components";
+import { FiMenu } from "react-icons/fi";
+
+import { colors } from "@/styles/assets";
 
 export const SidebarContainer = styled.div<{
   isClickOpen: boolean;
