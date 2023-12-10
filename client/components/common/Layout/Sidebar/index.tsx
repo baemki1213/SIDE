@@ -6,6 +6,7 @@ import {
   FaHistory,
   FaStar,
   FaRandom,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
 import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
@@ -57,36 +58,62 @@ const Sidebar = () => {
             <S.SidebarMenu>
               <FaMapMarkerAlt />
               <Gap side={5} />
-              <StyledText text="장소 찾기" />
+              <StyledText
+                text="장소 찾기"
+                fontWeight="semiBold"
+                fontColor="mainColor"
+              />
             </S.SidebarMenu>
             <S.SidebarMenu>
               <FaRobot />
               <Gap side={5} />
-              <StyledText text="AI 추천" />
+              <StyledText
+                text="AI 추천"
+                fontWeight="semiBold"
+                fontColor="mainColor"
+              />
             </S.SidebarMenu>
             <S.SidebarMenu>
               <FaGlobe />
               <Gap side={5} />
-              <StyledText text="월드컵 만들기" />
+              <StyledText
+                text="월드컵 만들기"
+                fontWeight="semiBold"
+                fontColor="mainColor"
+              />
             </S.SidebarMenu>
             <S.SidebarMenu>
               <FaHistory />
               <Gap side={5} />
-              <StyledText text="내 방문 기록" />
+              <StyledText
+                text="내 방문 기록"
+                fontWeight="semiBold"
+                fontColor="mainColor"
+              />
             </S.SidebarMenu>
             <S.SidebarMenu>
               <FaStar />
               <Gap side={5} />
-              <StyledText text="인기있는 장소" />
+              <StyledText
+                text="인기있는 장소"
+                fontWeight="semiBold"
+                fontColor="mainColor"
+              />
             </S.SidebarMenu>
             <S.SidebarMenu>
               <FaRandom />
               <Gap side={5} />
-              <StyledText text="랜덤 추천" />
+              <StyledText
+                text="랜덤 추천"
+                fontWeight="semiBold"
+                fontColor="mainColor"
+              />
             </S.SidebarMenu>
           </S.SidebarBody>
 
           <S.SidebarFooter>
+            <FaSignOutAlt />
+            <Gap side={5} />
             <StyledTextButton
               buttonType="button"
               styleProps={{ text: "로그아웃" }}

@@ -15,15 +15,19 @@ export const SidebarBody = styled.div`
   margin-top: 50px;
 `;
 export const SidebarMenu = styled.button`
+  cursor: pointer;
   display: flex;
-  align-items: baseline;
-  padding: 0 20px;
+  align-items: center;
+  padding: 5px 20px;
+  margin-bottom: 5px;
   :hover {
     background-color: rgba(0, 0, 0, 0.1);
   }
 `;
 
 export const SidebarFooter = styled.div`
+  display: flex;
+  align-items: center;
   margin-top: auto;
   margin-bottom: 15px;
   padding: 0 20px;
