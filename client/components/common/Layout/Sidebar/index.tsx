@@ -9,7 +9,7 @@ const Sidebar = () => {
   const [isClickOpen, setIsClickOpen] = useState(false);
   const [isHoverOpen, setIsHoverOpen] = useState(false);
 
-  const clickToggleSidebar = () => {
+  const handleClickToggleSidebar = () => {
     setIsClickOpen(!isClickOpen);
   };
   const handleContainerMouseEnter = () => {
@@ -21,9 +21,10 @@ const Sidebar = () => {
   return (
     <>
       <S.SidebarIcon isHoverOpen={isHoverOpen} isClickOpen={isClickOpen}>
-        <HeaderIcon onClick={clickToggleSidebar}>
-          <StyledBurgerIcon isOpen={isClickOpen} />
-        </HeaderIcon>
+        <StyledBurgerIcon
+          handleClick={handleClickToggleSidebar}
+          isOpen={isClickOpen}
+        />
       </S.SidebarIcon>
       <S.SidebarTrigger
         onMouseEnter={() => setIsHoverOpen(true)}
@@ -35,7 +36,7 @@ const Sidebar = () => {
         isHoverOpen={isHoverOpen}
         isClickOpen={isClickOpen}
       >
-        asdasd
+        <S.SidebarInner>asd</S.SidebarInner>
       </S.SidebarContainer>
     </>
   );

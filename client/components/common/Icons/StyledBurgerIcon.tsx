@@ -1,12 +1,13 @@
 import styled from "styled-components";
 
 interface Props {
+  handleClick: () => void;
   isOpen: boolean;
 }
 
-export const StyledBurgerIcon = ({ isOpen }: Props) => {
+export const StyledBurgerIcon = ({ handleClick, isOpen }: Props) => {
   return (
-    <BurgerIconContainer>
+    <BurgerIconContainer onClick={handleClick}>
       <BurgerIcon isOpen={isOpen} />
     </BurgerIconContainer>
   );

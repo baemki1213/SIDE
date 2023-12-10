@@ -28,6 +28,11 @@ export const SidebarContainer = styled.div<{
   border-bottom-right-radius: 4px;
 `;
 
+export const SidebarInner = styled.div`
+  height: 100%;
+  padding: 50px 20px;
+`;
+
 export const SidebarTrigger = styled.div`
   width: 20px;
   height: 100vh;
@@ -42,6 +47,7 @@ export const SidebarIcon = styled.header<{
   isHoverOpen: boolean;
 }>`
   position: relative;
-  left: ${({ isClickOpen }) => (isClickOpen ? "240px" : "0")};
+  left: ${({ isClickOpen }) => (isClickOpen ? "180px" : "0")};
   transition: left 0.3s ease;
+  z-index: 122;
 `;
