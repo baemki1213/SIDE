@@ -13,7 +13,7 @@ export interface AuthState {
 // Initial state
 const initialState: AuthState = {
   isLogin: false,
-  userInfo: { id: 0, email: "", nickname: "" },
+  userInfo: { id: 0, email: "", nickname: "", profile_image: null },
   access_token: "",
 };
 // Actual Slice

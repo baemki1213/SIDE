@@ -1,3 +1,4 @@
+import { colors } from "@/styles/assets";
 import styled from "styled-components";
 
 interface Props {
@@ -7,7 +8,7 @@ interface Props {
 
 export const StyledBurgerIcon = ({ handleClick, isOpen }: Props) => {
   return (
-    <BurgerIconContainer onClick={handleClick}>
+    <BurgerIconContainer data-testid="styledBurgerIcon" onClick={handleClick}>
       <BurgerIcon isOpen={isOpen} />
     </BurgerIconContainer>
   );
@@ -26,7 +27,8 @@ const BurgerIcon = styled.div<{ isOpen: boolean }>`
   position: relative;
   width: 30px;
   height: 2px;
-  background-color: ${({ isOpen }) => (isOpen ? "transparent" : "black")};
+  background-color: ${({ isOpen }) =>
+    isOpen ? "transparent" : colors.black47};
   transition: all 0.3s ease;
 
   &:before,
@@ -35,7 +37,7 @@ const BurgerIcon = styled.div<{ isOpen: boolean }>`
     position: absolute;
     width: 30px;
     height: 2px;
-    background-color: black;
+    background-color: ${colors.black47};
     transition: all 0.3s ease;
   }
 

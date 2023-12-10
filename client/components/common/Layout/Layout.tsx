@@ -20,6 +20,7 @@ export default Layout;
 const LayoutContainer = styled.div`
   height: 100vh;
   display: flex;
+  flex-direction: column;
 `;
 
 const Content = styled.div``;

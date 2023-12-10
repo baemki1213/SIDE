@@ -29,6 +29,8 @@ export const SidebarContainer = styled.div<{
 `;
 
 export const SidebarInner = styled.div`
+  display: flex;
+  flex-direction: column;
   height: 100%;
   padding: 50px 20px;
 `;
@@ -44,7 +46,6 @@ export const SidebarTrigger = styled.div`
 
 export const SidebarIcon = styled.header<{
   isClickOpen: boolean;
-  isHoverOpen: boolean;
 }>`
   position: relative;
   left: ${({ isClickOpen }) => (isClickOpen ? "180px" : "0")};
