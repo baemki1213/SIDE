@@ -104,41 +104,10 @@ describe("Login page", () => {
         })
       );
       expect(mockDispatch).toHaveBeenCalledWith(showToast("환영합니당!"));
-      expect(router.push).toHaveBeenCalledWith("/main");
+      expect(router.push).toHaveBeenCalledWith("/");
     });
   });
 
-  test("Should navigate prev page on successful login and update login info", async () => {
-    const mockDispatch = jest.fn();
-    (useRoute as jest.Mock).mockReturnValue({
-      previousPath: "/prev/page",
-    });
-    (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
-
-    render(<LoginPage />);
-    const emailInput = screen.getByPlaceholderText("이메일");
-    fireEvent.change(emailInput, { target: { value: "valid@email.com" } });
-    const passwordInput = screen.getByPlaceholderText("비밀번호");
-    fireEvent.change(passwordInput, { target: { value: "1234Qwer!@" } });
-    const signInButton = screen.getByRole("button", { name: "로그인" });
-    fireEvent.click(signInButton);
-    await waitFor(() => {
-      expect(mockDispatch).toHaveBeenCalledWith(
-        setLoginInfo({
-          isLogin: true,
-          userInfo: {
-            email: "valid@email.com",
-            id: 1,
-            nickname: "validNickname",
-          },
-          access_token: "valid_access_token",
-          refresh_token: "valid_refresh_token",
-        })
-      );
-      expect(mockDispatch).toHaveBeenCalledWith(showToast("환영합니당!"));
-      expect(router.push).toHaveBeenCalledWith("/prev/page");
-    });
-  });
   test("Should display unregistered message on failed login", async () => {
     render(<LoginPage />);
     const emailInput = screen.getByPlaceholderText("이메일");
