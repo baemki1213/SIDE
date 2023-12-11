@@ -12,14 +12,22 @@ import {
 import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
 import StyledText from "../../StyledText";
 import StyledTextButton from "../../StyledTextButton";
+import Gap from "../../Gap";
 
 import * as S from "./styles";
-import Gap from "../../Gap";
 
 const Sidebar = () => {
   const [isClickOpen, setIsClickOpen] = useState(false);
   const [isHoverOpen, setIsHoverOpen] = useState(false);
 
+  const navData = [
+    { id: "map", icon: <FaMapMarkerAlt />, text: "맛집 찾기" },
+    { id: "ai", icon: <FaRobot />, text: "AI 추천" },
+    { id: "cup", icon: <FaGlobe />, text: "맛집 월드컵" },
+    { id: "my", icon: <FaHistory />, text: "나의 기록" },
+    { id: "popular", icon: <FaStar />, text: "인기 장소" },
+    { id: "random", icon: <FaRandom />, text: "랜덤 추천" },
+  ];
   const handleClickToggleSidebar = () => {
     setIsClickOpen(!isClickOpen);
   };
@@ -30,6 +38,9 @@ const Sidebar = () => {
   };
   const handleLogout = () => {
     console.log("logout");
+  };
+  const handleNavIconClick = (id: string) => {
+    console.log(id);
   };
 
   return (
@@ -55,60 +66,19 @@ const Sidebar = () => {
       >
         <S.SidebarInner>
           <S.SidebarBody>
-            <S.SidebarMenu>
-              <FaMapMarkerAlt />
-              <Gap side={5} />
-              <StyledText
-                text="장소 찾기"
-                fontWeight="semiBold"
-                fontColor="mainColor"
-              />
-            </S.SidebarMenu>
-            <S.SidebarMenu>
-              <FaRobot />
-              <Gap side={5} />
-              <StyledText
-                text="AI 추천"
-                fontWeight="semiBold"
-                fontColor="mainColor"
-              />
-            </S.SidebarMenu>
-            <S.SidebarMenu>
-              <FaGlobe />
-              <Gap side={5} />
-              <StyledText
-                text="월드컵 만들기"
-                fontWeight="semiBold"
-                fontColor="mainColor"
-              />
-            </S.SidebarMenu>
-            <S.SidebarMenu>
-              <FaHistory />
-              <Gap side={5} />
-              <StyledText
-                text="내 방문 기록"
-                fontWeight="semiBold"
-                fontColor="mainColor"
-              />
-            </S.SidebarMenu>
-            <S.SidebarMenu>
-              <FaStar />
-              <Gap side={5} />
-              <StyledText
-                text="인기있는 장소"
-                fontWeight="semiBold"
-                fontColor="mainColor"
-              />
-            </S.SidebarMenu>
-            <S.SidebarMenu>
-              <FaRandom />
-              <Gap side={5} />
-              <StyledText
-                text="랜덤 추천"
-                fontWeight="semiBold"
-                fontColor="mainColor"
-              />
-            </S.SidebarMenu>
+            {navData.map(data => {
+              return (
+                <S.SidebarMenu
+                  onClick={() => handleNavIconClick(data.id)}
+                  aria-label={data.text}
+                  key={data.text}
+                >
+                  {data.icon}
+                  <Gap side={5} />
+                  <StyledText text={data.text} />
+                </S.SidebarMenu>
+              );
+            })}
           </S.SidebarBody>
 
           <S.SidebarFooter>
