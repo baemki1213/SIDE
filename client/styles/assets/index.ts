@@ -3,7 +3,7 @@ import { DefaultTheme } from "styled-components";
 export const colors = {
   pointColor: "#F95001",
   mainColor: "#0D0D0D",
-  mainWhite: "#F2F2F2",
+  mainWhite: "#ffffff",
   gray26: "#262626",
   gray59: "#595959",
   gray8c: "#8c8c8c",
