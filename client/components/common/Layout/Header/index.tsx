@@ -30,7 +30,7 @@ const Header = () => {
               <S.HeaderDefaultAvatar data-testid="header-defaultAvatar">
                 <StyledText
                   text={userInfo.nickname.slice(0, 1)}
-                  fontColor="mainWhite"
+                  fontColor="mainColor"
                   fontWeight="bold"
                 />
               </S.HeaderDefaultAvatar>
