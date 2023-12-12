@@ -14,9 +14,8 @@ import {
   findUserByEmail,
   findUserById,
 } from "../models/user";
-import { createAndSaveRefreshToken } from "../models/auth";
+import { createAndSaveRefreshToken, removeRefreshToken } from "../models/auth";
 import { compareHashedPassword, createAccessToken } from "../utils/auth";
-import { User } from "../types/User";
 
 const smtpTransport = nodemailer.createTransport({
   service: "Gmail",
@@ -172,6 +171,26 @@ const userController = {
       }
     } catch (err) {
       res.status(500).json({ message: "서버 에러, 잠시후 다시 시도해주세요." });
+    }
+  },
+  async logout(req: Request, res: Response) {
+    try {
+      const refreshToken = req.cookies["refresh_token"];
+
+      if (!refreshToken) {
+        return res
+          .status(401)
+          .json({ message: "로그아웃 실패: Token missing" });
+      }
+      console.log(refreshToken);
+      await removeRefreshToken(refreshToken);
+      res.clearCookie("refresh_token");
+
+      return res.status(200).json({ message: "로그아웃 성공" });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "서버 에러, 잠시 후 다시 시도해주세요." });
     }
   },
 

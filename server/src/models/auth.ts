@@ -1,7 +1,11 @@
 const jwt = require("jsonwebtoken");
 import connection from "../config/db.config";
 
-import { findRefreshTokenSQL, saveRefreshTokensSQL } from "../sql/auth";
+import {
+  findRefreshTokenSQL,
+  removeRefreshTokenSQL,
+  saveRefreshTokensSQL,
+} from "../sql/auth";
 
 const createAndSaveRefreshToken = async (userId: number) => {
   const expiresAt = new Date();
@@ -22,4 +26,8 @@ const findRefreshToken = async (token: string) => {
   return result[0];
 };
 
-export { createAndSaveRefreshToken, findRefreshToken };
+const removeRefreshToken = async (token: string) => {
+  return (await connection).query(removeRefreshTokenSQL, [token]);
+};
+
+export { createAndSaveRefreshToken, findRefreshToken, removeRefreshToken };

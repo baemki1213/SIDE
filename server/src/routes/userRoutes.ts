@@ -13,6 +13,7 @@ userRouter.post("/verify-email", userController.verifyEmail);
 userRouter.post("/check-nickname", userController.checkNickname);
 
 userRouter.post("/login", userController.login);
+userRouter.post("/logout", userController.logout);
 userRouter.get(
   "/user-info",
   authenticateAccessToken,
