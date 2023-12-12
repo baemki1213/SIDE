@@ -9,14 +9,12 @@ export interface AuthState {
   isLogin: boolean;
   userInfo: IUserInfo;
   access_token: string;
-  refresh_token: string;
 }
 // Initial state
 const initialState: AuthState = {
   isLogin: false,
-  userInfo: { id: 0, email: "", nickname: "" },
+  userInfo: { id: 0, email: "", nickname: "", profile_image: null },
   access_token: "",
-  refresh_token: "",
 };
 // Actual Slice
 export const authSlice = createSlice({
@@ -34,7 +32,14 @@ export const authSlice = createSlice({
       state.isLogin = isLogin;
       state.userInfo = userInfo;
       state.access_token = access_token;
-      state.refresh_token = refresh_token;
+    },
+    setAccessToken(state, action) {
+      state.access_token = action.payload;
+    },
+    clearLoginInfo(state) {
+      state.isLogin = false;
+      state.userInfo = initialState.userInfo;
+      state.access_token = "";
     },
   },
 
@@ -47,6 +52,12 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setIsLogin, setUserInfo, setLoginInfo } = authSlice.actions;
+export const {
+  setIsLogin,
+  setUserInfo,
+  setLoginInfo,
+  setAccessToken,
+  clearLoginInfo,
+} = authSlice.actions;
 export const selectAuthState = (state: RootState) => state.auth;
 export default authSlice.reducer;

@@ -1,4 +1,4 @@
-import { createUser } from "@/api";
+import { createUser } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 

@@ -10,6 +10,7 @@ import {
   saveVerificationCodeSQL,
   findCurrentEmailSQL,
   findUserByEmailSQL,
+  findUserByIdSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
 
@@ -89,6 +90,10 @@ const findUserByEmail = async (email: string) => {
   ).query<any>(findUserByEmailSQL, [email]);
   return result[0];
 };
+const findUserById = async (id: number): Promise<User | null> => {
+  const [result] = await (await connection).query<any>(findUserByIdSQL, [id]);
+  return result[0];
+};
 
 export {
   isEmailRegistered,
@@ -101,4 +106,5 @@ export {
   hashPassword,
   comparePassword,
   findUserByEmail,
+  findUserById,
 };

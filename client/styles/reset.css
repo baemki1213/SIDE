@@ -129,7 +129,7 @@ table {
 }
 button {
   background-color: transparent;
-  border: 2px solid transparent;
+  border: 0px solid transparent;
   padding: 0px;
   margin: 0px;
   cursor: pointer;
