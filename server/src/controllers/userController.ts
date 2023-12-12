@@ -182,7 +182,7 @@ const userController = {
           .status(401)
           .json({ message: "로그아웃 실패: Token missing" });
       }
-      console.log(refreshToken);
+
       await removeRefreshToken(refreshToken);
       res.clearCookie("refresh_token");
 
