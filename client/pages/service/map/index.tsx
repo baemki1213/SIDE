@@ -27,10 +27,9 @@ const Maps = () => {
       map: map,
       center: new window.naver.maps.LatLng(latitude, longitude),
       radius: radius,
-      strokeColor: "#5347AA",
-      strokeOpacity: 0.5,
+      strokeColor: "transparent",
       strokeWeight: 2,
-      fillColor: "#E51D1A",
+      fillColor: colors.pointColor,
       fillOpacity: 0.3,
     });
 
