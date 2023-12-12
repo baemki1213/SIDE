@@ -119,6 +119,21 @@ const authHandlers = [
       }
     }
   ),
+  // logout
+  http.post<any>(
+    `${process.env.NEXT_PUBLIC_API_URL}/user/logout/`,
+    async ({ request }: any) => {
+      if (request.headers.get("x-use-mock-error")) {
+        return HttpResponse.json(
+          { message: "서버 에러...! 잠시후 다시 시도해주세요." },
+          {
+            status: 500,
+          }
+        );
+      }
+      return HttpResponse.json({ message: "logout success" });
+    }
+  ),
 ];
 
 export { authHandlers };

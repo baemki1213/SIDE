@@ -8,12 +8,10 @@ import { useAppDispatch } from "@/hooks/reduxHook";
 import { showToast } from "@/store/toastSlice";
 import { setLoginInfo } from "@/store/authSlice";
 import { IUserInfo } from "@/types/user";
-import { useRoute } from "@/context/RouteContext";
 
 export const useLogin = () => {
   const dispatch: any = useAppDispatch();
   const router = useRouter();
-  const { previousPath } = useRoute();
 
   const { data, mutate, isLoading, isError, isSuccess, error, reset } =
     useMutation<

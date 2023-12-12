@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useRouter } from "next/router";
 import {
   FaMapMarkerAlt,
   FaRobot,
@@ -7,7 +8,10 @@ import {
   FaStar,
   FaRandom,
   FaSignOutAlt,
+  FaHome,
 } from "react-icons/fa";
+
+import { useLogout } from "@/hooks/user/login/useLogout";
 
 import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
 import StyledText from "../../StyledText";
@@ -16,17 +20,24 @@ import Gap from "../../Gap";
 
 import * as S from "./styles";
 
-const Sidebar = () => {
+interface Props {
+  isLogin: boolean;
+}
+
+const Sidebar = ({ isLogin }: Props) => {
+  const router = useRouter();
+  const { mutate: logout, isLoading: logoutIsLoading } = useLogout();
   const [isClickOpen, setIsClickOpen] = useState(false);
   const [isHoverOpen, setIsHoverOpen] = useState(false);
 
   const navData = [
-    { id: "map", icon: <FaMapMarkerAlt />, text: "맛집 찾기" },
-    { id: "ai", icon: <FaRobot />, text: "AI 추천" },
-    { id: "cup", icon: <FaGlobe />, text: "맛집 월드컵" },
-    { id: "my", icon: <FaHistory />, text: "나의 기록" },
-    { id: "popular", icon: <FaStar />, text: "인기 장소" },
-    { id: "random", icon: <FaRandom />, text: "랜덤 추천" },
+    { id: "", icon: <FaHome />, text: "홈" },
+    { id: "service/map", icon: <FaMapMarkerAlt />, text: "맛집 찾기" },
+    { id: "service/ai-recommendation", icon: <FaRobot />, text: "AI 추천" },
+    { id: "service/food-worldcup", icon: <FaGlobe />, text: "맛집 월드컵" },
+    { id: "my-history", icon: <FaHistory />, text: "나의 기록" },
+    { id: "service/popular", icon: <FaStar />, text: "인기 장소" },
+    { id: "service/random", icon: <FaRandom />, text: "랜덤 추천" },
   ];
   const handleClickToggleSidebar = () => {
     setIsClickOpen(!isClickOpen);
@@ -36,11 +47,11 @@ const Sidebar = () => {
       setIsHoverOpen(true);
     }
   };
-  const handleLogout = () => {
-    console.log("logout");
+  const handleLogout = async () => {
+    await logout({});
   };
   const handleNavIconClick = (id: string) => {
-    console.log(id);
+    router.push(`/${id}`);
   };
 
   return (
@@ -80,16 +91,17 @@ const Sidebar = () => {
               );
             })}
           </S.SidebarBody>
-
-          <S.SidebarFooter>
-            <FaSignOutAlt />
-            <Gap side={5} />
-            <StyledTextButton
-              buttonType="button"
-              styleProps={{ text: "로그아웃" }}
-              handleClick={handleLogout}
-            />
-          </S.SidebarFooter>
+          {isLogin && (
+            <S.SidebarFooter>
+              <FaSignOutAlt />
+              <Gap side={5} />
+              <StyledTextButton
+                buttonType="button"
+                styleProps={{ text: "로그아웃" }}
+                handleClick={handleLogout}
+              />
+            </S.SidebarFooter>
+          )}
         </S.SidebarInner>
       </S.SidebarContainer>
     </>

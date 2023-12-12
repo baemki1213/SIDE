@@ -36,6 +36,11 @@ export const authSlice = createSlice({
     setAccessToken(state, action) {
       state.access_token = action.payload;
     },
+    clearLoginInfo(state) {
+      state.isLogin = false;
+      state.userInfo = initialState.userInfo;
+      state.access_token = "";
+    },
   },
 
   extraReducers: builder => {
@@ -47,7 +52,12 @@ export const authSlice = createSlice({
   },
 });
 
-export const { setIsLogin, setUserInfo, setLoginInfo, setAccessToken } =
-  authSlice.actions;
+export const {
+  setIsLogin,
+  setUserInfo,
+  setLoginInfo,
+  setAccessToken,
+  clearLoginInfo,
+} = authSlice.actions;
 export const selectAuthState = (state: RootState) => state.auth;
 export default authSlice.reducer;

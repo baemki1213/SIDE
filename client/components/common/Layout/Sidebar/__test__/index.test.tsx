@@ -1,9 +1,18 @@
 import { fireEvent, render, screen, waitFor } from "@/utils/test-utils";
 import Sidebar from "..";
+import { useRouter } from "next/router";
+import { useAppDispatch } from "@/hooks/reduxHook";
+import { clearLoginInfo } from "@/store/authSlice";
+import { showToast } from "@/store/toastSlice";
+
+jest.mock("../../../../../hooks/reduxHook.ts", () => ({
+  ...jest.requireActual("../../../../../hooks/reduxHook.ts"),
+  useAppDispatch: jest.fn(),
+}));
 
 describe("sidebar", () => {
   test("Should render correctly", () => {
-    render(<Sidebar />);
+    render(<Sidebar isLogin />);
 
     const hamburgerIcon = screen.getByTestId("styledBurgerIcon");
     expect(hamburgerIcon).toBeInTheDocument();
@@ -12,7 +21,7 @@ describe("sidebar", () => {
   });
 
   test("Should render container when hover trigger", async () => {
-    render(<Sidebar />);
+    render(<Sidebar isLogin />);
     const sidebarTrigger = screen.getByTestId("sidebar-trigger");
     fireEvent.mouseOver(sidebarTrigger);
     await waitFor(() => {
@@ -44,7 +53,7 @@ describe("sidebar", () => {
     });
   });
   test("Should render fixed container when clicked icon", async () => {
-    render(<Sidebar />);
+    render(<Sidebar isLogin />);
     const hamburgerIcon = screen.getByTestId("styledBurgerIcon");
     fireEvent.click(hamburgerIcon);
     await waitFor(() => {
@@ -65,7 +74,11 @@ describe("sidebar", () => {
   });
 
   test("Should handle buttons correctly", async () => {
-    render(<Sidebar />);
+    const mockRouter = useRouter();
+    const mockDispatch = jest.fn();
+    (useAppDispatch as jest.Mock).mockReturnValue(mockDispatch);
+
+    render(<Sidebar isLogin />);
     const sidebarTrigger = screen.getByTestId("sidebar-trigger");
     fireEvent.mouseOver(sidebarTrigger);
     await waitFor(() => {
@@ -74,17 +87,31 @@ describe("sidebar", () => {
     });
     const sidebarMenu1 = screen.getByLabelText("맛집 찾기");
     fireEvent.click(sidebarMenu1);
+    expect(mockRouter.push).toHaveBeenCalledWith("/service/map");
     const sidebarMenu2 = screen.getByLabelText("AI 추천");
     fireEvent.click(sidebarMenu2);
+    expect(mockRouter.push).toHaveBeenCalledWith("/service/ai-recommendation");
     const sidebarMenu3 = screen.getByLabelText("맛집 월드컵");
     fireEvent.click(sidebarMenu3);
+    expect(mockRouter.push).toHaveBeenCalledWith("/service/food-worldcup");
     const sidebarMenu4 = screen.getByLabelText("나의 기록");
     fireEvent.click(sidebarMenu4);
+    expect(mockRouter.push).toHaveBeenCalledWith("/my-history");
     const sidebarMenu5 = screen.getByLabelText("인기 장소");
     fireEvent.click(sidebarMenu5);
+    expect(mockRouter.push).toHaveBeenCalledWith("/service/popular");
     const sidebarMenu6 = screen.getByLabelText("랜덤 추천");
     fireEvent.click(sidebarMenu6);
+    expect(mockRouter.push).toHaveBeenCalledWith("/service/random");
+
     const logoutButton = screen.getByRole("button", { name: "로그아웃" });
     fireEvent.click(logoutButton);
+
+    await waitFor(() => {
+      expect(mockDispatch).toHaveBeenCalledWith(clearLoginInfo());
+      expect(mockDispatch).toHaveBeenCalledWith(
+        showToast("로그아웃 되었습니다.")
+      );
+    });
   });
 });

@@ -11,12 +11,12 @@ import { selectAuthState } from "@/store/authSlice";
 
 const Header = () => {
   const router = useRouter();
-  const { isLogin, userInfo } = useAppSelector(selectAuthState);
+  const { isLogin, userInfo, access_token } = useAppSelector(selectAuthState);
 
   return (
     <S.HeaderContainer>
       <S.HeaderLeft>
-        <Sidebar />
+        <Sidebar isLogin={isLogin} />
       </S.HeaderLeft>
       <S.HeaderRight>
         {isLogin ? (

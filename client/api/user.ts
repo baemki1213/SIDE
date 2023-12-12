@@ -1,4 +1,8 @@
-import { requestWithAuth, requestWithoutAuth } from "@/utils/Axios-utils";
+import {
+  requestWithAuth,
+  requestWithCookie,
+  requestWithoutAuth,
+} from "@/utils/Axios-utils";
 
 interface ICreateProps {
   email: string;
@@ -45,6 +49,14 @@ export const login = async (data: { email: string; password: string }) => {
   return await requestWithoutAuth({
     method: "post",
     url: "/user/login/",
+    data,
+  });
+};
+
+export const logout = async (data: any) => {
+  return await requestWithCookie({
+    method: "post",
+    url: "/user/logout/",
     data,
   });
 };
