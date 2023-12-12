@@ -38,6 +38,7 @@
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@testing-library/user-event": "^14.4.3",
+    "@types/navermaps": "^3.7.4",
     "@types/react": "^18.2.8",
     "@types/redux-persist": "^4.3.1",
     "@types/styled-components": "^5.1.26",
