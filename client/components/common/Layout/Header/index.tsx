@@ -36,7 +36,10 @@ const Header = () => {
               </S.HeaderDefaultAvatar>
             )}
 
-            <StyledText text={`${userInfo?.nickname}님 환영합니다.`} />
+            <StyledText
+              text={`${userInfo?.nickname}님 환영합니다.`}
+              fontWeight="semiBold"
+            />
           </>
         ) : (
           <>
