@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import useLatLng from "@/hooks/map/useLatLng";
 
@@ -7,26 +7,35 @@ import { colors } from "@/styles/assets";
 
 const Maps = () => {
   const mapRef = useRef<naver.maps.Map | null>(null);
+  const currentCircleRef = useRef<naver.maps.Circle | null>(null);
+  const [radius, setRadius] = useState(500);
   const { position } = useLatLng();
-  const updateMarkers = (map: naver.maps.Map, markers: naver.maps.Marker[]) => {
-    const mapBounds: any = map.getBounds();
 
-    for (let i = 0; i < markers.length; i++) {
-      const position = markers[i].getPosition();
-
-      if (mapBounds.hasLatLng(position)) {
-        showMarker(map, markers[i]);
-      } else {
-        hideMarker(markers[i]);
-      }
+  const drawRadiusBoundary = (
+    map: any,
+    latitude: number,
+    longitude: number,
+    radius: number
+  ) => {
+    // 이전에 그려진 원이 있다면 지도에서 제거
+    if (currentCircleRef.current) {
+      currentCircleRef.current.setMap(null);
     }
-  };
-  const showMarker = (map: naver.maps.Map, marker: naver.maps.Marker) => {
-    marker.setMap(map);
-  };
 
-  const hideMarker = (marker: naver.maps.Marker) => {
-    marker.setMap(null);
+    // 새 원을 그림
+    const circle = new window.naver.maps.Circle({
+      map: map,
+      center: new window.naver.maps.LatLng(latitude, longitude),
+      radius: radius,
+      strokeColor: "#5347AA",
+      strokeOpacity: 0.5,
+      strokeWeight: 2,
+      fillColor: "#E51D1A",
+      fillOpacity: 0.3,
+    });
+
+    // 현재 그려진 원을 추적
+    currentCircleRef.current = circle;
   };
 
   useEffect(() => {
@@ -54,9 +63,22 @@ const Maps = () => {
 
       naver.maps.Event.addListener(mapRef.current, "click", function (e) {
         marker.setPosition(e.latlng);
+        drawRadiusBoundary(
+          mapRef.current,
+          e.latlng.lat(),
+          e.latlng.lng(),
+          radius
+        );
       });
+
+      drawRadiusBoundary(
+        mapRef.current,
+        position.latitude,
+        position.longitude,
+        radius
+      );
     }
-  }, [position.latitude, position.longitude]);
+  }, [position.latitude, position.longitude, radius]);
 
   return <S.MapContainer id="map"></S.MapContainer>;
 };
