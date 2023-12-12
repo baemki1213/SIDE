@@ -87,12 +87,6 @@ describe("sidebar", () => {
     });
     const sidebarMenu1 = screen.getByLabelText("맛집 찾기");
     fireEvent.click(sidebarMenu1);
-    expect(mockRouter.push).toHaveBeenCalledWith("/service/map");
-    const sidebarMenu2 = screen.getByLabelText("AI 추천");
-    fireEvent.click(sidebarMenu2);
-    expect(mockRouter.push).toHaveBeenCalledWith("/service/ai-recommendation");
-    const sidebarMenu3 = screen.getByLabelText("맛집 월드컵");
-    fireEvent.click(sidebarMenu3);
     expect(mockRouter.push).toHaveBeenCalledWith("/service/food-worldcup");
     const sidebarMenu4 = screen.getByLabelText("나의 기록");
     fireEvent.click(sidebarMenu4);
@@ -100,10 +94,6 @@ describe("sidebar", () => {
     const sidebarMenu5 = screen.getByLabelText("인기 장소");
     fireEvent.click(sidebarMenu5);
     expect(mockRouter.push).toHaveBeenCalledWith("/service/popular");
-    const sidebarMenu6 = screen.getByLabelText("랜덤 추천");
-    fireEvent.click(sidebarMenu6);
-    expect(mockRouter.push).toHaveBeenCalledWith("/service/random");
-
     const logoutButton = screen.getByRole("button", { name: "로그아웃" });
     fireEvent.click(logoutButton);
 

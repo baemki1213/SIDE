@@ -2,11 +2,8 @@ import { useState } from "react";
 import { useRouter } from "next/router";
 import {
   FaMapMarkerAlt,
-  FaRobot,
-  FaGlobe,
   FaHistory,
   FaStar,
-  FaRandom,
   FaSignOutAlt,
   FaHome,
 } from "react-icons/fa";
@@ -33,11 +30,8 @@ const Sidebar = ({ isLogin }: Props) => {
   const navData = [
     { id: "", icon: <FaHome />, text: "홈" },
     { id: "service/map", icon: <FaMapMarkerAlt />, text: "맛집 찾기" },
-    { id: "service/ai-recommendation", icon: <FaRobot />, text: "AI 추천" },
-    { id: "service/food-worldcup", icon: <FaGlobe />, text: "맛집 월드컵" },
     { id: "my-history", icon: <FaHistory />, text: "나의 기록" },
     { id: "service/popular", icon: <FaStar />, text: "인기 장소" },
-    { id: "service/random", icon: <FaRandom />, text: "랜덤 추천" },
   ];
   const handleClickToggleSidebar = () => {
     setIsClickOpen(!isClickOpen);
@@ -109,3 +103,7 @@ const Sidebar = ({ isLogin }: Props) => {
 };
 
 export default Sidebar;
+
+// { id: "service/ai-recommendation", icon: <FaRobot />, text: "AI 추천" },
+// { id: "service/food-worldcup", icon: <FaGlobe />, text: "맛집 월드컵" },
+// { id: "service/random", icon: <FaRandom />, text: "랜덤 추천" },
