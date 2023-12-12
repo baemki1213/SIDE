@@ -8,12 +8,10 @@ import { useAppDispatch } from "@/hooks/reduxHook";
 import { showToast } from "@/store/toastSlice";
 import { setLoginInfo } from "@/store/authSlice";
 import { IUserInfo } from "@/types/user";
-import { useRoute } from "@/context/RouteContext";
 
 export const useLogin = () => {
-  const dispatch = useAppDispatch();
+  const dispatch: any = useAppDispatch();
   const router = useRouter();
-  const { previousPath } = useRoute();
 
   const { data, mutate, isLoading, isError, isSuccess, error, reset } =
     useMutation<
@@ -30,16 +28,10 @@ export const useLogin = () => {
             isLogin: true,
             userInfo: res.data.user,
             access_token: res.data.access_token,
-            refresh_token: res.data.refresh_token,
           })
         );
         dispatch(showToast("환영합니다."));
-
-        if (previousPath === "/account/register") {
-          router.push("/main");
-        } else {
-          router.push(previousPath || "/main");
-        }
+        router.push("/");
       },
       onError: err => {
         dispatch(showToast(err.response.data.message));

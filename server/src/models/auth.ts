@@ -1,22 +1,12 @@
 const jwt = require("jsonwebtoken");
-import bcrypt from "bcrypt";
-
 import connection from "../config/db.config";
 
-import { saveRefreshTokensSQL } from "../sql/auth";
+import {
+  findRefreshTokenSQL,
+  removeRefreshTokenSQL,
+  saveRefreshTokensSQL,
+} from "../sql/auth";
 
-const compareHashedPassword = async (
-  inputPassword: string,
-  hashedPassword: string
-) => {
-  return bcrypt.compare(inputPassword, hashedPassword);
-};
-
-const createAccessToken = async (userId: number) => {
-  return jwt.sign({ id: userId }, process.env.JWT_ACCESS_SECRET, {
-    expiresIn: "15m",
-  });
-};
 const createAndSaveRefreshToken = async (userId: number) => {
   const expiresAt = new Date();
   const token = jwt.sign({ id: userId }, process.env.JWT_REFRESH_SECRET, {
@@ -28,4 +18,16 @@ const createAndSaveRefreshToken = async (userId: number) => {
   return token;
 };
 
-export { compareHashedPassword, createAccessToken, createAndSaveRefreshToken };
+const findRefreshToken = async (token: string) => {
+  const result: any = await (
+    await connection
+  ).query(findRefreshTokenSQL, [token]);
+
+  return result[0];
+};
+
+const removeRefreshToken = async (token: string) => {
+  return (await connection).query(removeRefreshTokenSQL, [token]);
+};
+
+export { createAndSaveRefreshToken, findRefreshToken, removeRefreshToken };

@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 import express, { Application } from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
+const cookieParser = require("cookie-parser");
 
 import routes from "./routes/index";
 import userRoutes from "./routes/userRoutes";
@@ -12,9 +13,11 @@ dotenv.config();
 const app: Application = express();
 const corsOptions = {
   origin: "http://localhost:3000",
+  credentials: true,
 };
 
 app.use(cors(corsOptions));
+app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use(routes);

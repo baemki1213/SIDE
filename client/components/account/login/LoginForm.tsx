@@ -2,9 +2,9 @@ import { useRouter } from "next/router";
 import { ChangeEvent } from "react";
 import styled from "styled-components";
 
-import useEmailValidation from "@/hooks/account/register/formValidation/useEmailValidation";
-import { useLogin } from "@/hooks/account/login/useLogin";
-import usePasswordValidation from "@/hooks/account/register/formValidation/usePasswordValidation";
+import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
+import { useLogin } from "@/hooks/user/login/useLogin";
+import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";

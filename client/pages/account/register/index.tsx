@@ -1,14 +1,14 @@
 import { ChangeEvent, useState } from "react";
 import Link from "next/link";
 
-import useEmailValidation from "@/hooks/account/register/formValidation/useEmailValidation";
-import usePasswordValidation from "@/hooks/account/register/formValidation/usePasswordValidation";
-import useNicknameValidation from "@/hooks/account/register/formValidation/useNicknameValidation";
+import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
+import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
+import useNicknameValidation from "@/hooks/user/register/formValidation/useNicknameValidation";
 import {
   useEmailVerification,
   useNicknameVerification,
-} from "@/hooks/account/register/authentication";
-import { useSignUp } from "@/hooks/account/register/authentication/useSignUp";
+} from "@/hooks/user/register/authentication";
+import { useSignUp } from "@/hooks/user/register/authentication/useSignUp";
 
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
