@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 
 import useLatLng from "@/hooks/map/useLatLng";
 
+import FilterButton from "@/components/service/map/FilterButton";
+
 import * as S from "./styles";
 import { colors } from "@/styles/assets";
 
@@ -79,7 +81,12 @@ const Maps = () => {
     }
   }, [position.latitude, position.longitude, radius]);
 
-  return <S.MapContainer id="map"></S.MapContainer>;
+  return (
+    <>
+      <S.MapContainer id="map"></S.MapContainer>
+      <FilterButton />
+    </>
+  );
 };
 
 export default Maps;
