@@ -31,6 +31,7 @@ export const BottomSheet = styled.div`
   border-top-right-radius: 20px;
   animation: ${slideUp} 0.3s ease-out; // 슬라이드 업 애니메이션 적용
   z-index: 100;
+  padding: 30px 10px;
 `;
 
 // 닫기 버튼 스타일

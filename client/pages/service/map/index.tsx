@@ -84,7 +84,7 @@ const Maps = () => {
   return (
     <>
       <S.MapContainer id="map"></S.MapContainer>
-      <FilterButton />
+      <FilterButton radius={radius} setRadius={setRadius} />
     </>
   );
 };
