@@ -28,6 +28,35 @@ interface Props {
   whiteSpace?: "normal" | "nowrap";
 }
 
+export default function StyledText({
+  text,
+  fontSize = "base",
+  fontWeight = "medium",
+  fontColor = "mainColor",
+  numberOfLines,
+  width = "auto",
+  textDecoration = "none",
+  textAlign = "initial",
+  wordBreak = "normal",
+  whiteSpace = "normal",
+}: Props) {
+  return (
+    <Wrapper textAlign={textAlign} width={width}>
+      <Text
+        textDecoration={textDecoration}
+        numberOfLines={numberOfLines}
+        fontSize={fontSize}
+        fontColor={fontColor}
+        fontWeight={fontWeight}
+        wordBreak={wordBreak}
+        whiteSpace={whiteSpace}
+      >
+        {text}
+      </Text>
+    </Wrapper>
+  );
+}
+
 const Wrapper = styled.div<{
   width?: string;
   textAlign?: "left" | "right" | "center" | "justify" | "initial" | "inherit";
@@ -68,32 +97,3 @@ const Text = styled.p<{
   word-break: ${props => props.wordBreak};
   transition: all 0.3s ease;
 `;
-
-export default function StyledText({
-  text,
-  fontSize = "base",
-  fontWeight = "medium",
-  fontColor = "mainColor",
-  numberOfLines,
-  width = "auto",
-  textDecoration = "none",
-  textAlign = "initial",
-  wordBreak = "normal",
-  whiteSpace = "normal",
-}: Props) {
-  return (
-    <Wrapper textAlign={textAlign} width={width}>
-      <Text
-        textDecoration={textDecoration}
-        numberOfLines={numberOfLines}
-        fontSize={fontSize}
-        fontColor={fontColor}
-        fontWeight={fontWeight}
-        wordBreak={wordBreak}
-        whiteSpace={whiteSpace}
-      >
-        {text}
-      </Text>
-    </Wrapper>
-  );
-}
