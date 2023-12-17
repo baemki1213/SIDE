@@ -103,7 +103,3 @@ const Sidebar = ({ isLogin }: Props) => {
 };
 
 export default Sidebar;
-
-// { id: "service/ai-recommendation", icon: <FaRobot />, text: "AI 추천" },
-// { id: "service/food-worldcup", icon: <FaGlobe />, text: "맛집 월드컵" },
-// { id: "service/random", icon: <FaRandom />, text: "랜덤 추천" },
