@@ -5,17 +5,14 @@ import { createAddressString } from "../utils/service/createAddressString";
 
 import { Request } from "../types/Express";
 
-interface SearchQuery {
-  query: string;
-  latitude: number;
-  longitude: number;
-  distance: number;
-}
-
 const serviceController = {
   async fetchStoresInCircle(req: Request, res: Response) {
-    const { query, latitude, longitude, distance } = req.query;
+    const { query, latitude, longitude, distance, max_page } = req.query;
     const distanceNumber = Number(distance) as number;
+    const maxPage = parseInt(max_page as string, 10) || 1;
+    const pageSize = 8; // 페이지 당 최대 결과 수
+    const results = [];
+    let currentPage = 1;
 
     try {
       const geoResponse = await axios.get(
@@ -34,41 +31,38 @@ const serviceController = {
           },
         }
       );
-      console.log(geoResponse.data.results[0], "results!!");
+
       const addressString = createAddressString(geoResponse.data);
       const completeQuery = `${addressString} ${query}`;
 
-      const searchResponse = await axios.get(
-        "https://openapi.naver.com/v1/search/local.json",
-        {
-          params: {
-            query: completeQuery,
-            display: 5, // 한 번에 표시할 검색 결과 개수
-            start: 1, // 검색 시작 위치
-            sort: "random", // 검색 결과 정렬 방법
-          },
-          headers: {
-            "X-Naver-Client-Id":
-              process.env.NEXT_PUBLIC_NAVER_SEARCH_CLIENT_KEY,
-            "X-Naver-Client-Secret":
-              process.env.NEXT_PUBLIC_NAVER_SEARCH_SECRET_KEY,
-          },
-        }
-      );
-      const searchResults = searchResponse.data.items;
-      const katechBaseX = Number(longitude) * 10000000;
-      const katechBaseY = Number(latitude) * 10000000;
+      while (currentPage <= maxPage) {
+        const kakaoResponse = await axios.get(
+          "https://dapi.kakao.com/v2/local/search/keyword.json",
+          {
+            params: {
+              query: completeQuery,
+              x: longitude, // 기준 경도
+              y: latitude, // 기준 위도
+              page: currentPage,
+              size: pageSize,
+              radius: Math.min(distanceNumber, 20000), // 최대 반경 20km
+              sort: "accuracy",
+            },
+            headers: {
+              Authorization: `KakaoAK ${process.env.KAKAO_REST_API_KEY}`,
+            },
+          }
+        );
+        const pageResults = kakaoResponse.data.documents;
 
-      const filteredResults = searchResults.filter((item: any) => {
-        const itemX = Number(item.mapx);
-        const itemY = Number(item.mapy);
-        const itemDistance =
-          Math.sqrt(
-            Math.pow(itemX - katechBaseX, 2) + Math.pow(itemY - katechBaseY, 2)
-          ) / 100;
-        return itemDistance <= distanceNumber;
-      });
-      res.status(200).json(filteredResults);
+        if (pageResults.length === 0) {
+          break;
+        }
+
+        results.push(...pageResults);
+        currentPage++;
+      }
+      res.status(200).json(results.sort((a, b) => a.distance - b.distance));
     } catch (error) {
       res.status(500).json({ message: "서버 내부 오류" });
     }
