@@ -7,7 +7,6 @@ export const FilterContainer = styled.div`
 
 export const FilterWrapper = styled.div`
   display: flex;
-  display: flex;
   justify-content: flex-start;
   align-items: center;
   flex-wrap: wrap;

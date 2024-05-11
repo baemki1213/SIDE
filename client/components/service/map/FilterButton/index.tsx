@@ -33,7 +33,10 @@ const FilterButton = ({ filterInfo, setFilterInfo }: Props) => {
             setIsShowing={setIsBottomSheetOpen}
             toggleBottomSheet={toggleBottomSheet}
           >
-            <QueryFilter />
+            <QueryFilter
+              filterInfo={filterInfo}
+              setFilterInfo={setFilterInfo}
+            />
             <RadiusFilter
               filterInfo={filterInfo}
               setFilterInfo={setFilterInfo}
