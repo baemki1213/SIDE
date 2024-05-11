@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
+import * as S from "./styles";
 import StyledButton from "@/components/common/StyledButton";
 import StyledText from "@/components/common/StyledText";
 import Gap from "@/components/common/Gap";
@@ -20,15 +21,9 @@ const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
   };
 
   return (
-    <RadiusFilterContainer>
-      <Gap side={10} />
-      <StyledText
-        text="거리"
-        fontColor="pointColor"
-        fontWeight="bold"
-        fontSize="lg"
-      />
-      <RadiusFilterWrapper>
+    <S.FilterContainer>
+      <StyledText text="Distance" fontColor="black47" fontWeight="semiBold" />
+      <S.FilterWrapper>
         {radiusOptions.map((option, index) => (
           <StyledButton
             key={index}
@@ -41,24 +36,9 @@ const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
             opacity={filterInfo.radius === option ? 1 : 0.7}
           />
         ))}
-      </RadiusFilterWrapper>
-    </RadiusFilterContainer>
+      </S.FilterWrapper>
+    </S.FilterContainer>
   );
 };
 
 export default RadiusFilter;
-
-const RadiusFilterContainer = styled.div`
-  width: 100%;
-  height: 100%;
-`;
-
-const RadiusFilterWrapper = styled.div`
-  display: flex;
-  margin-top: 10px;
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 5px;
-`;
