@@ -20,7 +20,7 @@ const Maps: React.FC = () => {
   });
 
   const { position, setPosition, isLoading: isLatLngLoading } = useLatLng();
-  const { data } = useSearchAddress(
+  const { data, refetch } = useSearchAddress(
     filterInfo,
     position.latitude,
     position.longitude
@@ -119,14 +119,16 @@ const Maps: React.FC = () => {
   }, [isLatLngLoading, filterInfo.radius, position, setPosition]);
 
   useEffect(() => {
-    if (mapRef.current && position.latitude && position.longitude)
+    if (mapRef.current && position.latitude && position.longitude) {
       drawRadiusBoundary(
         mapRef.current,
         position.latitude,
         position.longitude,
         filterInfo.radius
       );
-  }, [position.latitude, position.longitude, filterInfo.radius]);
+      refetch();
+    }
+  }, [position.latitude, position.longitude, filterInfo.radius, refetch]);
 
   useEffect(() => {
     if (mapRef.current && data) {
@@ -141,7 +143,11 @@ const Maps: React.FC = () => {
       ) : (
         <S.MapContainer id="map" />
       )}
-      <FilterButton filterInfo={filterInfo} setFilterInfo={setFilterInfo} />
+      <FilterButton
+        filterInfo={filterInfo}
+        setFilterInfo={setFilterInfo}
+        fetchData={refetch}
+      />
     </>
   );
 };

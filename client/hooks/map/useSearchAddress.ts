@@ -12,6 +12,7 @@ const useSearchAddress = (
     queryKey: ["searchAddress", query, latitude, longitude, distance, category],
     queryFn: () =>
       fetchAddresses({ query, latitude, longitude, distance, category }),
+    enabled: false,
   });
 };
 
