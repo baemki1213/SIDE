@@ -2,14 +2,16 @@ import { useState, useEffect } from "react";
 
 const useLatLng = () => {
   const [isLoading, setIsLoading] = useState(true);
-  const [position, setPosition] = useState({
-    latitude: 37.4116304,
-    longitude: 127.1298606,
+  const [position, setPosition] = useState<{
+    latitude: number | null;
+    longitude: number | null;
+  }>({
+    latitude: null,
+    longitude: null,
   });
   const [error, setError] = useState("");
-
   const handleSuccess = (position: {
-    coords: { latitude: number; longitude: number };
+    coords: { latitude: number | null; longitude: number | null };
   }) => {
     setPosition({
       latitude: position.coords.latitude,

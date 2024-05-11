@@ -3,8 +3,8 @@ import { UseQueryResult, useQuery } from "@tanstack/react-query";
 
 const useSearchAddress = (
   query: string,
-  latitude: number,
-  longitude: number,
+  latitude: number | null,
+  longitude: number | null,
   distance: number
 ): UseQueryResult<any[], Error> => {
   return useQuery({
