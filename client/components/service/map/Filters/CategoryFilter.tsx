@@ -2,9 +2,9 @@ import { Dispatch, SetStateAction } from "react";
 
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
+import StyledButton from "@/components/common/StyledButton";
 
 import { FilterInfo } from "@/types/map";
-import StyledButton from "@/components/common/StyledButton";
 
 interface Props {
   filterInfo: FilterInfo;
