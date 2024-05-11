@@ -20,7 +20,9 @@ const FilterButton = ({ filterInfo, setFilterInfo, fetchData }: Props) => {
 
   const toggleBottomSheet = async () => {
     setIsBottomSheetOpen(!isBottomSheetOpen);
-    fetchData();
+    if (isBottomSheetOpen) {
+      fetchData();
+    }
   };
 
   return (

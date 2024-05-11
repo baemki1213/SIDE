@@ -116,7 +116,7 @@ const Maps: React.FC = () => {
         }
       });
     }
-  }, [isLatLngLoading, filterInfo.radius, position, setPosition]);
+  }, [isLatLngLoading, position, setPosition]);
 
   useEffect(() => {
     if (mapRef.current && position.latitude && position.longitude) {
