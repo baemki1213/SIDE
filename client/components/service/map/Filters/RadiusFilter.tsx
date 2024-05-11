@@ -1,20 +1,22 @@
+import { Dispatch, SetStateAction } from "react";
 import styled from "styled-components";
 
 import StyledButton from "@/components/common/StyledButton";
 import StyledText from "@/components/common/StyledText";
-import { Dispatch, SetStateAction } from "react";
 import Gap from "@/components/common/Gap";
 
+import { FilterInfo } from "@/types/map";
+
 interface Props {
-  radius: number;
-  setRadius: Dispatch<SetStateAction<number>>;
+  filterInfo: FilterInfo;
+  setFilterInfo: Dispatch<SetStateAction<FilterInfo>>;
 }
 
-const RadiusFilter = ({ radius, setRadius }: Props) => {
-  const radiusOptions = [250, 500, 1000, 1500, 2000, Infinity];
+const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
+  const radiusOptions = [250, 500, 1000, 1500, 2000, 99999999];
 
   const handleRadiusButtonClick = (radius: number) => {
-    setRadius(radius);
+    setFilterInfo(prev => ({ ...prev, radius }));
   };
 
   return (
@@ -30,11 +32,11 @@ const RadiusFilter = ({ radius, setRadius }: Props) => {
         {radiusOptions.map((option, index) => (
           <StyledButton
             key={index}
-            text={`${option === Infinity ? "무제한" : `${option}m`}`}
+            text={`${option === 99999999 ? "무제한" : `${option}m`}`}
             width="70px"
             borderRadius="30px"
             onClick={() => handleRadiusButtonClick(option)}
-            buttonType={radius === option ? "primary" : "secondary"}
+            buttonType={filterInfo.radius === option ? "primary" : "secondary"}
           />
         ))}
       </RadiusFilterWrapper>

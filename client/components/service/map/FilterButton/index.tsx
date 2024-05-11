@@ -5,12 +5,14 @@ import * as S from "./styles";
 import BottomSheet from "@/components/common/Layout/BottomSheet";
 import RadiusFilter from "../Filters/RadiusFilter";
 
+import { FilterInfo } from "@/types/map";
+
 interface Props {
-  radius: number;
-  setRadius: Dispatch<SetStateAction<number>>;
+  filterInfo: FilterInfo;
+  setFilterInfo: Dispatch<SetStateAction<FilterInfo>>;
 }
 
-const FilterButton = ({ radius, setRadius }: Props) => {
+const FilterButton = ({ filterInfo, setFilterInfo }: Props) => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
   const toggleBottomSheet = () => {
@@ -29,7 +31,10 @@ const FilterButton = ({ radius, setRadius }: Props) => {
             setIsShowing={setIsBottomSheetOpen}
             toggleBottomSheet={toggleBottomSheet}
           >
-            <RadiusFilter radius={radius} setRadius={setRadius} />
+            <RadiusFilter
+              filterInfo={filterInfo}
+              setFilterInfo={setFilterInfo}
+            />
           </BottomSheet>
         )}
       </S.FilterContainer>
