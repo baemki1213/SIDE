@@ -4,6 +4,7 @@ import styled from "styled-components";
 export const TextInputContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `;
 
 export const TextInputTextBox = styled.input<{
