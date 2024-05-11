@@ -1,7 +1,5 @@
 import { Dispatch, SetStateAction } from "react";
-// 지정된 키워드를 선택할 수 있음.
-// 한개만 선택할 수 있도록 함.
-// 혹은 직접 입력하도록.
+
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
 
