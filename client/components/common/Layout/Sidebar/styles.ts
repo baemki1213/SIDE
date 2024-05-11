@@ -34,12 +34,12 @@ export const SidebarFooter = styled.div`
 `;
 
 export const SidebarTrigger = styled.div`
-  width: 20px;
+  width: 10px;
   height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99;
+  z-index: 80;
 `;
 
 export const SidebarIcon = styled.header<{

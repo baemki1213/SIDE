@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 import routes from "./routes/index";
 import userRoutes from "./routes/userRoutes";
 import authRoutes from "./routes/authRoutes";
+import serviceRoutes from "./routes/serviceRoutes";
 
 dotenv.config();
 
@@ -23,6 +24,7 @@ app.use(bodyParser.json());
 app.use(routes);
 app.use("/api/user", userRoutes);
 app.use("/api/auth", authRoutes);
+app.use("/api/service", serviceRoutes);
 
 const PORT: string | number = process.env.SERVER_PORT || 3000;
 

@@ -61,8 +61,8 @@ export const buttonSizeTheme: IButtonSize = {
 
 export const buttonStyle: IButtonStyle = {
   primary: {
-    backgroundColor: "mainColor",
-    fontColor: "mainWhite",
+    backgroundColor: "pointColor",
+    fontColor: "mainColor",
     border: {
       borderWidth: "1px",
       borderStyle: "solid",
@@ -71,11 +71,11 @@ export const buttonStyle: IButtonStyle = {
   },
   secondary: {
     backgroundColor: "white",
-    fontColor: "mainColor",
+    fontColor: "pointColor",
     border: {
       borderWidth: "1px",
       borderStyle: "solid",
-      borderColor: "mainColor",
+      borderColor: "pointColor",
     },
   },
   ghost: {

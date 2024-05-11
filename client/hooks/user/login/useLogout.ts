@@ -16,7 +16,9 @@ export const useLogout = () => {
       queryClient.removeQueries(); // 모든 쿼리 데이터 초기화
     },
     onError: (error: any) => {
-      dispatch(showToast(error.response?.data.message || "로그아웃 실패"));
+      dispatch(clearLoginInfo());
+      dispatch(showToast("로그아웃 되었습니다."));
+      queryClient.removeQueries(); // 모든 쿼리 데이터 초기화
     },
   });
 
