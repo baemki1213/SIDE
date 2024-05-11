@@ -23,7 +23,7 @@ const QueryFilter = ({ filterInfo, setFilterInfo }: Props) => {
   return (
     <S.FilterContainer>
       <StyledText
-        text="Keyword(Optional)"
+        text="키워드 (선택사항)"
         fontColor="black47"
         fontWeight="semiBold"
         fontSize="lg"
@@ -31,10 +31,10 @@ const QueryFilter = ({ filterInfo, setFilterInfo }: Props) => {
       <S.FilterWrapper>
         <TextInput
           name="query"
-          infoText="찾고 싶은 장소의 키워드를 입력해 주세요."
+          infoText="찾고 싶은 장소를 알려주세요!"
           value={filterInfo.query}
           onChange={handleKeywordChange}
-          placeholder="예: 매운 음식, 중식, 한식, 호텔, 공부하기 좋은... 기타 등등"
+          placeholder="예: 한식, 떡볶이, 24시 운영, 호텔, 어린이 놀이터 등"
         />
       </S.FilterWrapper>
     </S.FilterContainer>

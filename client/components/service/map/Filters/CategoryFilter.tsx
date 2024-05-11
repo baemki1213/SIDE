@@ -12,6 +12,7 @@ interface Props {
 }
 
 const CategoryOptionsMap: { label: string; value: string }[] = [
+  { label: "무작위", value: "RANDOM" },
   { label: "카페", value: "CE7" },
   { label: "음식점", value: "FD6" },
   { label: "관광명소", value: "AT4" },
@@ -25,12 +26,12 @@ const CategoryFilter = ({ filterInfo, setFilterInfo }: Props) => {
 
   return (
     <S.FilterContainer>
-      <StyledText text="Category" fontColor="black47" fontWeight="semiBold" />
+      <StyledText text="카테고리" fontColor="black47" fontWeight="semiBold" />
       <S.FilterWrapper>
         {CategoryOptionsMap.map((categoryOption, index) => (
           <StyledButton
             key={index}
-            text={categoryOption.label}
+            text={categoryOption.label || "무작위"}
             width="80px"
             size="small"
             borderRadius="25px"
