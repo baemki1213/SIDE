@@ -7,27 +7,23 @@ import FilterButton from "@/components/service/map/FilterButton";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
 
 import { colors } from "@/styles/assets";
-
-interface FilterInfo {
-  query: string;
-  radius: number;
-}
+import { FilterInfo } from "@/types/map";
 
 const Maps: React.FC = () => {
   const mapRef = useRef<naver.maps.Map | null>(null);
   const currentCircleRef = useRef<naver.maps.Circle | null>(null);
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
   const [filterInfo, setFilterInfo] = useState<FilterInfo>({
-    query: "카페",
+    query: "",
+    category: "",
     radius: 500,
   });
 
   const { position, setPosition, isLoading: isLatLngLoading } = useLatLng();
   const { data } = useSearchAddress(
-    filterInfo.query,
+    filterInfo,
     position.latitude,
-    position.longitude,
-    filterInfo.radius
+    position.longitude
   );
 
   const addMarkersToMap = (map: naver.maps.Map, places: any[]) => {
@@ -90,7 +86,7 @@ const Maps: React.FC = () => {
     ) {
       const mapOptions = {
         center: new naver.maps.LatLng(position.latitude, position.longitude),
-        zoom: 17,
+        zoom: 16,
         zoomControl: true,
         zoomControlOptions: {
           position: naver.maps.Position.TOP_RIGHT,

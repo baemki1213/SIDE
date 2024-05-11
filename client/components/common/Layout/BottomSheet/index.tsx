@@ -27,7 +27,7 @@ const BottomSheet = ({
         <S.BottomSheetCloseButton onClick={toggleBottomSheet}>
           <FaTimes color={colors.black47} />
         </S.BottomSheetCloseButton>
-        {children}
+        <S.BottomSheetContentWrapper>{children}</S.BottomSheetContentWrapper>
       </S.BottomSheet>
     </>
   );

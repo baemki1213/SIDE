@@ -13,9 +13,9 @@ interface Props {
   setFilterInfo: Dispatch<SetStateAction<FilterInfo>>;
 }
 
-const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
-  const radiusOptions = [250, 500, 1000, 1500, 2000, 99999999];
+const radiusOptions = [250, 500, 1000, 1500, 2000, 99999999];
 
+const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
   const handleRadiusButtonClick = (radius: number) => {
     setFilterInfo(prev => ({ ...prev, radius }));
   };

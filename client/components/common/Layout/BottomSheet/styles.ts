@@ -44,3 +44,8 @@ export const BottomSheetCloseButton = styled.button`
   cursor: pointer;
   font-size: 24px; // 버튼 크기 조절
 `;
+
+export const BottomSheetContentWrapper = styled.div`
+  overflow-x: hidden;
+  overflow-y: auto;
+`;
