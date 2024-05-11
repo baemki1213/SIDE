@@ -7,7 +7,9 @@ import { Request } from "../types/Express";
 
 const serviceController = {
   async fetchStoresInCircle(req: Request, res: Response) {
-    const { query, latitude, longitude, distance, max_page } = req.query;
+    const { query, latitude, longitude, distance, max_page, category } =
+      req.query;
+
     const distanceNumber = Number(distance) as number;
     const maxPage = parseInt(max_page as string, 10) || 1;
     const pageSize = 8; // 페이지 당 최대 결과 수
@@ -34,19 +36,19 @@ const serviceController = {
 
       const addressString = createAddressString(geoResponse.data);
       const completeQuery = `${addressString} ${query}`;
-
       while (currentPage <= maxPage) {
         const kakaoResponse = await axios.get(
           "https://dapi.kakao.com/v2/local/search/keyword.json",
           {
             params: {
-              query: completeQuery,
               x: longitude, // 기준 경도
               y: latitude, // 기준 위도
               page: currentPage,
               size: pageSize,
               radius: Math.min(distanceNumber, 20000), // 최대 반경 20km
               sort: "accuracy",
+              query: completeQuery,
+              ...(category !== "RANDOM" && { category_group_code: category }),
             },
             headers: {
               Authorization: `KakaoAK ${process.env.KAKAO_REST_API_KEY}`,

@@ -12,13 +12,17 @@ import { FilterInfo } from "@/types/map";
 interface Props {
   filterInfo: FilterInfo;
   setFilterInfo: Dispatch<SetStateAction<FilterInfo>>;
+  fetchData: () => void;
 }
 
-const FilterButton = ({ filterInfo, setFilterInfo }: Props) => {
+const FilterButton = ({ filterInfo, setFilterInfo, fetchData }: Props) => {
   const [isBottomSheetOpen, setIsBottomSheetOpen] = useState(false);
 
-  const toggleBottomSheet = () => {
+  const toggleBottomSheet = async () => {
     setIsBottomSheetOpen(!isBottomSheetOpen);
+    if (isBottomSheetOpen) {
+      fetchData();
+    }
   };
 
   return (
@@ -33,7 +37,10 @@ const FilterButton = ({ filterInfo, setFilterInfo }: Props) => {
             setIsShowing={setIsBottomSheetOpen}
             toggleBottomSheet={toggleBottomSheet}
           >
-            <QueryFilter />
+            <QueryFilter
+              filterInfo={filterInfo}
+              setFilterInfo={setFilterInfo}
+            />
             <RadiusFilter
               filterInfo={filterInfo}
               setFilterInfo={setFilterInfo}
