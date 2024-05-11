@@ -3,7 +3,9 @@ import { FaFilter } from "react-icons/fa";
 
 import * as S from "./styles";
 import BottomSheet from "@/components/common/Layout/BottomSheet";
+import QueryFilter from "../Filters/QueryFilter";
 import RadiusFilter from "../Filters/RadiusFilter";
+import CategoryFilter from "../Filters/CategoryFilter";
 
 import { FilterInfo } from "@/types/map";
 
@@ -31,7 +33,12 @@ const FilterButton = ({ filterInfo, setFilterInfo }: Props) => {
             setIsShowing={setIsBottomSheetOpen}
             toggleBottomSheet={toggleBottomSheet}
           >
+            <QueryFilter />
             <RadiusFilter
+              filterInfo={filterInfo}
+              setFilterInfo={setFilterInfo}
+            />
+            <CategoryFilter
               filterInfo={filterInfo}
               setFilterInfo={setFilterInfo}
             />
