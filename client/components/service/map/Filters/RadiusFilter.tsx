@@ -32,11 +32,13 @@ const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
         {radiusOptions.map((option, index) => (
           <StyledButton
             key={index}
-            text={`${option === 99999999 ? "무제한" : `${option}m`}`}
-            width="70px"
-            borderRadius="30px"
+            text={`${option === 99999999 ? "최대" : `${option}m`}`}
+            width="80px"
+            size="small"
+            borderRadius="25px"
             onClick={() => handleRadiusButtonClick(option)}
             buttonType={filterInfo.radius === option ? "primary" : "secondary"}
+            opacity={filterInfo.radius === option ? 1 : 0.7}
           />
         ))}
       </RadiusFilterWrapper>
