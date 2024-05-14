@@ -48,7 +48,7 @@ const serviceController = {
               radius: Math.min(distanceNumber, 20000), // 최대 반경 20km
               sort: "accuracy",
               query: completeQuery,
-              ...(category !== "RANDOM" && { category_group_code: category }),
+              ...(category !== "TOTAL" && { category_group_code: category }),
             },
             headers: {
               Authorization: `KakaoAK ${process.env.KAKAO_REST_API_KEY}`,
