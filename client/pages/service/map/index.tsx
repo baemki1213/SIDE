@@ -1,10 +1,16 @@
+import { createRoot } from "react-dom/client";
 import React, { useEffect, useRef, useState } from "react";
+
 import useLatLng from "@/hooks/map/useLatLng";
 import useSearchAddress from "@/hooks/map/useSearchAddress";
 
 import * as S from "./styles";
 import FilterButton from "@/components/service/map/FilterButton";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
+import Modal from "@/components/common/Modal";
+import CenterMarkerBattleButton from "@/components/service/map/CenterMarkerBattleButton"; // 수정된 부분
+import StyledTextButton from "@/components/common/StyledTextButton";
+import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
 
 import { colors } from "@/styles/assets";
 import { FilterInfo } from "@/types/map";
@@ -12,7 +18,11 @@ import { FilterInfo } from "@/types/map";
 const Maps: React.FC = () => {
   const mapRef = useRef<naver.maps.Map | null>(null);
   const currentCircleRef = useRef<naver.maps.Circle | null>(null);
+  const centerMarkerRef = useRef<naver.maps.Marker | null>(null);
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
+  const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null); // 추가된 부분
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterInfo, setFilterInfo] = useState<FilterInfo>({
     query: "",
     category: "",
@@ -20,7 +30,7 @@ const Maps: React.FC = () => {
   });
 
   const { position, setPosition, isLoading: isLatLngLoading } = useLatLng();
-  const { data, refetch } = useSearchAddress(
+  const { data: searchData, refetch } = useSearchAddress(
     filterInfo,
     position.latitude,
     position.longitude
@@ -36,16 +46,28 @@ const Maps: React.FC = () => {
         title: place.place_name,
       });
 
-      const infoWindow = new naver.maps.InfoWindow({
-        content: `<div style="padding:10px;">${place.place_name}</div>`,
-      });
+      const infoWindowContent = (
+        <InfoWindowContent
+          place_name={place.place_name}
+          road_address_name={place.road_address_name}
+          phone={place.phone}
+          place_url={place.place_url}
+        />
+      );
 
-      naver.maps.Event.addListener(marker, "click", () => {
-        if (infoWindow.getMap()) {
-          infoWindow.close();
-        } else {
-          infoWindow.open(map, marker);
+      naver.maps.Event.addListener(marker, "click", async () => {
+        if (infoWindowRef.current) {
+          infoWindowRef.current.close();
         }
+        const contentDiv = document.createElement("div");
+        const root = createRoot(contentDiv);
+        root.render(infoWindowContent);
+
+        infoWindowRef.current = new naver.maps.InfoWindow({
+          content: contentDiv,
+        });
+
+        infoWindowRef.current.open(map, marker);
       });
 
       markersRef.current.push(marker);
@@ -59,7 +81,11 @@ const Maps: React.FC = () => {
     radius: number
   ) => {
     if (currentCircleRef.current) {
-      currentCircleRef.current.setMap(null);
+      try {
+        currentCircleRef.current.setMap(null);
+      } catch (e) {
+        console.error("Failed to remove circle:", e);
+      }
     }
 
     const circle = new naver.maps.Circle({
@@ -105,18 +131,32 @@ const Maps: React.FC = () => {
           anchor: new naver.maps.Point(12, 24),
         },
       });
+      centerMarkerRef.current = centerMarker;
 
       naver.maps.Event.addListener(mapRef.current, "click", (e: any) => {
         const newLat = e.coord.lat();
         const newLng = e.coord.lng();
-        // Avoid unnecessary updates if the position has not changed
+
         if (newLat !== position.latitude || newLng !== position.longitude) {
           setPosition({ latitude: newLat, longitude: newLng });
           centerMarker.setPosition(e.coord);
         }
       });
+
+      drawRadiusBoundary(
+        mapRef.current,
+        position.latitude,
+        position.longitude,
+        filterInfo.radius
+      );
     }
-  }, [isLatLngLoading, position, setPosition]);
+  }, [
+    isLatLngLoading,
+    position.latitude,
+    position.longitude,
+    filterInfo.radius,
+    setPosition,
+  ]);
 
   useEffect(() => {
     if (mapRef.current && position.latitude && position.longitude) {
@@ -131,10 +171,35 @@ const Maps: React.FC = () => {
   }, [position.latitude, position.longitude, filterInfo.radius, refetch]);
 
   useEffect(() => {
-    if (mapRef.current && data) {
-      addMarkersToMap(mapRef.current, data);
+    if (mapRef.current && searchData) {
+      addMarkersToMap(mapRef.current, searchData);
     }
-  }, [data]);
+  }, [searchData]);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      const handleResize = () => {
+        mapRef.current?.setSize(
+          new naver.maps.Size(window.innerWidth, window.innerHeight)
+        );
+      };
+
+      handleResize(); // 초기 사이즈 설정
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, [isModalOpen]);
+
+  const handleHide = () => {
+    setIsModalOpen(false);
+    if (mapRef.current) {
+      mapRef.current.setSize(
+        new naver.maps.Size(window.innerWidth, window.innerHeight)
+      );
+    }
+  };
 
   return (
     <>
@@ -143,6 +208,28 @@ const Maps: React.FC = () => {
       ) : (
         <S.MapContainer id="map" />
       )}
+      <Modal isShowing={isModalOpen} hide={handleHide}>
+        <>Modal</>
+      </Modal>
+
+      {searchData && mapRef.current && centerMarkerRef.current && (
+        <CenterMarkerBattleButton
+          map={mapRef.current}
+          position={centerMarkerRef.current.getPosition()}
+          onClick={() => setIsModalOpen(true)}
+        >
+          <StyledTextButton
+            buttonType="button"
+            styleProps={{
+              text: "대진표 만들기",
+              fontColor: "pointColor",
+              fontSize: "sm",
+            }}
+            handleClick={() => setIsModalOpen(true)}
+          />
+        </CenterMarkerBattleButton>
+      )}
+
       <FilterButton
         filterInfo={filterInfo}
         setFilterInfo={setFilterInfo}
