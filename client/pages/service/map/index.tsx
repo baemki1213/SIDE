@@ -35,43 +35,10 @@ const Maps: React.FC = () => {
     position.latitude,
     position.longitude
   );
-
-  const addMarkersToMap = (map: naver.maps.Map, places: any[]) => {
-    markersRef.current.forEach(marker => marker.setMap(null));
-    markersRef.current = [];
-    places.forEach(place => {
-      const marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(place.y, place.x),
-        map: map,
-        title: place.place_name,
-      });
-
-      const infoWindowContent = (
-        <InfoWindowContent
-          place_name={place.place_name}
-          road_address_name={place.road_address_name}
-          phone={place.phone}
-          place_url={place.place_url}
-        />
-      );
-
-      naver.maps.Event.addListener(marker, "click", async () => {
-        if (infoWindowRef.current) {
-          infoWindowRef.current.close();
-        }
-        const contentDiv = document.createElement("div");
-        const root = createRoot(contentDiv);
-        root.render(infoWindowContent);
-
-        infoWindowRef.current = new naver.maps.InfoWindow({
-          content: contentDiv,
-        });
-
-        infoWindowRef.current.open(map, marker);
-      });
-
-      markersRef.current.push(marker);
-    });
+  const closeInfoWindow = () => {
+    if (infoWindowRef.current) {
+      infoWindowRef.current.close();
+    }
   };
 
   const drawRadiusBoundary = (
@@ -134,6 +101,9 @@ const Maps: React.FC = () => {
       centerMarkerRef.current = centerMarker;
 
       naver.maps.Event.addListener(mapRef.current, "click", (e: any) => {
+        if (infoWindowRef.current) {
+          closeInfoWindow();
+        }
         const newLat = e.coord.lat();
         const newLng = e.coord.lng();
 
@@ -171,6 +141,47 @@ const Maps: React.FC = () => {
   }, [position.latitude, position.longitude, filterInfo.radius, refetch]);
 
   useEffect(() => {
+    const addMarkersToMap = (map: naver.maps.Map, places: any[]) => {
+      markersRef.current.forEach(marker => marker.setMap(null));
+      markersRef.current = [];
+      places.forEach(place => {
+        const marker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(place.y, place.x),
+          map: map,
+          title: place.place_name,
+        });
+
+        const infoWindowContent = (
+          <InfoWindowContent
+            place_name={place.place_name}
+            road_address_name={place.road_address_name}
+            phone={place.phone}
+            place_url={place.place_url}
+            closeInfoIndow={closeInfoWindow}
+          />
+        );
+
+        naver.maps.Event.addListener(marker, "click", async () => {
+          if (infoWindowRef.current) {
+            closeInfoWindow();
+          }
+          const contentDiv = document.createElement("div");
+          const root = createRoot(contentDiv);
+          root.render(infoWindowContent);
+
+          infoWindowRef.current = new naver.maps.InfoWindow({
+            content: contentDiv,
+            disableAnchor: true,
+            borderWidth: 0,
+          });
+
+          infoWindowRef.current.open(map, marker);
+        });
+
+        markersRef.current.push(marker);
+      });
+    };
+
     if (mapRef.current && searchData) {
       addMarkersToMap(mapRef.current, searchData);
     }
