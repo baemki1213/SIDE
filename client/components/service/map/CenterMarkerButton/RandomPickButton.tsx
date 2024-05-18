@@ -1,7 +1,12 @@
-import StyledButton from "@/components/common/StyledButton";
 import { useState } from "react";
 
-const RandomPickButton = () => {
+import StyledButton from "@/components/common/StyledButton";
+
+interface Props {
+  items: any[];
+}
+
+const RandomPickButton = ({ items }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (

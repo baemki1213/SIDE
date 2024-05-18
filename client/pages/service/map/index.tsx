@@ -14,7 +14,8 @@ import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButt
 import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
 
 import { colors } from "@/styles/assets";
-import { FilterInfo } from "@/types/map";
+import { FilterInfo, PlaceInfo } from "@/types/map";
+import { getLastCategory } from "@/utils/string";
 
 const Maps: React.FC = () => {
   const mapRef = useRef<naver.maps.Map | null>(null);
@@ -68,19 +69,20 @@ const Maps: React.FC = () => {
   );
 
   const addMarkersToMap = useCallback(
-    (map: naver.maps.Map, places: any[]) => {
+    (map: naver.maps.Map, places: PlaceInfo[]) => {
       markersRef.current.forEach(marker => marker.setMap(null));
       markersRef.current = [];
 
       places.forEach(place => {
         const marker = new naver.maps.Marker({
-          position: new naver.maps.LatLng(place.y, place.x),
+          position: new naver.maps.LatLng(Number(place.y), Number(place.x)),
           map,
           title: place.place_name,
         });
 
         const infoWindowContent = (
           <InfoWindowContent
+            categoryName={getLastCategory(place.category_name)}
             place_name={place.place_name}
             road_address_name={place.road_address_name}
             phone={place.phone}
@@ -258,7 +260,7 @@ const Maps: React.FC = () => {
           position={centerMarkerRef.current.getPosition()}
         >
           <BattleButton />
-          <RandomPickButton />
+          <RandomPickButton items={searchData} />
         </CenterMarkerButton>
       )}
       <CurrentLocationButton
