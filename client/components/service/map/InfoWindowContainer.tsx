@@ -8,6 +8,7 @@ import Gap from "@/components/common/Gap";
 
 interface InfoWindowContentProps {
   place_name: string;
+  categoryName: string;
   road_address_name: string;
   phone?: string;
   place_url?: string;
@@ -17,6 +18,7 @@ interface InfoWindowContentProps {
 const InfoWindowContent: React.FC<InfoWindowContentProps> = ({
   place_name,
   road_address_name,
+  categoryName,
   phone,
   place_url,
   closeInfoWindow,
@@ -26,12 +28,19 @@ const InfoWindowContent: React.FC<InfoWindowContentProps> = ({
       <StyledText text={place_name} fontWeight="bold" fontColor="black47" />
       <Gap side={5} />
       <StyledText
+        text={categoryName}
+        fontSize="xs"
+        fontColor="black47"
+        fontWeight="regular"
+      />
+      <Gap side={5} />
+      <StyledText
         text={road_address_name}
         fontSize="xs"
         fontColor="gray130"
         fontWeight="regular"
       />
-      <StyledText text={phone} fontColor="black47" fontSize="sm" />
+      <StyledText text={phone} fontSize="xs" fontColor="gray130" />
       <Gap side={5} />
       {place_url && (
         <Link href={place_url} target="_blank" rel="noopener noreferrer">
