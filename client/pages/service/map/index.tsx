@@ -16,8 +16,10 @@ import RandomPickButton from "@/components/service/map/CenterMarkerButton/Random
 import { colors } from "@/styles/assets";
 import { FilterInfo, PlaceInfo } from "@/types/map";
 import { getLastCategory } from "@/utils/string";
+import { useAppDispatch } from "@/hooks/reduxHook";
 
 const Maps: React.FC = () => {
+  const dispatch = useAppDispatch();
   const mapRef = useRef<naver.maps.Map | null>(null);
   const currentCircleRef = useRef<naver.maps.Circle | null>(null);
   const centerMarkerRef = useRef<naver.maps.Marker | null>(null);
@@ -259,7 +261,7 @@ const Maps: React.FC = () => {
           position={centerMarkerRef.current.getPosition()}
         >
           <BattleButton />
-          <RandomPickButton items={searchData} />
+          <RandomPickButton dispatch={dispatch} items={searchData} />
         </CenterMarkerButton>
       )}
       <CurrentLocationButton
