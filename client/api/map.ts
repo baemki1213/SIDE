@@ -14,6 +14,11 @@ interface SaveSelectionParams {
   place: PlaceInfo;
 }
 
+interface FetchUserPlacesParams {
+  userId: number;
+  page: number;
+}
+
 export const fetchAddresses = async (params: FetchAddressesParams) => {
   const { query, latitude, longitude, distance, category } = params;
   if (!latitude || !longitude || !category) return null;
@@ -34,6 +39,22 @@ export const saveSelection = async (
       method: "post",
       url: `/service/map/save-place-and-user`,
       data,
+    },
+    token,
+    dispatch
+  );
+};
+
+export const fetchUserPlaces = async (
+  { userId, page }: FetchUserPlacesParams,
+  token: string,
+  dispatch: any
+) => {
+  return await requestWithAuth(
+    {
+      method: "get",
+      url: `/service/map/userPlaces/${userId}?page=${page}`,
+      data: {},
     },
     token,
     dispatch
