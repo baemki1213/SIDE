@@ -20,8 +20,9 @@ export const ModalContainer = styled.div`
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  width: 320px;
-  height: 100px;
+  margin: 0 20px;
+  min-width: 300px;
+  min-height: 100px;
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
