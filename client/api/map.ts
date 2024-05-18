@@ -1,5 +1,5 @@
 import { PlaceInfo } from "@/types/map";
-import { requestWithCookie } from "@/utils/Axios-utils";
+import { requestWithAuth, requestWithCookie } from "@/utils/Axios-utils";
 
 interface FetchAddressesParams {
   query: string;
@@ -23,11 +23,19 @@ export const fetchAddresses = async (params: FetchAddressesParams) => {
   });
 };
 
-export const saveSelection = async (data: SaveSelectionParams) => {
+export const saveSelection = async (
+  data: SaveSelectionParams,
+  token: string,
+  dispatch: any
+) => {
   if (!data) return null;
-  return await requestWithCookie({
-    method: "post",
-    url: `/service/map/save-place-and-user`,
-    data,
-  });
+  return await requestWithAuth(
+    {
+      method: "post",
+      url: `/service/map/save-place-and-user`,
+      data,
+    },
+    token,
+    dispatch
+  );
 };

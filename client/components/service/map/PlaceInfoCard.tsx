@@ -1,17 +1,17 @@
 import styled from "styled-components";
 
 import { getLastCategory } from "@/utils/string";
+import useSaveSelection from "@/hooks/map/useSaveSelection";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
 import Gap from "@/components/common/Gap";
 import StyledText from "@/components/common/StyledText";
+import StyledButton from "@/components/common/StyledButton";
 
 import { colors } from "@/styles/assets";
 import { PlaceInfo } from "@/types/map";
-import StyledButton from "@/components/common/StyledButton";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 import { closeModal, openModal } from "@/store/modalSlice";
 import { selectAuthState } from "@/store/authSlice";
-import useSaveSelection from "@/hooks/map/useSaveSelection";
 import { showToast } from "@/store/toastSlice";
 
 interface Props {
@@ -19,7 +19,8 @@ interface Props {
 }
 
 const PlaceInfoCard = ({ place }: Props) => {
-  const { userInfo } = useAppSelector(selectAuthState);
+  const { userInfo, access_token } = useAppSelector(selectAuthState);
+  const token = access_token;
   const userId = userInfo.id;
   const dispatch = useAppDispatch();
   const handleSuccess = () => {
@@ -47,6 +48,8 @@ const PlaceInfoCard = ({ place }: Props) => {
   const { mutate: saveSelection } = useSaveSelection({
     userId,
     place,
+    token,
+    dispatch,
     onSuccess: handleSuccess,
     onError: handleError,
   });

@@ -6,17 +6,19 @@ import { saveSelection } from "@/api/map";
 interface Props {
   userId: number;
   place: PlaceInfo;
+  token: string;
+  dispatch: any;
   onSuccess: () => void;
   onError: (error: Error) => void;
 }
 
 const useSaveSelection = (
-  { userId, place }: Props,
+  { userId, place, token, dispatch }: Props,
   onSuccess?: () => void,
   onError?: (error: Error) => void
 ): UseMutationResult<any, Error, { userId: number; place: PlaceInfo }> => {
   return useMutation<any, Error, { userId: number; place: PlaceInfo }>({
-    mutationFn: () => saveSelection({ userId, place }),
+    mutationFn: () => saveSelection({ userId, place }, token, dispatch),
     onSuccess,
     onError,
   });
