@@ -12,7 +12,12 @@ interface SignUpError {
   };
 }
 
-export const useSignUp = (setIsModalOpen: (value: boolean) => void) => {
+interface Props {
+  onSuccess: () => void;
+  onError: (error: SignUpError) => void;
+}
+
+export const useSignUp = ({ onSuccess, onError }: Props) => {
   const {
     mutate: createUserMutate,
     isLoading,
@@ -26,9 +31,8 @@ export const useSignUp = (setIsModalOpen: (value: boolean) => void) => {
     { email: string; password: string; nickname: string }
   >({
     mutationFn: createUser,
-    onSuccess: () => {
-      setIsModalOpen(true);
-    },
+    onSuccess,
+    onError,
   });
 
   return { createUserMutate, isLoading, isSuccess, isError, error, reset };
