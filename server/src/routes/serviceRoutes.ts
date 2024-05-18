@@ -6,6 +6,6 @@ const serviceRoutes: Router = express.Router();
 
 serviceRoutes.get("/map/circle", serviceController.fetchStoresInCircle);
 serviceRoutes.post("/map/save-place-and-user", serviceController.saveSelection);
-serviceRoutes.get("/userPlaces/:userId", serviceController.getUserPlaces);
+serviceRoutes.get("/map/userPlaces/:userId", serviceController.getUserPlaces);
 
 export default serviceRoutes;
