@@ -8,10 +8,10 @@ import * as S from "./styles";
 import FilterButton from "@/components/service/map/FilterButton";
 import CurrentLocationButton from "@/components/service/map/CurrentLocationButton";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
-import Modal from "@/components/common/Modal";
-import CenterMarkerBattleButton from "@/components/service/map/CenterMarkerBattleButton"; // 수정된 부분
-import StyledTextButton from "@/components/common/StyledTextButton";
+import CenterMarkerButton from "@/components/service/map/CenterMarkerButton";
 import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
+import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
+import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
 
 import { colors } from "@/styles/assets";
 import { FilterInfo } from "@/types/map";
@@ -244,15 +244,6 @@ const Maps: React.FC = () => {
     }
   }, [isModalOpen]);
 
-  const handleHide = () => {
-    setIsModalOpen(false);
-    if (mapRef.current) {
-      mapRef.current.setSize(
-        new naver.maps.Size(window.innerWidth, window.innerHeight)
-      );
-    }
-  };
-
   return (
     <>
       {isLatLngLoading ? (
@@ -260,26 +251,15 @@ const Maps: React.FC = () => {
       ) : (
         <S.MapContainer id="map" />
       )}
-      <Modal isShowing={isModalOpen} hide={handleHide}>
-        <>Modal</>
-      </Modal>
 
       {searchData && mapRef.current && centerMarkerRef.current && (
-        <CenterMarkerBattleButton
+        <CenterMarkerButton
           map={mapRef.current}
           position={centerMarkerRef.current.getPosition()}
-          onClick={() => setIsModalOpen(true)}
         >
-          <StyledTextButton
-            buttonType="button"
-            styleProps={{
-              text: "대진표 만들기",
-              fontColor: "pointColor",
-              fontSize: "sm",
-            }}
-            handleClick={() => setIsModalOpen(true)}
-          />
-        </CenterMarkerBattleButton>
+          <BattleButton />
+          <RandomPickButton />
+        </CenterMarkerButton>
       )}
       <CurrentLocationButton
         handleCurrentLocationClick={handleCurrentLocationClick}
