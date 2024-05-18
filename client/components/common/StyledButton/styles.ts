@@ -42,7 +42,7 @@ export const Container = styled.button<{
   }
 
   &:active {
-    box-shadow: 0 4px ${({ theme }) => theme.colors.grayEd};
+    box-shadow: 0 4px ${colors.grayEd};
     transform: translateY(4px);
   }
 `;
