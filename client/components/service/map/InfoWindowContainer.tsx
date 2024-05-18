@@ -11,7 +11,7 @@ interface InfoWindowContentProps {
   road_address_name: string;
   phone?: string;
   place_url?: string;
-  closeInfoIndow: () => void;
+  closeInfoWindow: () => void;
 }
 
 const InfoWindowContent: React.FC<InfoWindowContentProps> = ({
@@ -19,10 +19,10 @@ const InfoWindowContent: React.FC<InfoWindowContentProps> = ({
   road_address_name,
   phone,
   place_url,
-  closeInfoIndow,
+  closeInfoWindow,
 }) => {
   return (
-    <InfoWindowContainer onClick={closeInfoIndow}>
+    <InfoWindowContainer onClick={closeInfoWindow}>
       <StyledText text={place_name} fontWeight="bold" fontColor="black47" />
       <Gap side={5} />
       <StyledText
