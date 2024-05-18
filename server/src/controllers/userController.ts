@@ -149,7 +149,7 @@ const userController = {
       );
 
       if (isMatch) {
-        const { email, nickname, created_at, profile_image } = user;
+        const { id, email, nickname, created_at, profile_image } = user;
         const accessToken = await createAccessToken(user.id);
         const refreshToken = await createAndSaveRefreshToken(user.id);
 
@@ -161,7 +161,7 @@ const userController = {
         });
         return res.json({
           message: "Login successful",
-          user: { email, nickname, profile_image, created_at },
+          user: { id, email, nickname, profile_image, created_at },
           access_token: accessToken,
         });
       } else {
