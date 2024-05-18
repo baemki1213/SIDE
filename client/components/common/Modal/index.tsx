@@ -1,47 +1,24 @@
 import React, { FC } from "react";
 import * as S from "./styles";
-import StyledButton from "../StyledButton";
 
-interface IProps {
-  isShowing: boolean;
-  hide: () => void;
-  children: React.ReactNode;
-  closeHandler?: () => void;
-  confirmHandler?: () => void;
-}
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
+import { closeModal, selectModalState } from "@/store/modalSlice";
 
-const Modal: FC<IProps> = ({
-  isShowing,
-  hide,
-  children,
-  closeHandler,
-  confirmHandler,
-}: IProps) => {
-  if (!isShowing) return null;
+const Modal: FC = () => {
+  const dispatch = useAppDispatch();
+  const { isModalOpen, children } = useAppSelector(selectModalState);
+
+  const handleClose = () => {
+    dispatch(closeModal());
+  };
+
+  if (!isModalOpen) return null;
   else
     return (
-      <S.ModalBackdrop isShowing={isShowing} onClick={hide}>
+      <S.ModalBackdrop isShowing={isModalOpen} onClick={handleClose}>
         <S.ModalContainer onClick={e => e.stopPropagation()}>
-          <S.CloseButton onClick={hide}>&times;</S.CloseButton>
+          <S.CloseButton onClick={handleClose}>&times;</S.CloseButton>
           {children}
-          <S.ModalFooter>
-            {closeHandler && (
-              <StyledButton
-                size="small"
-                buttonType="secondary"
-                onClick={closeHandler}
-                text="취소"
-              />
-            )}
-            {confirmHandler && (
-              <StyledButton
-                size="small"
-                buttonType="primary"
-                onClick={confirmHandler}
-                text="확인"
-              />
-            )}
-          </S.ModalFooter>
         </S.ModalContainer>
       </S.ModalBackdrop>
     );

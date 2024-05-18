@@ -24,7 +24,6 @@ const Maps: React.FC = () => {
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
   const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null); // 추가된 부분
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [filterInfo, setFilterInfo] = useState<FilterInfo>({
     query: "",
     category: "",
@@ -244,7 +243,7 @@ const Maps: React.FC = () => {
         window.removeEventListener("resize", handleResize);
       };
     }
-  }, [isModalOpen]);
+  }, []);
 
   return (
     <>
