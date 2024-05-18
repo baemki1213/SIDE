@@ -8,36 +8,52 @@ import StyledText from "@/components/common/StyledText";
 import { colors } from "@/styles/assets";
 import { PlaceInfo } from "@/types/map";
 import StyledButton from "@/components/common/StyledButton";
-import { useAppDispatch } from "@/hooks/reduxHook";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 import { closeModal, openModal } from "@/store/modalSlice";
+import { selectAuthState } from "@/store/authSlice";
+import useSaveSelection from "@/hooks/map/useSaveSelection";
+import { showToast } from "@/store/toastSlice";
 
 interface Props {
   place: PlaceInfo;
 }
 
 const PlaceInfoCard = ({ place }: Props) => {
+  const { userInfo } = useAppSelector(selectAuthState);
+  const userId = userInfo.id;
   const dispatch = useAppDispatch();
+  const handleSuccess = () => {
+    dispatch(
+      openModal(
+        <>
+          <StyledText
+            text="✅ 탁월한 선택입니다!"
+            fontColor="black47"
+            fontWeight="semiBold"
+          />
+          <StyledText
+            text="선택한 장소들은 나의 기록에서 확인할 수 있어요!"
+            fontColor="black47"
+            fontWeight="semiBold"
+          />
+        </>
+      )
+    );
+  };
+  const handleError = (error: any) => {
+    dispatch(showToast(error.response.data.message));
+  };
+
+  const { mutate: saveSelection } = useSaveSelection({
+    userId,
+    place,
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
 
   const handleSelectClick = () => {
     dispatch(closeModal());
-    setTimeout(() => {
-      dispatch(
-        openModal(
-          <>
-            <StyledText
-              text="✅ 탁월한 선택입니다!"
-              fontColor="black47"
-              fontWeight="semiBold"
-            />
-            <StyledText
-              text="선택한 장소들은 나의 기록에서 확인할 수 있어요!"
-              fontColor="black47"
-              fontWeight="semiBold"
-            />
-          </>
-        )
-      );
-    }, 200);
+    saveSelection({ userId, place });
   };
 
   return (

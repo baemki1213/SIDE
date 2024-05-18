@@ -1,3 +1,4 @@
+import { PlaceInfo } from "@/types/map";
 import { requestWithCookie } from "@/utils/Axios-utils";
 
 interface FetchAddressesParams {
@@ -8,11 +9,25 @@ interface FetchAddressesParams {
   category: string;
 }
 
+interface SaveSelectionParams {
+  userId: number;
+  place: PlaceInfo;
+}
+
 export const fetchAddresses = async (params: FetchAddressesParams) => {
   const { query, latitude, longitude, distance, category } = params;
   if (!latitude || !longitude || !category) return null;
   return await requestWithCookie({
     method: "get",
     url: `/service/map/circle?latitude=${latitude}&longitude=${longitude}&distance=${distance}&query=${query}&category=${category}&max_page=4`,
+  });
+};
+
+export const saveSelection = async (data: SaveSelectionParams) => {
+  if (!data) return null;
+  return await requestWithCookie({
+    method: "post",
+    url: `/service/map/save-place-and-user`,
+    data,
   });
 };
