@@ -8,8 +8,6 @@ interface Props {
   place: PlaceInfo;
   token: string;
   dispatch: any;
-  onSuccess: () => void;
-  onError: (error: Error) => void;
 }
 
 const useSaveSelection = (
@@ -19,8 +17,12 @@ const useSaveSelection = (
 ): UseMutationResult<any, Error, { userId: number; place: PlaceInfo }> => {
   return useMutation<any, Error, { userId: number; place: PlaceInfo }>({
     mutationFn: () => saveSelection({ userId, place }, token, dispatch),
-    onSuccess,
-    onError,
+    onSuccess: () => {
+      if (onSuccess) onSuccess();
+    },
+    onError: (error: Error) => {
+      if (onError) onError(error);
+    },
   });
 };
 

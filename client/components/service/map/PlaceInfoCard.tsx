@@ -45,14 +45,16 @@ const PlaceInfoCard = ({ place }: Props) => {
     dispatch(showToast(error.response.data.message));
   };
 
-  const { mutate: saveSelection } = useSaveSelection({
-    userId,
-    place,
-    token,
-    dispatch,
-    onSuccess: handleSuccess,
-    onError: handleError,
-  });
+  const { mutate: saveSelection } = useSaveSelection(
+    {
+      userId,
+      place,
+      token,
+      dispatch,
+    },
+    handleSuccess,
+    handleError
+  );
 
   const handleSelectClick = () => {
     dispatch(closeModal());
