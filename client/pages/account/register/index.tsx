@@ -1,5 +1,6 @@
 import { ChangeEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
 import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
@@ -9,6 +10,7 @@ import {
   useNicknameVerification,
 } from "@/hooks/user/register/authentication";
 import { useSignUp } from "@/hooks/user/register/authentication/useSignUp";
+import { useAppDispatch } from "@/hooks/reduxHook";
 
 import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
@@ -17,13 +19,12 @@ import TextInput from "@/components/common/TextInput";
 import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
 import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
-import Modal from "@/components/common/Modal";
-import ModalContent from "@/components/account/register/ModalContent";
-import { useRouter } from "next/router";
+
+import { openModal } from "@/store/modalSlice";
 
 export default function RegisterPage() {
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [registerInfo, setRegisterInfo] = useState({
     email: "",
     password: "",
@@ -60,13 +61,40 @@ export default function RegisterPage() {
     isSuccess: nicknameIsSuccess,
     isLoading: nicknameIsLoading,
   } = useNicknameVerification(setIsNicknameValid, setErrorMessage);
+
+  const handleSignUpSuccess = () => {
+    dispatch(
+      openModal(
+        <StyledText
+          text="회원가입이 완료되었습니다!"
+          fontColor="black47"
+          fontSize="lg"
+          fontWeight="semiBold"
+        />
+      )
+    );
+    router.push("/account/login");
+  };
+  const handleSignUpError = (error: any) => {
+    dispatch(
+      openModal(
+        <StyledText
+          text={`오류 발생: ${error.response.data.message}`}
+          fontColor="black47"
+          fontSize="lg"
+          fontWeight="semiBold"
+        />
+      )
+    );
+  };
+
   const {
     createUserMutate,
     isLoading: signUpIsLoading,
     isSuccess: signUpIsSuccess,
     isError: signUpIsError,
     error: signUpError,
-  } = useSignUp(setIsModalOpen);
+  } = useSignUp({ onSuccess: handleSignUpSuccess, onError: handleSignUpError });
 
   const handleEmailVerifyClick = () => {
     if (email) {
@@ -99,15 +127,13 @@ export default function RegisterPage() {
       verifyName({ nickname });
     }
   };
-  const handleHide = () => {
-    setIsModalOpen(false);
-  };
+
   const modalConfirmHandler = () => {
     if (signUpIsLoading) {
       return undefined;
     }
     if (signUpIsError) {
-      return handleHide;
+      // modal close
     }
     if (signUpIsSuccess) {
       return router.push("/account/login");
@@ -131,18 +157,6 @@ export default function RegisterPage() {
 
   return (
     <S.Container>
-      <Modal
-        isShowing={isModalOpen}
-        hide={handleHide}
-        confirmHandler={modalConfirmHandler}
-      >
-        <ModalContent
-          isError={signUpIsError}
-          isLoading={signUpIsLoading}
-          isSuccess={signUpIsSuccess}
-          text={modalText()}
-        />
-      </Modal>
       <S.Wrapper>
         <StyledText
           text="회원가입"

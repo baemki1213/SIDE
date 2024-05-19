@@ -12,7 +12,7 @@ interface Props {
 }
 
 const CategoryOptionsMap: { label: string; value: string }[] = [
-  { label: "무작위", value: "RANDOM" },
+  { label: "전체", value: "TOTAL" },
   { label: "카페", value: "CE7" },
   { label: "음식점", value: "FD6" },
   { label: "관광명소", value: "AT4" },

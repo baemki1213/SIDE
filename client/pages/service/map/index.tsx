@@ -1,18 +1,31 @@
-import React, { useEffect, useRef, useState } from "react";
+import { createRoot } from "react-dom/client";
+import React, { useCallback, useEffect, useRef, useState } from "react";
+
 import useLatLng from "@/hooks/map/useLatLng";
 import useSearchAddress from "@/hooks/map/useSearchAddress";
 
 import * as S from "./styles";
 import FilterButton from "@/components/service/map/FilterButton";
+import CurrentLocationButton from "@/components/service/map/CurrentLocationButton";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
+import CenterMarkerButton from "@/components/service/map/CenterMarkerButton";
+import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
+import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
+import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
 
 import { colors } from "@/styles/assets";
-import { FilterInfo } from "@/types/map";
+import { FilterInfo, PlaceInfo } from "@/types/map";
+import { getLastCategory } from "@/utils/string";
+import { useAppDispatch } from "@/hooks/reduxHook";
 
 const Maps: React.FC = () => {
+  const dispatch = useAppDispatch();
   const mapRef = useRef<naver.maps.Map | null>(null);
   const currentCircleRef = useRef<naver.maps.Circle | null>(null);
+  const centerMarkerRef = useRef<naver.maps.Marker | null>(null);
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
+  const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null); // 추가된 부분
+
   const [filterInfo, setFilterInfo] = useState<FilterInfo>({
     query: "",
     category: "",
@@ -20,59 +33,119 @@ const Maps: React.FC = () => {
   });
 
   const { position, setPosition, isLoading: isLatLngLoading } = useLatLng();
-  const { data, refetch } = useSearchAddress(
+  const { data: searchData, refetch } = useSearchAddress(
     filterInfo,
     position.latitude,
     position.longitude
   );
 
-  const addMarkersToMap = (map: naver.maps.Map, places: any[]) => {
-    markersRef.current.forEach(marker => marker.setMap(null));
-    markersRef.current = [];
-    places.forEach(place => {
-      const marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(place.y, place.x),
-        map: map,
-        title: place.place_name,
-      });
-
-      const infoWindow = new naver.maps.InfoWindow({
-        content: `<div style="padding:10px;">${place.place_name}</div>`,
-      });
-
-      naver.maps.Event.addListener(marker, "click", () => {
-        if (infoWindow.getMap()) {
-          infoWindow.close();
-        } else {
-          infoWindow.open(map, marker);
-        }
-      });
-
-      markersRef.current.push(marker);
-    });
-  };
-
-  const drawRadiusBoundary = (
-    map: any,
-    latitude: number,
-    longitude: number,
-    radius: number
-  ) => {
-    if (currentCircleRef.current) {
-      currentCircleRef.current.setMap(null);
+  const closeInfoWindow = useCallback(() => {
+    if (infoWindowRef.current) {
+      infoWindowRef.current.close();
     }
+  }, []);
 
-    const circle = new naver.maps.Circle({
-      map: map,
-      center: new naver.maps.LatLng(latitude, longitude),
-      radius: radius,
-      strokeColor: "transparent",
-      strokeWeight: 2,
-      fillColor: colors.pointColor,
-      fillOpacity: 0.3,
-    });
+  const drawRadiusBoundary = useCallback(
+    (
+      map: naver.maps.Map,
+      latitude: number,
+      longitude: number,
+      radius: number
+    ) => {
+      if (currentCircleRef.current) {
+        currentCircleRef.current.setMap(null);
+      }
 
-    currentCircleRef.current = circle;
+      currentCircleRef.current = new naver.maps.Circle({
+        map,
+        center: new naver.maps.LatLng(latitude, longitude),
+        radius,
+        strokeColor: "transparent",
+        strokeWeight: 2,
+        fillColor: colors.pointColor,
+        fillOpacity: 0.3,
+      });
+    },
+    []
+  );
+
+  const addMarkersToMap = useCallback(
+    (map: naver.maps.Map, places: PlaceInfo[]) => {
+      markersRef.current.forEach(marker => marker.setMap(null));
+      markersRef.current = [];
+
+      places.forEach(place => {
+        const marker = new naver.maps.Marker({
+          position: new naver.maps.LatLng(Number(place.y), Number(place.x)),
+          map,
+          title: place.place_name,
+        });
+
+        const infoWindowContent = (
+          <InfoWindowContent
+            categoryName={getLastCategory(place.category_name)}
+            place_name={place.place_name}
+            road_address_name={place.road_address_name}
+            phone={place.phone}
+            place_url={place.place_url}
+            closeInfoWindow={closeInfoWindow}
+          />
+        );
+
+        naver.maps.Event.addListener(marker, "click", () => {
+          closeInfoWindow();
+
+          const contentDiv = document.createElement("div");
+          const root = createRoot(contentDiv);
+          root.render(infoWindowContent);
+
+          infoWindowRef.current = new naver.maps.InfoWindow({
+            content: contentDiv,
+            disableAnchor: true,
+            borderWidth: 0,
+          });
+
+          infoWindowRef.current.open(map, marker);
+        });
+
+        markersRef.current.push(marker);
+      });
+    },
+    [closeInfoWindow]
+  );
+
+  const handleCurrentLocationClick = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          const { latitude, longitude } = position.coords;
+          const newCenter = new naver.maps.LatLng(latitude, longitude);
+
+          if (mapRef.current) {
+            mapRef.current.setCenter(newCenter);
+            setPosition({ latitude, longitude });
+
+            if (centerMarkerRef.current) {
+              centerMarkerRef.current.setPosition(newCenter);
+            } else {
+              centerMarkerRef.current = new naver.maps.Marker({
+                position: newCenter,
+                map: mapRef.current,
+                icon: {
+                  url: "https://w7.pngwing.com/pngs/96/889/png-transparent-marker-map-interesting-places-the-location-on-the-map-the-location-of-the-thumbnail.png",
+                  size: new naver.maps.Size(24, 24),
+                  origin: new naver.maps.Point(0, 0),
+                  anchor: new naver.maps.Point(12, 24),
+                },
+              });
+            }
+          }
+        },
+        error => {
+          console.error("Error fetching current location:", error);
+        }
+      );
+    }
   };
 
   useEffect(() => {
@@ -95,7 +168,7 @@ const Maps: React.FC = () => {
 
       mapRef.current = new naver.maps.Map("map", mapOptions);
 
-      const centerMarker = new naver.maps.Marker({
+      centerMarkerRef.current = new naver.maps.Marker({
         position: new naver.maps.LatLng(position.latitude, position.longitude),
         map: mapRef.current,
         icon: {
@@ -107,16 +180,32 @@ const Maps: React.FC = () => {
       });
 
       naver.maps.Event.addListener(mapRef.current, "click", (e: any) => {
+        closeInfoWindow();
+
         const newLat = e.coord.lat();
         const newLng = e.coord.lng();
-        // Avoid unnecessary updates if the position has not changed
+
         if (newLat !== position.latitude || newLng !== position.longitude) {
           setPosition({ latitude: newLat, longitude: newLng });
-          centerMarker.setPosition(e.coord);
+          centerMarkerRef.current?.setPosition(e.coord);
         }
       });
+
+      drawRadiusBoundary(
+        mapRef.current,
+        position.latitude,
+        position.longitude,
+        filterInfo.radius
+      );
     }
-  }, [isLatLngLoading, position, setPosition]);
+  }, [
+    isLatLngLoading,
+    position,
+    filterInfo.radius,
+    setPosition,
+    drawRadiusBoundary,
+    closeInfoWindow,
+  ]);
 
   useEffect(() => {
     if (mapRef.current && position.latitude && position.longitude) {
@@ -128,13 +217,35 @@ const Maps: React.FC = () => {
       );
       refetch();
     }
-  }, [position.latitude, position.longitude, filterInfo.radius, refetch]);
+  }, [
+    position.latitude,
+    position.longitude,
+    filterInfo.radius,
+    refetch,
+    drawRadiusBoundary,
+  ]);
 
   useEffect(() => {
-    if (mapRef.current && data) {
-      addMarkersToMap(mapRef.current, data);
+    if (mapRef.current && searchData) {
+      addMarkersToMap(mapRef.current, searchData);
     }
-  }, [data]);
+  }, [addMarkersToMap, searchData]);
+
+  useEffect(() => {
+    if (mapRef.current) {
+      const handleResize = () => {
+        mapRef.current?.setSize(
+          new naver.maps.Size(window.innerWidth, window.innerHeight)
+        );
+      };
+
+      handleResize();
+      window.addEventListener("resize", handleResize);
+      return () => {
+        window.removeEventListener("resize", handleResize);
+      };
+    }
+  }, []);
 
   return (
     <>
@@ -143,6 +254,19 @@ const Maps: React.FC = () => {
       ) : (
         <S.MapContainer id="map" />
       )}
+
+      {searchData && mapRef.current && centerMarkerRef.current && (
+        <CenterMarkerButton
+          map={mapRef.current}
+          position={centerMarkerRef.current.getPosition()}
+        >
+          <BattleButton />
+          <RandomPickButton dispatch={dispatch} items={searchData} />
+        </CenterMarkerButton>
+      )}
+      <CurrentLocationButton
+        handleCurrentLocationClick={handleCurrentLocationClick}
+      />
       <FilterButton
         filterInfo={filterInfo}
         setFilterInfo={setFilterInfo}
