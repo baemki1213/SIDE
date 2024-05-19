@@ -31,7 +31,7 @@ const Sidebar = ({ isLogin }: Props) => {
     { id: "", icon: <FaHome />, text: "홈" },
     { id: "service/map", icon: <FaMapMarkerAlt />, text: "맛집 찾기" },
     { id: "my-history", icon: <FaHistory />, text: "나의 기록" },
-    { id: "service/popular", icon: <FaStar />, text: "인기 장소" },
+    // { id: "service/popular", icon: <FaStar />, text: "인기 장소" },
   ];
   const handleClickToggleSidebar = () => {
     setIsClickOpen(!isClickOpen);
