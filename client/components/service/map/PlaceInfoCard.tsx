@@ -10,9 +10,10 @@ import StyledButton from "@/components/common/StyledButton";
 
 import { colors } from "@/styles/assets";
 import { PlaceInfo } from "@/types/map";
-import { closeModal, openModal } from "@/store/modalSlice";
+import { openModal } from "@/store/modalSlice";
 import { selectAuthState } from "@/store/authSlice";
 import { showToast } from "@/store/toastSlice";
+import { useCallback } from "react";
 
 interface Props {
   place: PlaceInfo;
@@ -23,7 +24,7 @@ const PlaceInfoCard = ({ place }: Props) => {
   const token = access_token;
   const userId = userInfo.id;
   const dispatch = useAppDispatch();
-  const handleSuccess = () => {
+  const handleSuccess = useCallback(() => {
     dispatch(
       openModal(
         <>
@@ -40,26 +41,29 @@ const PlaceInfoCard = ({ place }: Props) => {
         </>
       )
     );
-  };
-  const handleError = (error: any) => {
-    dispatch(showToast(error.response.data.message));
-  };
+  }, [dispatch]);
 
-  const { mutate: saveSelection } = useSaveSelection(
-    {
-      userId,
-      place,
-      token,
-      dispatch,
+  const handleError = useCallback(
+    (error: any) => {
+      dispatch(showToast(error.response.data.message));
     },
-    handleSuccess,
-    handleError
+    [dispatch]
   );
 
-  const handleSelectClick = () => {
-    dispatch(closeModal());
-    saveSelection({ userId, place });
-  };
+  const { mutate: saveSelection } = useSaveSelection({
+    token,
+    dispatch,
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
+
+  const handleSelectClick = useCallback(
+    (e: React.MouseEvent, place: PlaceInfo) => {
+      e.stopPropagation();
+      saveSelection({ userId, place });
+    },
+    [saveSelection, userId]
+  );
 
   return (
     <CardWrapper>
@@ -119,7 +123,7 @@ const PlaceInfoCard = ({ place }: Props) => {
       <StyledButton
         buttonType="primary"
         text="선택하기"
-        onClick={handleSelectClick}
+        onClick={e => handleSelectClick(e, place)}
         size="medium"
       />
     </CardWrapper>

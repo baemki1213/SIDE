@@ -3,6 +3,8 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 
 import useLatLng from "@/hooks/map/useLatLng";
 import useSearchAddress from "@/hooks/map/useSearchAddress";
+import useSaveSelection from "@/hooks/map/useSaveSelection";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
 import * as S from "./styles";
 import FilterButton from "@/components/service/map/FilterButton";
@@ -12,11 +14,13 @@ import CenterMarkerButton from "@/components/service/map/CenterMarkerButton";
 import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
 import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
 import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
+import StyledText from "@/components/common/StyledText";
 
 import { colors } from "@/styles/assets";
 import { FilterInfo, PlaceInfo } from "@/types/map";
-import { getLastCategory } from "@/utils/string";
-import { useAppDispatch } from "@/hooks/reduxHook";
+import { openModal } from "@/store/modalSlice";
+import { showToast } from "@/store/toastSlice";
+import { selectAuthState } from "@/store/authSlice";
 
 const Maps: React.FC = () => {
   const dispatch = useAppDispatch();
@@ -24,7 +28,10 @@ const Maps: React.FC = () => {
   const currentCircleRef = useRef<naver.maps.Circle | null>(null);
   const centerMarkerRef = useRef<naver.maps.Marker | null>(null);
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
-  const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null); // 추가된 부분
+  const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null);
+  const { userInfo, access_token } = useAppSelector(selectAuthState);
+  const userId = userInfo.id;
+  const token = access_token;
 
   const [filterInfo, setFilterInfo] = useState<FilterInfo>({
     query: "",
@@ -44,6 +51,47 @@ const Maps: React.FC = () => {
       infoWindowRef.current.close();
     }
   }, []);
+
+  const handleSuccess = useCallback(() => {
+    dispatch(
+      openModal(
+        <>
+          <StyledText
+            text="✅ 탁월한 선택입니다!"
+            fontColor="black47"
+            fontWeight="semiBold"
+          />
+          <StyledText
+            text="선택한 장소들은 나의 기록에서 확인할 수 있어요!"
+            fontColor="black47"
+            fontWeight="semiBold"
+          />
+        </>
+      )
+    );
+  }, [dispatch]);
+
+  const handleError = useCallback(
+    (error: any) => {
+      dispatch(showToast(error.response.data.message));
+    },
+    [dispatch]
+  );
+
+  const { mutate: saveSelection } = useSaveSelection({
+    token,
+    dispatch,
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
+
+  const handleSelectClick = useCallback(
+    (e: React.MouseEvent, place: PlaceInfo) => {
+      e.stopPropagation();
+      saveSelection({ userId, place });
+    },
+    [saveSelection, userId]
+  );
 
   const drawRadiusBoundary = useCallback(
     (
@@ -83,12 +131,11 @@ const Maps: React.FC = () => {
 
         const infoWindowContent = (
           <InfoWindowContent
-            categoryName={getLastCategory(place.category_name)}
-            place_name={place.place_name}
-            road_address_name={place.road_address_name}
-            phone={place.phone}
-            place_url={place.place_url}
+            place={place}
             closeInfoWindow={closeInfoWindow}
+            handleSelectClick={(e: React.MouseEvent) =>
+              handleSelectClick(e, place)
+            }
           />
         );
 
@@ -111,7 +158,7 @@ const Maps: React.FC = () => {
         markersRef.current.push(marker);
       });
     },
-    [closeInfoWindow]
+    [closeInfoWindow, handleSelectClick]
   );
 
   const handleCurrentLocationClick = () => {

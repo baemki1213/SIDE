@@ -17,7 +17,7 @@ interface IProps {
   type?: "button" | "submit" | "reset";
   size?: ButtonSizeKey;
   width?: string;
-  onClick(): void;
+  onClick: (e: any) => void;
   disabled?: boolean;
   borderRadius?: string;
   iconPosition?: "right" | "left";
@@ -38,7 +38,7 @@ export default function StyledButton({
   type = "button",
   size = "regular",
   width = "100%",
-  onClick = () => console.log(),
+  onClick,
   disabled = false,
   borderRadius = "4px",
   iconPosition,
