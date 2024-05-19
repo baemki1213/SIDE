@@ -94,9 +94,7 @@ const serviceController = {
 
       await insertUserPlace(userId, placeId);
 
-      return res
-        .status(200)
-        .json({ message: "Place and user place saved/updated" });
+      return res.status(200).json({ message: "success" });
     } catch (error) {
       return res
         .status(500)
@@ -112,16 +110,27 @@ const serviceController = {
     const offset = (pageNumber - 1) * limitNumber;
 
     try {
-      const userPlaces = await getUserPlacesByUserId(
+      const { places, totalCount } = await getUserPlacesByUserId(
         parseInt(userId, 10),
         limitNumber,
         offset
       );
-      res.status(200).json(userPlaces);
+
+      const totalPages = Math.ceil(totalCount / limitNumber);
+
+      res.status(200).json({
+        data: places,
+        meta: {
+          totalCount,
+          totalPages,
+          currentPage: pageNumber,
+          pageSize: limitNumber,
+        },
+      });
     } catch (error) {
-      return res
-        .status(500)
-        .json({ message: "서버 에러, 잠시 후 다시 시도해주세요." });
+      res.status(500).json({
+        message: "서버 에러, 잠시 후 다시 시도해주세요.",
+      });
     }
   },
 };

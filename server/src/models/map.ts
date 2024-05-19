@@ -95,16 +95,29 @@ export const getUserPlacesByUserId = async (
   userId: number,
   limit: number,
   offset: number
-): Promise<RowDataPacket[]> => {
-  const [rows] = await (
+): Promise<{ places: RowDataPacket[]; totalCount: number }> => {
+  const [places] = await (
     await connection
   ).query<RowDataPacket[]>(
-    `SELECT places.*
+    `SELECT places.*, user_places.created_at as created_at
      FROM user_places
      JOIN places ON user_places.place_id = places.id
      WHERE user_places.user_id = ?
+     ORDER BY user_places.created_at DESC
      LIMIT ? OFFSET ?`,
     [userId, limit, offset]
   );
-  return rows;
+
+  const [countResult] = await (
+    await connection
+  ).query<RowDataPacket[]>(
+    `SELECT COUNT(*) as totalCount
+     FROM user_places
+     WHERE user_id = ?`,
+    [userId]
+  );
+
+  const totalCount = countResult[0].totalCount;
+
+  return { places, totalCount };
 };
