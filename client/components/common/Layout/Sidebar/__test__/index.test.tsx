@@ -29,7 +29,7 @@ describe("sidebar", () => {
       expect(sidebarContainer).toBeInTheDocument();
       expect(sidebarContainer).toHaveStyle("top: 80px; left: 0px; opacity: 1;");
     });
-    const sidebarMenu1 = screen.getByLabelText("맛집 찾기");
+    const sidebarMenu1 = screen.getByLabelText("장소 찾기");
     expect(sidebarMenu1).toBeInTheDocument();
     // const sidebarMenu2 = screen.getByLabelText("AI 추천");
     // expect(sidebarMenu2).toBeInTheDocument();
@@ -85,7 +85,7 @@ describe("sidebar", () => {
       const sidebarContainer = screen.getByTestId("sidebar-container");
       expect(sidebarContainer).toBeInTheDocument();
     });
-    const sidebarMenu1 = screen.getByLabelText("맛집 찾기");
+    const sidebarMenu1 = screen.getByLabelText("장소 찾기");
     fireEvent.click(sidebarMenu1);
     expect(mockRouter.push).toHaveBeenCalledWith("/service/map");
     const sidebarMenu4 = screen.getByLabelText("나의 기록");
