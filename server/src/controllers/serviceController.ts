@@ -19,7 +19,7 @@ const serviceController = {
 
     const distanceNumber = Number(distance) as number;
     const maxPage = parseInt(max_page as string, 10) || 1;
-    const pageSize = 8; // 페이지 당 최대 결과 수
+    const pageSize = 8;
     const results = [];
     let currentPage = 1;
 
@@ -44,7 +44,7 @@ const serviceController = {
       const addressString = createAddressString(geoResponse.data);
       const completeQuery = `${addressString} ${query}`;
       while (currentPage <= maxPage) {
-        const kakaoResponse = await axios.get(
+        const kakaoResponse: any = await axios.get(
           "https://dapi.kakao.com/v2/local/search/keyword.json",
           {
             params: {
@@ -64,7 +64,8 @@ const serviceController = {
         );
         const pageResults = kakaoResponse.data.documents;
 
-        if (pageResults.length === 0) {
+        if (kakaoResponse.data.meta.is_end) {
+          results.push(...pageResults);
           break;
         }
 
