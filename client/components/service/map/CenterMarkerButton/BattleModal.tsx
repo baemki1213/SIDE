@@ -56,7 +56,9 @@ const BattleModal: React.FC<BattleModalProps> = ({
           fontColor="black47"
           fontWeight="bold"
           fontSize="lg"
-          text={`이번 라운드 ${currentRoundIndex + 1}/${rounds.length}`}
+          text={`🏟️ ${isFinal ? "마지막" : "이번"} 라운드 ${
+            currentRoundIndex + 1
+          }/${rounds.length}`}
         />
         <Gap side={5} />
         <StyledText
@@ -77,7 +79,7 @@ const BattleModal: React.FC<BattleModalProps> = ({
                 text={
                   isLastRound
                     ? isFinal
-                      ? "최종선택"
+                      ? "최종선택 🏆"
                       : "선택하고 다음 라운드 진행"
                     : "선택"
                 }
