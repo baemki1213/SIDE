@@ -15,21 +15,24 @@ import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
 import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
 import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
 import StyledText from "@/components/common/StyledText";
+import BattleModal from "@/components/service/map/CenterMarkerButton/BattleModal";
 
 import { colors } from "@/styles/assets";
 import { FilterInfo, PlaceInfo } from "@/types/map";
 import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
 import { selectAuthState } from "@/store/authSlice";
+import { useRouter } from "next/router";
 
 const Maps: React.FC = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const mapRef = useRef<naver.maps.Map | null>(null);
   const currentCircleRef = useRef<naver.maps.Circle | null>(null);
   const centerMarkerRef = useRef<naver.maps.Marker | null>(null);
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
   const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null);
-  const { userInfo, access_token } = useAppSelector(selectAuthState);
+  const { userInfo, access_token, isLogin } = useAppSelector(selectAuthState);
   const userId = userInfo.id;
   const token = access_token;
 
@@ -92,6 +95,18 @@ const Maps: React.FC = () => {
     },
     [saveSelection, userId]
   );
+
+  const handleBattleClick = (places: PlaceInfo[]) => {
+    if (isLogin) {
+      dispatch(
+        openModal(
+          <BattleModal places={places} onFinalSelection={handleSelectClick} />
+        )
+      );
+    } else {
+      alert("로그인 해주세요!");
+    }
+  };
 
   const drawRadiusBoundary = useCallback(
     (
@@ -286,8 +301,8 @@ const Maps: React.FC = () => {
         );
       };
 
-      handleResize();
       window.addEventListener("resize", handleResize);
+
       return () => {
         window.removeEventListener("resize", handleResize);
       };
@@ -307,10 +322,19 @@ const Maps: React.FC = () => {
           map={mapRef.current}
           position={centerMarkerRef.current.getPosition()}
         >
-          <BattleButton />
-          <RandomPickButton dispatch={dispatch} items={searchData} />
+          <BattleButton
+            places={searchData}
+            handleBattleClick={handleBattleClick}
+          />
+          <RandomPickButton
+            isLogin={isLogin}
+            dispatch={dispatch}
+            items={searchData}
+            router={router}
+          />
         </CenterMarkerButton>
       )}
+
       <CurrentLocationButton
         handleCurrentLocationClick={handleCurrentLocationClick}
       />

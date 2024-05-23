@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import StyledButton from "@/components/common/StyledButton";
@@ -10,6 +11,8 @@ import { PlaceInfo } from "@/types/map";
 
 interface Props {
   items: PlaceInfo[];
+  isLogin: boolean;
+  router: any;
   dispatch: AppDispatch;
 }
 
@@ -21,28 +24,32 @@ const getRandomItems = (arr: PlaceInfo[], num: number) => {
   return shuffled.slice(0, num);
 };
 
-const RandomPickButton = ({ items, dispatch }: Props) => {
+const RandomPickButton = ({ items, isLogin, router, dispatch }: Props) => {
   const handleRandomPick = () => {
-    const randomItems = getRandomItems(items, 2);
-    dispatch(
-      openModal(
-        <ModalInnerWrapper>
-          <CardWrapper>
-            {randomItems.map((place, index) => (
-              <PlaceInfoCard key={index} place={place} />
-            ))}
-          </CardWrapper>
-          <Gap side={20} />
-          <StyledButton
-            width="200px"
-            text="다시 추천 받기"
-            onClick={handleRandomPick}
-            buttonType="primary"
-            size="small"
-          />
-        </ModalInnerWrapper>
-      )
-    );
+    if (isLogin) {
+      const randomItems = getRandomItems(items, 2);
+      dispatch(
+        openModal(
+          <ModalInnerWrapper>
+            <CardWrapper>
+              {randomItems.map((place, index) => (
+                <PlaceInfoCard key={index} place={place} />
+              ))}
+            </CardWrapper>
+            <Gap side={20} />
+            <StyledButton
+              width="200px"
+              text="다시 추천 받기"
+              onClick={handleRandomPick}
+              buttonType="primary"
+              size="small"
+            />
+          </ModalInnerWrapper>
+        )
+      );
+    } else {
+      alert("로그인 해주세요!");
+    }
   };
 
   return (
