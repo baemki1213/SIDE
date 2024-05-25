@@ -239,7 +239,7 @@ const userController = {
           expiresIn: "1h",
         }
       );
-      const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+      const resetLink = `http://localhost:3000/account/reset-password?token=${token}`;
       const mailOptions = {
         from: process.env.GOOGLE_USER,
         to: email,
