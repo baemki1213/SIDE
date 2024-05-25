@@ -19,10 +19,13 @@ const RequestResetPassword: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
+    try {
+      const data: any = await requestResetPassword({ email });
+      dispatch(showToast(data.data.message));
+    } catch (error: any) {
+      dispatch(showToast(error.response.data.message));
+    }
 
-    const data: any = await requestResetPassword({ email });
-
-    dispatch(showToast(data.data.message));
     setIsLoading(false);
   };
 
