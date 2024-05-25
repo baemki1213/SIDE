@@ -31,7 +31,7 @@ const CenterMarkerButton: React.FC<CenterMarkerButtonProps> = ({
       const projection = map.getProjection();
       const pos = projection.fromCoordToOffset(position);
       div.style.top = `${pos.y - 80}px`;
-      div.style.left = `${pos.x - 135}px`;
+      div.style.left = `${pos.x - 141}px`;
     };
 
     updatePosition();

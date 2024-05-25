@@ -1,5 +1,6 @@
 import { createRoot } from "react-dom/client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 import useLatLng from "@/hooks/map/useLatLng";
 import useSearchAddress from "@/hooks/map/useSearchAddress";
@@ -22,7 +23,6 @@ import { FilterInfo, PlaceInfo } from "@/types/map";
 import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
 import { selectAuthState } from "@/store/authSlice";
-import { useRouter } from "next/router";
 
 const Maps: React.FC = () => {
   const router = useRouter();
@@ -91,9 +91,13 @@ const Maps: React.FC = () => {
   const handleSelectClick = useCallback(
     (e: React.MouseEvent, place: PlaceInfo) => {
       e.stopPropagation();
-      saveSelection({ userId, place });
+      if (isLogin) {
+        saveSelection({ userId, place });
+      } else {
+        alert("로그인 해주세요!");
+      }
     },
-    [saveSelection, userId]
+    [saveSelection, userId, isLogin]
   );
 
   const handleBattleClick = (places: PlaceInfo[]) => {
@@ -194,10 +198,10 @@ const Maps: React.FC = () => {
                 position: newCenter,
                 map: mapRef.current,
                 icon: {
-                  url: "https://w7.pngwing.com/pngs/96/889/png-transparent-marker-map-interesting-places-the-location-on-the-map-the-location-of-the-thumbnail.png",
-                  size: new naver.maps.Size(24, 24),
+                  url: "/marker.svg",
+                  size: new naver.maps.Size(36, 36),
                   origin: new naver.maps.Point(0, 0),
-                  anchor: new naver.maps.Point(12, 24),
+                  anchor: new naver.maps.Point(18, 36),
                 },
               });
             }
@@ -234,10 +238,10 @@ const Maps: React.FC = () => {
         position: new naver.maps.LatLng(position.latitude, position.longitude),
         map: mapRef.current,
         icon: {
-          url: "https://w7.pngwing.com/pngs/96/889/png-transparent-marker-map-interesting-places-the-location-on-the-map-the-location-of-the-thumbnail.png",
-          size: new naver.maps.Size(24, 24),
+          url: "/marker.svg",
+          size: new naver.maps.Size(36, 36),
           origin: new naver.maps.Point(0, 0),
-          anchor: new naver.maps.Point(12, 24),
+          anchor: new naver.maps.Point(18, 36),
         },
       });
 
