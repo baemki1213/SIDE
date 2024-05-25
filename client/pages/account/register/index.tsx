@@ -197,7 +197,7 @@ export default function RegisterPage() {
           )}
           <TextInput
             labelText="비밀번호"
-            infoText="대문자, 소문자, 숫자, 특수문자 반드시 포함 8자 이상"
+            infoText="대문자, 특수문자 반드시 포함 8자 이상"
             name="password"
             value={password}
             onChange={handleOnChange}
