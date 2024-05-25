@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 const jwt = require("jsonwebtoken");
 import { Request } from "../types/Express";
 import { Response } from "express";
@@ -14,6 +15,7 @@ import {
   findCurrentEmail,
   findUserByEmail,
   findUserById,
+  patchUserById,
 } from "../models/user";
 import { createAndSaveRefreshToken, removeRefreshToken } from "../models/auth";
 import { compareHashedPassword, createAccessToken } from "../utils/auth";
@@ -260,6 +262,40 @@ const userController = {
       });
     } catch (error: any) {
       res.status(500).json({ message: "서버 오류가 발생했습니다.", error });
+    }
+  },
+
+  async resetPassword(req: Request, res: Response) {
+    const { token, newPassword } = req.body;
+
+    if (!token || !newPassword) {
+      return res
+        .status(400)
+        .json({ message: "토큰과 새 비밀번호가 필요합니다." });
+    }
+
+    try {
+      const decoded: { userId: number } = jwt.verify(
+        token,
+        process.env.JWT_RESET_SECRET
+      );
+      const user = await findUserById(decoded.userId);
+
+      if (!user) {
+        return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+      }
+
+      const hashedPassword = await bcrypt.hash(newPassword, 10);
+
+      patchUserById(decoded.userId, { hashed_password: hashedPassword });
+
+      return res
+        .status(200)
+        .json({ message: "비밀번호가 성공적으로 변경되었습니다." });
+    } catch (error) {
+      return res
+        .status(500)
+        .json({ message: "서버 오류가 발생했습니다.", error });
     }
   },
 };

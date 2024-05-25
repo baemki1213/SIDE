@@ -11,6 +11,7 @@ import {
   findCurrentEmailSQL,
   findUserByEmailSQL,
   findUserByIdSQL,
+  updateUserSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
 
@@ -95,6 +96,20 @@ const findUserById = async (id: number): Promise<User | null> => {
   return result[0];
 };
 
+const patchUserById = async (id: number, patchData: any) => {
+  const fields = Object.keys(patchData);
+  const values = Object.values(patchData);
+
+  if (fields.length === 0) {
+    throw new Error("업데이트할 데이터가 없습니다.");
+  }
+
+  const sql = updateUserSQL(fields);
+  const [result] = await (await connection).query<any>(sql, [...values, id]);
+
+  return result.affectedRows > 0;
+};
+
 export {
   isEmailRegistered,
   isNicknameTaken,
@@ -107,4 +122,5 @@ export {
   comparePassword,
   findUserByEmail,
   findUserById,
+  patchUserById,
 };

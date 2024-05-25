@@ -82,7 +82,7 @@ export const requestResetPassword = async (data: { email: string }) => {
 };
 
 export const resetPassword = async (data: {
-  email: string;
+  token: string;
   newPassword: string;
 }) => {
   return await requestWithoutAuth({

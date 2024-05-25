@@ -21,5 +21,6 @@ userRouter.get(
 );
 
 userRouter.post("/request-reset-password", userController.requestResetPassword);
+userRouter.post("/reset-password", userController.resetPassword);
 
 export default userRouter;
