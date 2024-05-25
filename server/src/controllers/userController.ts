@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 import { Request } from "../types/Express";
 import { Response } from "express";
 import { randomInt } from "crypto";
@@ -16,7 +17,6 @@ import {
 } from "../models/user";
 import { createAndSaveRefreshToken, removeRefreshToken } from "../models/auth";
 import { compareHashedPassword, createAccessToken } from "../utils/auth";
-
 const smtpTransport = nodemailer.createTransport({
   service: "Gmail",
   secure: true,
@@ -215,6 +215,51 @@ const userController = {
       return res
         .status(500)
         .json({ message: "Server error", error: error.toString() });
+    }
+  },
+
+  async requestResetPassword(req: Request, res: Response) {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ message: "이메일이 필요합니다." });
+    }
+
+    try {
+      const user = await findUserByEmail(email);
+
+      if (!user) {
+        return res.status(404).json({ message: "사용자를 찾을 수 없습니다." });
+      }
+
+      const token = jwt.sign(
+        { userId: user.id },
+        process.env.JWT_RESET_SECRET,
+        {
+          expiresIn: "1h",
+        }
+      );
+      const resetLink = `http://localhost:3000/reset-password?token=${token}`;
+      const mailOptions = {
+        from: process.env.GOOGLE_USER,
+        to: email,
+        subject: "이메일 인증",
+        text: `다음 링크를 클릭하여 비밀번호를 재설정하세요: ${resetLink}`,
+        html: `<p>다음 링크를 클릭하여 비밀번호를 재설정하세요:</p><a href="${resetLink}">${resetLink}</a>`,
+      };
+
+      smtpTransport.sendMail(mailOptions, (error: any, info: any) => {
+        if (error)
+          return res.status(500).json({
+            message: "이메일 전송에 실패했습니다",
+            error: error.toString(),
+          });
+        return res
+          .status(200)
+          .json({ message: "비밀번호 재설정 이메일이 전송되었습니다." });
+      });
+    } catch (error: any) {
+      res.status(500).json({ message: "서버 오류가 발생했습니다.", error });
     }
   },
 };
