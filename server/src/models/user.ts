@@ -12,6 +12,7 @@ import {
   findUserByEmailSQL,
   findUserByIdSQL,
   updateUserSQL,
+  deleteUserByIdSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
 
@@ -110,6 +111,17 @@ const patchUserById = async (id: number, patchData: any) => {
   return result.affectedRows > 0;
 };
 
+const deleteUserById = async (id: number): Promise<boolean> => {
+  const [result] = await (await connection).query<any>(deleteUserByIdSQL, [id]);
+  return result.affectedRows > 0;
+};
+
+export const deleteRefreshTokensByUserId = async (userId: number) => {
+  const deleteTokensSQL = `DELETE FROM refreshtokens WHERE userId = ?`;
+  const [result] = await (await connection).query(deleteTokensSQL, [userId]);
+  return result;
+};
+
 export {
   isEmailRegistered,
   isNicknameTaken,
@@ -123,4 +135,5 @@ export {
   findUserByEmail,
   findUserById,
   patchUserById,
+  deleteUserById,
 };

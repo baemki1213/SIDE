@@ -91,3 +91,15 @@ export const resetPassword = async (data: {
     data,
   });
 };
+
+export const deleteUser = async (token: string, dispatch: any) => {
+  return await requestWithAuth(
+    {
+      method: "delete",
+      url: "/user/delete-account",
+      data: {},
+    },
+    token,
+    dispatch
+  );
+};

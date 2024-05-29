@@ -23,4 +23,10 @@ userRouter.get(
 userRouter.post("/request-reset-password", userController.requestResetPassword);
 userRouter.post("/reset-password", userController.resetPassword);
 
+userRouter.delete(
+  "/delete-account",
+  authenticateAccessToken,
+  userController.deleteUser
+);
+
 export default userRouter;

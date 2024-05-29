@@ -16,6 +16,8 @@ import {
   findUserByEmail,
   findUserById,
   patchUserById,
+  deleteUserById,
+  deleteRefreshTokensByUserId,
 } from "../models/user";
 import { createAndSaveRefreshToken, removeRefreshToken } from "../models/auth";
 import { compareHashedPassword, createAccessToken } from "../utils/auth";
@@ -296,6 +298,27 @@ const userController = {
       return res
         .status(500)
         .json({ message: "서버 오류가 발생했습니다.", error });
+    }
+  },
+
+  async deleteUser(req: Request, res: Response) {
+    const authHeader = req.headers.authorization;
+    const accessToken = authHeader && authHeader.split(" ")[1];
+
+    try {
+      const decoded: any = jwt.verify(
+        accessToken,
+        process.env.JWT_ACCESS_SECRET as string
+      );
+      await deleteRefreshTokensByUserId(decoded.id);
+      await deleteUserById(decoded.id);
+
+      return res.status(200).json({ message: "회원탈퇴가 완료되었습니다." });
+    } catch (error: any) {
+      return res.status(500).json({
+        message: "서버 오류가 발생했습니다.",
+        error: error.toString(),
+      });
     }
   },
 };

@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <S.HeaderContainer>
       <S.HeaderLeft>
-        <Sidebar isLogin={isLogin} />
+        <Sidebar isLogin={isLogin} token={access_token} />
       </S.HeaderLeft>
       <S.HeaderRight>
         {isLogin ? (

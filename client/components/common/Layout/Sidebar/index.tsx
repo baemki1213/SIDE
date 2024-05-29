@@ -16,14 +16,22 @@ import StyledTextButton from "../../StyledTextButton";
 import Gap from "../../Gap";
 
 import * as S from "./styles";
+import { useAppDispatch } from "@/hooks/reduxHook";
+import { openModal } from "@/store/modalSlice";
+import StyledButton from "../../StyledButton";
+import { deleteUser } from "@/api/user";
+import { showToast } from "@/store/toastSlice";
 
 interface Props {
   isLogin: boolean;
+  token: string;
 }
 
-const Sidebar = ({ isLogin }: Props) => {
+const Sidebar = ({ isLogin, token }: Props) => {
+  const dispatch = useAppDispatch();
   const router = useRouter();
-  const { mutate: logout, isLoading: logoutIsLoading } = useLogout();
+  const [isLoading, setIsLoading] = useState(false);
+  const { mutate: logout } = useLogout();
   const [isClickOpen, setIsClickOpen] = useState(false);
   const [isHoverOpen, setIsHoverOpen] = useState(false);
 
@@ -44,6 +52,43 @@ const Sidebar = ({ isLogin }: Props) => {
   const handleLogout = async () => {
     await logout({});
   };
+
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    try {
+      const data = await deleteUser(token, dispatch);
+      dispatch(showToast(data.data.message));
+      await logout({});
+      router.push("/");
+    } catch (error: any) {
+      dispatch(showToast(error.response.data.message));
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleSignOutModalOpen = async () => {
+    dispatch(
+      openModal(
+        <>
+          <StyledText
+            text="정말 탈퇴하시겠습니까?"
+            fontColor="black47"
+            fontSize="lg"
+            fontWeight="semiBold"
+          />
+          <Gap side={20} />
+          <StyledButton
+            buttonType="secondary"
+            text="네"
+            onClick={handleSignOut}
+            isLoading={isLoading}
+          />
+        </>
+      )
+    );
+  };
+
   const handleNavIconClick = (id: string) => {
     router.push(`/${id}`);
   };
@@ -85,16 +130,28 @@ const Sidebar = ({ isLogin }: Props) => {
               );
             })}
           </S.SidebarBody>
+
+          {isLogin && <S.SidebarFooter></S.SidebarFooter>}
+
           {isLogin && (
-            <S.SidebarFooter>
-              <FaSignOutAlt />
-              <Gap side={5} />
-              <StyledTextButton
-                buttonType="button"
-                styleProps={{ text: "로그아웃" }}
-                handleClick={handleLogout}
-              />
-            </S.SidebarFooter>
+            <>
+              <S.SidebarFooter>
+                <FaSignOutAlt />
+                <Gap side={5} />
+                <StyledTextButton
+                  buttonType="button"
+                  styleProps={{ text: "로그아웃" }}
+                  handleClick={handleLogout}
+                />
+              </S.SidebarFooter>
+              <S.SidebarFooter>
+                <StyledTextButton
+                  buttonType="button"
+                  styleProps={{ text: "회원탈퇴" }}
+                  handleClick={handleSignOutModalOpen}
+                />
+              </S.SidebarFooter>
+            </>
           )}
         </S.SidebarInner>
       </S.SidebarContainer>

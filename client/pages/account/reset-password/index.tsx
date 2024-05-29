@@ -25,12 +25,14 @@ const ResetPassword = () => {
     newPassword,
     newPassword
   );
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     setIsLoading(true);
     try {
       const data = await resetPassword({ token, newPassword });
       dispatch(showToast(data.data.message));
+      localStorage.removeItem("auth");
     } catch (error: any) {
       dispatch(showToast(error.response.data.message));
     }
