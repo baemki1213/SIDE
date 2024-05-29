@@ -1,7 +1,7 @@
 import { DefaultTheme } from "styled-components";
 
 export const colors = {
-  pointColor: " #1e4083",
+  pointColor: "#1e4083",
   mainColor: "#0D0D0D",
   mainWhite: "#ffffff",
   gray26: "#262626",
