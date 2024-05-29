@@ -1,14 +1,27 @@
 const { TextEncoder, TextDecoder } = require("node:util");
 
-Reflect.set(globalThis, "TextEncoder", TextEncoder);
-Reflect.set(globalThis, "TextDecoder", TextDecoder);
+if (!globalThis.TextEncoder) {
+  Reflect.set(globalThis, "TextEncoder", TextEncoder);
+}
+if (!globalThis.TextDecoder) {
+  Reflect.set(globalThis, "TextDecoder", TextDecoder);
+}
 
-const { Blob } = require("node:buffer");
-const { fetch, Request, Response, Headers, FormData } = require("undici");
-
-Reflect.set(globalThis, "fetch", fetch);
-Reflect.set(globalThis, "Blob", Blob);
-Reflect.set(globalThis, "Request", Request);
-Reflect.set(globalThis, "Response", Response);
-Reflect.set(globalThis, "Headers", Headers);
-Reflect.set(globalThis, "FormData", FormData);
+if (!globalThis.Blob) {
+  globalThis.Blob = require("node:buffer").Blob;
+}
+if (!globalThis.fetch) {
+  globalThis.fetch = require("node-fetch");
+}
+if (!globalThis.Request) {
+  globalThis.Request = require("node-fetch").Request;
+}
+if (!globalThis.Response) {
+  globalThis.Response = require("node-fetch").Response;
+}
+if (!globalThis.Headers) {
+  globalThis.Headers = require("node-fetch").Headers;
+}
+if (!globalThis.FormData) {
+  globalThis.FormData = require("form-data");
+}

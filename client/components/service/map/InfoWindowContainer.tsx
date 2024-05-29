@@ -1,28 +1,30 @@
 import React from "react";
 import styled from "styled-components";
 
-import StyledText from "@/components/common/StyledText";
+import { getLastCategory } from "@/utils/string";
 
-import { colors } from "@/styles/assets";
+import StyledText from "@/components/common/StyledText";
 import Gap from "@/components/common/Gap";
+import StyledButton from "@/components/common/StyledButton";
+
+import { PlaceInfo } from "@/types/map";
+import { colors } from "@/styles/assets";
 
 interface InfoWindowContentProps {
-  place_name: string;
-  categoryName: string;
-  road_address_name: string;
-  phone?: string;
-  place_url?: string;
+  place: PlaceInfo;
+  handleSelectClick: (e: React.MouseEvent, place: PlaceInfo) => void;
   closeInfoWindow: () => void;
 }
 
 const InfoWindowContent: React.FC<InfoWindowContentProps> = ({
-  place_name,
-  road_address_name,
-  categoryName,
-  phone,
-  place_url,
+  place,
+  handleSelectClick,
   closeInfoWindow,
 }) => {
+  const { place_name, road_address_name, category_name, phone, place_url } =
+    place;
+  const categoryName = getLastCategory(category_name);
+
   return (
     <InfoWindowContainer onClick={closeInfoWindow}>
       <StyledText text={place_name} fontWeight="bold" fontColor="black47" />
@@ -52,6 +54,16 @@ const InfoWindowContent: React.FC<InfoWindowContentProps> = ({
           />
         </Link>
       )}
+      <Gap side={5} />
+      <StyledButton
+        buttonType="primary"
+        text="저장하기"
+        size="xSmall"
+        onClick={e => {
+          handleSelectClick(e, place);
+          closeInfoWindow();
+        }}
+      />
     </InfoWindowContainer>
   );
 };

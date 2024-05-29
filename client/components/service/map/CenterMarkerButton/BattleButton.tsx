@@ -1,11 +1,14 @@
-import { useState } from "react";
-
+import React from "react";
 import * as S from "./styles";
 import StyledButton from "@/components/common/StyledButton";
+import { PlaceInfo } from "@/types/map";
 
-const BattleButton = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+interface Props {
+  places: PlaceInfo[];
+  handleBattleClick: (places: PlaceInfo[]) => void;
+}
 
+const BattleButton: React.FC<Props> = ({ places, handleBattleClick }) => {
   return (
     <S.ButtonContainer>
       <StyledButton
@@ -13,7 +16,7 @@ const BattleButton = () => {
         buttonType="secondary"
         text="대진표 만들기"
         size="small"
-        onClick={() => setIsModalOpen(true)}
+        onClick={() => handleBattleClick(places)}
       />
     </S.ButtonContainer>
   );

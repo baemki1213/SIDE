@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <S.HeaderContainer>
       <S.HeaderLeft>
-        <Sidebar isLogin={isLogin} />
+        <Sidebar isLogin={isLogin} token={access_token} />
       </S.HeaderLeft>
       <S.HeaderRight>
         {isLogin ? (
@@ -30,7 +30,7 @@ const Header = () => {
               <S.HeaderDefaultAvatar data-testid="header-defaultAvatar">
                 <StyledText
                   text={userInfo.nickname.slice(0, 1)}
-                  fontColor="mainColor"
+                  fontColor="mainWhite"
                   fontWeight="bold"
                 />
               </S.HeaderDefaultAvatar>

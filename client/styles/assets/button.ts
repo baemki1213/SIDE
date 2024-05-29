@@ -57,6 +57,11 @@ export const buttonSizeTheme: IButtonSize = {
     fontWeight: "semiBold",
     buttonHeight: "40px",
   },
+  xSmall: {
+    fontSize: "xs",
+    fontWeight: "semiBold",
+    buttonHeight: "30px",
+  },
 };
 
 export const buttonStyle: IButtonStyle = {

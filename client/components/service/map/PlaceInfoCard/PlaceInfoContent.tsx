@@ -1,68 +1,19 @@
 import styled from "styled-components";
 
-import { getLastCategory } from "@/utils/string";
-import useSaveSelection from "@/hooks/map/useSaveSelection";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
-
 import Gap from "@/components/common/Gap";
 import StyledText from "@/components/common/StyledText";
-import StyledButton from "@/components/common/StyledButton";
 
 import { colors } from "@/styles/assets";
 import { PlaceInfo } from "@/types/map";
-import { closeModal, openModal } from "@/store/modalSlice";
-import { selectAuthState } from "@/store/authSlice";
-import { showToast } from "@/store/toastSlice";
+import { getLastCategory } from "@/utils/string";
 
 interface Props {
   place: PlaceInfo;
 }
 
-const PlaceInfoCard = ({ place }: Props) => {
-  const { userInfo, access_token } = useAppSelector(selectAuthState);
-  const token = access_token;
-  const userId = userInfo.id;
-  const dispatch = useAppDispatch();
-  const handleSuccess = () => {
-    dispatch(
-      openModal(
-        <>
-          <StyledText
-            text="✅ 탁월한 선택입니다!"
-            fontColor="black47"
-            fontWeight="semiBold"
-          />
-          <StyledText
-            text="선택한 장소들은 나의 기록에서 확인할 수 있어요!"
-            fontColor="black47"
-            fontWeight="semiBold"
-          />
-        </>
-      )
-    );
-  };
-  const handleError = (error: any) => {
-    dispatch(showToast(error.response.data.message));
-  };
-
-  const { mutate: saveSelection } = useSaveSelection(
-    {
-      userId,
-      place,
-      token,
-      dispatch,
-    },
-    handleSuccess,
-    handleError
-  );
-
-  const handleSelectClick = () => {
-    dispatch(closeModal());
-    saveSelection({ userId, place });
-  };
-
+const PlaceInfoContent = ({ place }: Props) => {
   return (
-    <CardWrapper>
+    <>
       <StyledText text="미리보기" />
       <StyledText
         text="(카카오 맵의 사진을 클릭한 후 왼쪽 또는 오른쪽 영역을 클릭하여 이동할 수 있습니다.)"
@@ -115,29 +66,11 @@ const PlaceInfoCard = ({ place }: Props) => {
           />
         </Link>
       )}
-      <Gap side={10} />
-      <StyledButton
-        buttonType="primary"
-        text="선택하기"
-        onClick={handleSelectClick}
-        size="medium"
-      />
-    </CardWrapper>
+    </>
   );
 };
 
-export default PlaceInfoCard;
-
-const CardWrapper = styled.div`
-  min-height: 200px;
-  border: 1px solid ${colors.pointColor};
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border-radius: 10px;
-`;
+export default PlaceInfoContent;
 
 const Link = styled.a`
   cursor: pointer;

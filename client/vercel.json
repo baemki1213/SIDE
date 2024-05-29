@@ -1,0 +1,8 @@
+{
+  "build": {
+    "env": {
+      "NODE_ENV": "production"
+    },
+    "ignore": ["jest.config.js", "jest.setup.ts", "jest.polyfills.ts", "tests"]
+  }
+}

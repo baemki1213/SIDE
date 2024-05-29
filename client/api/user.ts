@@ -72,3 +72,34 @@ export const getUserInfo = async (data: {}, token: string, dispatch: any) => {
     dispatch
   );
 };
+
+export const requestResetPassword = async (data: { email: string }) => {
+  return await requestWithoutAuth({
+    method: "post",
+    url: "/user/request-reset-password",
+    data,
+  });
+};
+
+export const resetPassword = async (data: {
+  token: string;
+  newPassword: string;
+}) => {
+  return await requestWithoutAuth({
+    method: "post",
+    url: "/user/reset-password",
+    data,
+  });
+};
+
+export const deleteUser = async (token: string, dispatch: any) => {
+  return await requestWithAuth(
+    {
+      method: "delete",
+      url: "/user/delete-account",
+      data: {},
+    },
+    token,
+    dispatch
+  );
+};

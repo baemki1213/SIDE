@@ -17,4 +17,5 @@ export interface PlaceInfo {
   road_address_name: string;
   x: string;
   y: string;
+  created_at: string;
 }

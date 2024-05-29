@@ -1,8 +1,11 @@
 import { createRoot } from "react-dom/client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useRouter } from "next/router";
 
 import useLatLng from "@/hooks/map/useLatLng";
 import useSearchAddress from "@/hooks/map/useSearchAddress";
+import useSaveSelection from "@/hooks/map/useSaveSelection";
+import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
 import * as S from "./styles";
 import FilterButton from "@/components/service/map/FilterButton";
@@ -12,19 +15,26 @@ import CenterMarkerButton from "@/components/service/map/CenterMarkerButton";
 import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
 import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
 import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
+import StyledText from "@/components/common/StyledText";
+import BattleModal from "@/components/service/map/CenterMarkerButton/BattleModal";
 
 import { colors } from "@/styles/assets";
 import { FilterInfo, PlaceInfo } from "@/types/map";
-import { getLastCategory } from "@/utils/string";
-import { useAppDispatch } from "@/hooks/reduxHook";
+import { openModal } from "@/store/modalSlice";
+import { showToast } from "@/store/toastSlice";
+import { selectAuthState } from "@/store/authSlice";
 
 const Maps: React.FC = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const mapRef = useRef<naver.maps.Map | null>(null);
   const currentCircleRef = useRef<naver.maps.Circle | null>(null);
   const centerMarkerRef = useRef<naver.maps.Marker | null>(null);
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
-  const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null); // 추가된 부분
+  const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null);
+  const { userInfo, access_token, isLogin } = useAppSelector(selectAuthState);
+  const userId = userInfo.id;
+  const token = access_token;
 
   const [filterInfo, setFilterInfo] = useState<FilterInfo>({
     query: "",
@@ -44,6 +54,63 @@ const Maps: React.FC = () => {
       infoWindowRef.current.close();
     }
   }, []);
+
+  const handleSuccess = useCallback(() => {
+    dispatch(
+      openModal(
+        <>
+          <StyledText
+            text="✅ 탁월한 선택입니다!"
+            fontColor="black47"
+            fontWeight="semiBold"
+          />
+          <StyledText
+            text="선택한 장소들은 나의 기록에서 확인할 수 있어요!"
+            fontColor="black47"
+            fontWeight="semiBold"
+          />
+        </>
+      )
+    );
+  }, [dispatch]);
+
+  const handleError = useCallback(
+    (error: any) => {
+      dispatch(showToast(error.response.data.message));
+    },
+    [dispatch]
+  );
+
+  const { mutate: saveSelection } = useSaveSelection({
+    token,
+    dispatch,
+    onSuccess: handleSuccess,
+    onError: handleError,
+  });
+
+  const handleSelectClick = useCallback(
+    (e: React.MouseEvent, place: PlaceInfo) => {
+      e.stopPropagation();
+      if (isLogin) {
+        saveSelection({ userId, place });
+      } else {
+        alert("로그인 해주세요!");
+      }
+    },
+    [saveSelection, userId, isLogin]
+  );
+
+  const handleBattleClick = (places: PlaceInfo[]) => {
+    if (isLogin) {
+      dispatch(
+        openModal(
+          <BattleModal places={places} onFinalSelection={handleSelectClick} />
+        )
+      );
+    } else {
+      alert("로그인 해주세요!");
+    }
+  };
 
   const drawRadiusBoundary = useCallback(
     (
@@ -83,12 +150,11 @@ const Maps: React.FC = () => {
 
         const infoWindowContent = (
           <InfoWindowContent
-            categoryName={getLastCategory(place.category_name)}
-            place_name={place.place_name}
-            road_address_name={place.road_address_name}
-            phone={place.phone}
-            place_url={place.place_url}
+            place={place}
             closeInfoWindow={closeInfoWindow}
+            handleSelectClick={(e: React.MouseEvent) =>
+              handleSelectClick(e, place)
+            }
           />
         );
 
@@ -111,7 +177,7 @@ const Maps: React.FC = () => {
         markersRef.current.push(marker);
       });
     },
-    [closeInfoWindow]
+    [closeInfoWindow, handleSelectClick]
   );
 
   const handleCurrentLocationClick = () => {
@@ -132,10 +198,10 @@ const Maps: React.FC = () => {
                 position: newCenter,
                 map: mapRef.current,
                 icon: {
-                  url: "https://w7.pngwing.com/pngs/96/889/png-transparent-marker-map-interesting-places-the-location-on-the-map-the-location-of-the-thumbnail.png",
-                  size: new naver.maps.Size(24, 24),
+                  url: "/marker.svg",
+                  size: new naver.maps.Size(36, 36),
                   origin: new naver.maps.Point(0, 0),
-                  anchor: new naver.maps.Point(12, 24),
+                  anchor: new naver.maps.Point(18, 36),
                 },
               });
             }
@@ -172,10 +238,10 @@ const Maps: React.FC = () => {
         position: new naver.maps.LatLng(position.latitude, position.longitude),
         map: mapRef.current,
         icon: {
-          url: "https://w7.pngwing.com/pngs/96/889/png-transparent-marker-map-interesting-places-the-location-on-the-map-the-location-of-the-thumbnail.png",
-          size: new naver.maps.Size(24, 24),
+          url: "/marker.svg",
+          size: new naver.maps.Size(36, 36),
           origin: new naver.maps.Point(0, 0),
-          anchor: new naver.maps.Point(12, 24),
+          anchor: new naver.maps.Point(18, 36),
         },
       });
 
@@ -239,8 +305,8 @@ const Maps: React.FC = () => {
         );
       };
 
-      handleResize();
       window.addEventListener("resize", handleResize);
+
       return () => {
         window.removeEventListener("resize", handleResize);
       };
@@ -260,10 +326,19 @@ const Maps: React.FC = () => {
           map={mapRef.current}
           position={centerMarkerRef.current.getPosition()}
         >
-          <BattleButton />
-          <RandomPickButton dispatch={dispatch} items={searchData} />
+          <BattleButton
+            places={searchData}
+            handleBattleClick={handleBattleClick}
+          />
+          <RandomPickButton
+            isLogin={isLogin}
+            dispatch={dispatch}
+            items={searchData}
+            router={router}
+          />
         </CenterMarkerButton>
       )}
+
       <CurrentLocationButton
         handleCurrentLocationClick={handleCurrentLocationClick}
       />
