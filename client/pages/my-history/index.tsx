@@ -7,7 +7,7 @@ import useUserPlaces from "@/hooks/map/useUserPlaces";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 import { getLastCategory } from "@/utils/string";
 
-import * as S from "./styles";
+import * as S from "../../styles/my-history/my-history";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
 import StyledText from "@/components/common/StyledText";
 import Gap from "@/components/common/Gap";

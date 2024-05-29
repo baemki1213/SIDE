@@ -12,7 +12,7 @@ import {
 import { useSignUp } from "@/hooks/user/register/authentication/useSignUp";
 import { useAppDispatch } from "@/hooks/reduxHook";
 
-import * as S from "./styles";
+import * as S from "../../../styles/account/register";
 import StyledText from "@/components/common/StyledText";
 import TextInput from "@/components/common/TextInput";
 // import SocialButtons from "@/components/account/SocialButtons";

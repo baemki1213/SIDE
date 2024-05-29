@@ -3,7 +3,7 @@ import { ChangeEvent, useState } from "react";
 import LoginForm from "@/components/account/login/LoginForm";
 import LoginTitle from "@/components/account/login/LoginTitle";
 
-import * as S from "./styles";
+import * as S from "../../../styles/account/login";
 
 export default function LoginPage() {
   const [loginInfo, setLoginInfo] = useState({

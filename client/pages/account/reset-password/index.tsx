@@ -4,7 +4,7 @@ import { useState } from "react";
 import { resetPassword } from "@/api/user";
 import { useAppDispatch } from "@/hooks/reduxHook";
 
-import * as S from "./styles";
+import * as S from "../../../styles/account/reset-password";
 
 import { showToast } from "@/store/toastSlice";
 import StyledText from "@/components/common/StyledText";
