@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { requestResetPassword } from "@/api/user";
 import { useAppDispatch } from "@/hooks/reduxHook";
 
-import * as S from "./styles";
+import * as S from "../../../styles/account/request-reset";
 
 import { showToast } from "@/store/toastSlice";
 import StyledText from "@/components/common/StyledText";

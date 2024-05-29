@@ -7,7 +7,7 @@ import useSearchAddress from "@/hooks/map/useSearchAddress";
 import useSaveSelection from "@/hooks/map/useSaveSelection";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
-import * as S from "./styles";
+import * as S from "../../../styles/service/map";
 import FilterButton from "@/components/service/map/FilterButton";
 import CurrentLocationButton from "@/components/service/map/CurrentLocationButton";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
