@@ -19,6 +19,7 @@ import {
 } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { toastSlice } from "./toastSlice";
+import { modalSlice } from "./modalSlice";
 
 const createNoopStorage = () => {
   return {
@@ -48,6 +49,7 @@ const reducer = (state: any, action: PayloadAction<any>) => {
   return combineReducers({
     [authSlice.name]: authSlice.reducer,
     [toastSlice.name]: toastSlice.reducer,
+    [modalSlice.name]: modalSlice.reducer,
   })(state, action);
 };
 const persistedReducer = persistReducer(persistConfig, reducer);
@@ -57,9 +59,7 @@ const makeStore = () =>
     reducer: persistedReducer,
     middleware: getDefaultMiddleware =>
       getDefaultMiddleware({
-        serializableCheck: {
-          ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-        },
+        serializableCheck: false,
       }).concat(),
   });
 

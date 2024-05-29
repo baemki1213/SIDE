@@ -11,6 +11,8 @@ import {
   findCurrentEmailSQL,
   findUserByEmailSQL,
   findUserByIdSQL,
+  updateUserSQL,
+  deleteUserByIdSQL,
 } from "../sql/user";
 import connection from "../config/db.config";
 
@@ -95,6 +97,31 @@ const findUserById = async (id: number): Promise<User | null> => {
   return result[0];
 };
 
+const patchUserById = async (id: number, patchData: any) => {
+  const fields = Object.keys(patchData);
+  const values = Object.values(patchData);
+
+  if (fields.length === 0) {
+    throw new Error("업데이트할 데이터가 없습니다.");
+  }
+
+  const sql = updateUserSQL(fields);
+  const [result] = await (await connection).query<any>(sql, [...values, id]);
+
+  return result.affectedRows > 0;
+};
+
+const deleteUserById = async (id: number): Promise<boolean> => {
+  const [result] = await (await connection).query<any>(deleteUserByIdSQL, [id]);
+  return result.affectedRows > 0;
+};
+
+export const deleteRefreshTokensByUserId = async (userId: number) => {
+  const deleteTokensSQL = `DELETE FROM refreshtokens WHERE userId = ?`;
+  const [result] = await (await connection).query(deleteTokensSQL, [userId]);
+  return result;
+};
+
 export {
   isEmailRegistered,
   isNicknameTaken,
@@ -107,4 +134,6 @@ export {
   comparePassword,
   findUserByEmail,
   findUserById,
+  patchUserById,
+  deleteUserById,
 };

@@ -14,8 +14,8 @@ const GridContainer = styled.div`
 const StyledGridItem = styled.div<{ size: number }>`
   padding-right: 15px;
   padding-left: 15px;
-  flex: 0 0 ${props => (props.size / 12) * 100}%;
-  max-width: ${props => (props.size / 12) * 100}%;
+  flex: 0 0 ${({ size }) => (size / 12) * 100}%;
+  max-width: ${({ size }) => (size / 12) * 100}%;
 `;
 
 // 그리드 컨테이너 컴포넌트 Props 타입 정의

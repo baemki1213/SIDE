@@ -57,11 +57,16 @@ export const buttonSizeTheme: IButtonSize = {
     fontWeight: "semiBold",
     buttonHeight: "40px",
   },
+  xSmall: {
+    fontSize: "xs",
+    fontWeight: "semiBold",
+    buttonHeight: "30px",
+  },
 };
 
 export const buttonStyle: IButtonStyle = {
   primary: {
-    backgroundColor: "mainColor",
+    backgroundColor: "pointColor",
     fontColor: "mainWhite",
     border: {
       borderWidth: "1px",
@@ -70,12 +75,12 @@ export const buttonStyle: IButtonStyle = {
     },
   },
   secondary: {
-    backgroundColor: "white",
-    fontColor: "mainColor",
+    backgroundColor: "mainWhite",
+    fontColor: "pointColor",
     border: {
       borderWidth: "1px",
       borderStyle: "solid",
-      borderColor: "mainColor",
+      borderColor: "pointColor",
     },
   },
   ghost: {

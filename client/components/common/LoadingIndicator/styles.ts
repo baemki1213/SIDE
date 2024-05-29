@@ -51,8 +51,8 @@ const rotate = keyframes`
 
 // 스피너 컴포넌트 스타일링
 export const Spinner = styled.div<{ size?: string }>`
-  border: 5px solid ${colors.grayEd};
-  border-top: 5px solid ${colors.mainColor};
+  border: 5px solid ${({ theme }) => theme.colors.grayEd};
+  border-top: 5px solid ${({ theme }) => theme.colors.pointColor};
   border-radius: 50%;
   width: ${({ size }) => size || "50px"};
   height: ${({ size }) => size || "50px"};

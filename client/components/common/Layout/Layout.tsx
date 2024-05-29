@@ -18,11 +18,13 @@ const Layout = ({ children }: Props) => {
 export default Layout;
 
 const LayoutContainer = styled.div`
-  position: fixed;
-  width: 100vw;
+  width: 100%;
   height: 100vh;
   display: flex;
   flex-direction: column;
 `;
 
-const Content = styled.div``;
+const Content = styled.div`
+  flex: 1;
+  overflow: auto;
+`;

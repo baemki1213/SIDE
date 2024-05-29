@@ -33,7 +33,7 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
     login({ email, password });
   };
   const handleResetClick = () => {
-    router.push("/account/reset");
+    router.push("/account/request-reset");
   };
   const handleSignUpClick = () => {
     router.push("/account/register");

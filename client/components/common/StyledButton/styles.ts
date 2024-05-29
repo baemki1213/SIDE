@@ -21,7 +21,9 @@ export const Container = styled.button<{
   buttonType: ButtonStyleKey;
   borderRadius: string;
   disabled: boolean;
+  opacity: number;
 }>`
+  opacity: ${({ opacity }) => opacity};
   width: ${({ width }) => width};
   height: ${({ size }) => buttonSizeTheme[size]?.buttonHeight};
   background-color: ${({ buttonType }) =>
@@ -34,4 +36,13 @@ export const Container = styled.button<{
     colors[buttonStyle[buttonType]?.border.borderColor]};
   border-radius: ${({ borderRadius }) => borderRadius};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:active {
+    box-shadow: 0 3px ${colors.grayEd};
+    transform: translateY(3px);
+  }
 `;
