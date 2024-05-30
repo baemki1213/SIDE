@@ -1,13 +1,16 @@
 {
   "compilerOptions": {
     "target": "es2022",
+    "module": "CommonJS",
+    "outDir": "./dist",
     "strict": true,
     "esModuleInterop": true,
-    "preserveValueImports": false,
-    "module": "CommonJS"
+    "preserveValueImports": false
   },
   "ts-node": {
     "esm": true,
     "experimentalSpecifierResolution": "node"
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules"]
 }
