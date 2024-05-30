@@ -99,6 +99,7 @@ export default function Home() {
         <StyledText
           text="&copy; 2024 Mapack. All rights reserved."
           textAlign="center"
+          fontSize="xs"
         />
       </Footer>
     </Container>
