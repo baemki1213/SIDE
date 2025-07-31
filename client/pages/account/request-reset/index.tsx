@@ -20,7 +20,7 @@ const RequestResetPassword: React.FC = () => {
     event.preventDefault();
     setIsLoading(true);
     try {
-      const data: any = await requestResetPassword({ email });
+      const data = await requestResetPassword({ email });
       dispatch(showToast(data.data.message));
     } catch (error: any) {
       dispatch(showToast(error.response.data.message));

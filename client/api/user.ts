@@ -62,15 +62,11 @@ export const logout = async (data: any) => {
 };
 
 export const getUserInfo = async (data: {}, token: string, dispatch: any) => {
-  return await requestWithAuth(
-    {
-      method: "get",
-      url: "/user/user-info/",
-      data,
-    },
-    token,
-    dispatch
-  );
+  return await requestWithAuth({
+    method: "get",
+    url: "/user/user-info/",
+    data,
+  });
 };
 
 export const requestResetPassword = async (data: { email: string }) => {
@@ -92,14 +88,10 @@ export const resetPassword = async (data: {
   });
 };
 
-export const deleteUser = async (token: string, dispatch: any) => {
-  return await requestWithAuth(
-    {
-      method: "delete",
-      url: "/user/delete-account",
-      data: {},
-    },
-    token,
-    dispatch
-  );
+export const deleteUser = async () => {
+  return await requestWithAuth({
+    method: "delete",
+    url: "/user/delete-account",
+    data: {},
+  });
 };
