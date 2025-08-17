@@ -18,7 +18,7 @@ Mapack - 위치 기반 장소 추천 토너먼트 서비스
 - 실제 위치 데이터를 활용한 현실적인 추천
 - 점심 메뉴 선정
 
-### Frontend (clinet/)
+### Frontend (client/)
 ```
 components/
 ├── common/             # 재사용 컴포넌트 (Button, Modal, Layout 등)
