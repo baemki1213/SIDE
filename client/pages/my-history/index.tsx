@@ -16,11 +16,10 @@ import { selectAuthState } from "@/store/authSlice";
 import { PlaceInfo } from "@/types/map";
 
 const MyHistory = () => {
-  const dispatch = useAppDispatch();
   const router = useRouter();
 
   const [page, setPage] = useState(1);
-  const { isLogin, userInfo, access_token } = useAppSelector(selectAuthState);
+  const { isLogin, userInfo } = useAppSelector(selectAuthState);
 
   useEffect(() => {
     if (!isLogin) {
@@ -28,12 +27,7 @@ const MyHistory = () => {
     }
   }, [isLogin, router]);
 
-  const { data, isLoading, isError } = useUserPlaces(
-    userInfo.id,
-    page,
-    access_token,
-    dispatch
-  );
+  const { data, isLoading, isError } = useUserPlaces(userInfo.id, page);
 
   const groupPlacesByDate = (places: PlaceInfo[]) => {
     return places.reduce((acc, place) => {

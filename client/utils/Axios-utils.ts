@@ -1,9 +1,9 @@
-import { Dispatch } from "@reduxjs/toolkit";
 import { AxiosError, AxiosResponse } from "axios";
 
 import { instance } from "../api/Core";
 import { refreshToken } from "@/api/auth";
-import { setAccessToken } from "@/store/authSlice";
+
+import { dispatch } from "@/store";
 
 interface IRequestOptions {
   method?: "get" | "post" | "patch" | "delete" | "put";
@@ -12,15 +12,15 @@ interface IRequestOptions {
   "Content-Type"?: "application/json" | "multipart/form-data";
 }
 
-export const requestWithAuth = async (
-  { ...options }: IRequestOptions,
-  token: string,
-  dispatch: Dispatch
-) => {
-  instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+export const requestWithAuth = async (options: IRequestOptions) => {
+  const token = localStorage.getItem("access_token"); // ✅ 또는 Redux 상태에서 직접
+  if (token) {
+    instance.defaults.headers.common.Authorization = `Bearer ${token}`;
+  }
   instance.defaults.headers.common["Content-Type"] = "application/json";
 
   const onSuccess = (res: AxiosResponse<any>) => res?.data;
+
   const onError = async (err: AxiosError<any>) => {
     if (
       (err.response?.status === 401 &&
@@ -30,9 +30,10 @@ export const requestWithAuth = async (
     ) {
       try {
         const newAccessToken = await refreshToken({});
-
         instance.defaults.headers.common.Authorization = `Bearer ${newAccessToken.access_token}`;
-        dispatch(setAccessToken(newAccessToken.access_token));
+
+        localStorage.setItem("access_token", newAccessToken.access_token); // ✅ 추가
+
         return await instance(options).then(onSuccess);
       } catch (refreshError) {
         throw refreshError;

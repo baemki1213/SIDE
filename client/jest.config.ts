@@ -17,7 +17,6 @@ const customJestConfig = {
   testEnvironment: "jest-environment-jsdom",
   transform: {
     "^.+\\.tsx?$": "babel-jest",
-    "^.+\\.svg$": "jest-transformer-svg",
   },
   testEnvironmentOptions: {
     customExportConditions: [""],

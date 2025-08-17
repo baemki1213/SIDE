@@ -32,9 +32,8 @@ const Maps: React.FC = () => {
   const centerMarkerRef = useRef<naver.maps.Marker | null>(null);
   const markersRef = useRef<Array<naver.maps.Marker>>([]);
   const infoWindowRef = useRef<naver.maps.InfoWindow | null>(null);
-  const { userInfo, access_token, isLogin } = useAppSelector(selectAuthState);
+  const { userInfo, isLogin } = useAppSelector(selectAuthState);
   const userId = userInfo.id;
-  const token = access_token;
 
   const [filterInfo, setFilterInfo] = useState<FilterInfo>({
     query: "",
@@ -82,8 +81,6 @@ const Maps: React.FC = () => {
   );
 
   const { mutate: saveSelection } = useSaveSelection({
-    token,
-    dispatch,
     onSuccess: handleSuccess,
     onError: handleError,
   });

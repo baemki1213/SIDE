@@ -28,35 +28,22 @@ export const fetchAddresses = async (params: FetchAddressesParams) => {
   });
 };
 
-export const saveSelection = async (
-  data: SaveSelectionParams,
-  token: string,
-  dispatch: any
-) => {
+export const saveSelection = async (data: SaveSelectionParams) => {
   if (!data) return null;
-  return await requestWithAuth(
-    {
-      method: "post",
-      url: `/service/map/save-place-and-user`,
-      data,
-    },
-    token,
-    dispatch
-  );
+  return await requestWithAuth({
+    method: "post",
+    url: `/service/map/save-place-and-user`,
+    data,
+  });
 };
 
-export const fetchUserPlaces = async (
-  { userId, page }: FetchUserPlacesParams,
-  token: string,
-  dispatch: any
-) => {
-  return await requestWithAuth(
-    {
-      method: "get",
-      url: `/service/map/userPlaces/${userId}?page=${page}`,
-      data: {},
-    },
-    token,
-    dispatch
-  );
+export const fetchUserPlaces = async ({
+  userId,
+  page,
+}: FetchUserPlacesParams) => {
+  return await requestWithAuth({
+    method: "get",
+    url: `/service/map/userPlaces/${userId}?page=${page}`,
+    data: {},
+  });
 };

@@ -3,17 +3,16 @@ import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
 import { login } from "@/api/user";
-import { useAppDispatch } from "@/hooks/reduxHook";
 
 import { showToast } from "@/store/toastSlice";
 import { setLoginInfo } from "@/store/authSlice";
 import { IUserInfo } from "@/types/user";
+import { dispatch } from "@/store";
 
 export const useLogin = () => {
-  const dispatch: any = useAppDispatch();
   const router = useRouter();
 
-  const { data, mutate, isLoading, isError, isSuccess, error, reset } =
+  const { data, mutate, isPending, isError, isSuccess, error, reset } =
     useMutation<
       AxiosResponse<any, any>,
       any,
@@ -23,11 +22,15 @@ export const useLogin = () => {
       onSuccess: async (res: {
         data: { user: IUserInfo; access_token: string; refresh_token: string };
       }) => {
+        const { user, access_token } = res.data;
+
+        // ✅ 로컬스토리지에 저장해서 requestWithAuth에서 자동 사용되게
+        localStorage.setItem("access_token", access_token);
+
         dispatch(
           setLoginInfo({
             isLogin: true,
-            userInfo: res.data.user,
-            access_token: res.data.access_token,
+            userInfo: user,
           })
         );
         dispatch(showToast("환영합니다."));
@@ -39,7 +42,7 @@ export const useLogin = () => {
     });
   return {
     mutate,
-    isLoading,
+    isPending,
     isSuccess,
     isError,
     error,

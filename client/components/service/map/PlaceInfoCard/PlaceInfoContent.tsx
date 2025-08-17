@@ -15,12 +15,6 @@ const PlaceInfoContent = ({ place }: Props) => {
   return (
     <>
       <StyledText text="미리보기" />
-      <StyledText
-        text="(카카오 맵의 사진을 클릭한 후 왼쪽 또는 오른쪽 영역을 클릭하여 이동할 수 있습니다.)"
-        fontSize="xs"
-        fontColor="gray130"
-        textAlign="center"
-      />
       <Gap side={5} />
       <IframeWrapper>
         <Iframe src={place.place_url} allowFullScreen />
@@ -87,9 +81,6 @@ const IframeWrapper = styled.div`
   height: 300px;
   border: 1px solid ${colors.grayDisabledColor};
   cursor: pointer;
-  :hover {
-    border: 1px solid ${colors.black47};
-  }
 `;
 
 const Iframe = styled.iframe`

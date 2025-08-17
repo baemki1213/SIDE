@@ -26,7 +26,7 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
     password,
     password
   );
-  const { mutate: login, isLoading: loginIsLoading } = useLogin();
+  const { mutate: login, isPending: loginIsLoading } = useLogin();
   const loginIsValid = EmailIsValid && passwordIsValid;
 
   const handleLoginClick = async () => {
