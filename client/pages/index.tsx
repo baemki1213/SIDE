@@ -9,6 +9,7 @@ import { wrapper } from "@/store";
 import { selectAuthState, setIsLogin } from "@/store/authSlice";
 import { colors } from "@/styles/assets";
 import { useRouter } from "next/router";
+import Text from "@/components/common/Text";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "true") {
   import("../mocks").then(({ setUpMocks }) => {
@@ -32,18 +33,13 @@ export default function Home() {
     <Container>
       <HeroSection>
         <HeroText>
-          <StyledText
-            text="안녕하세요!"
-            fontColor="pointColor"
-            fontWeight="bold"
-            fontSize="xl"
-          />
-          <StyledText
-            text="좋은 장소를 찾기를 바랍니다."
-            fontColor="pointColor"
-            fontWeight="bold"
-            fontSize="xl"
-          />
+          <Text className="text-xl font-bold text-point text-left">
+            안녕하세요!
+          </Text>
+          <Text className="text-xl font-bold text-point">
+            좋은 장소를 찾기를 바랍니다.
+          </Text>
+
           <Gap side={10} />
           <StyledButton
             buttonType="primary"
