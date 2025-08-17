@@ -20,8 +20,8 @@ interface Props {
 }
 
 const PlaceInfoCard = ({ place }: Props) => {
-  const { userInfo, access_token } = useAppSelector(selectAuthState);
-  const token = access_token;
+  const { userInfo } = useAppSelector(selectAuthState);
+
   const userId = userInfo.id;
   const dispatch = useAppDispatch();
   const handleSuccess = useCallback(() => {
@@ -51,8 +51,6 @@ const PlaceInfoCard = ({ place }: Props) => {
   );
 
   const { mutate: saveSelection } = useSaveSelection({
-    token,
-    dispatch,
     onSuccess: handleSuccess,
     onError: handleError,
   });

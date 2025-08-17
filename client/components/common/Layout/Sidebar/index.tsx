@@ -24,10 +24,9 @@ import { showToast } from "@/store/toastSlice";
 
 interface Props {
   isLogin: boolean;
-  token: string;
 }
 
-const Sidebar = ({ isLogin, token }: Props) => {
+const Sidebar = ({ isLogin }: Props) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
@@ -56,7 +55,7 @@ const Sidebar = ({ isLogin, token }: Props) => {
   const handleSignOut = async () => {
     setIsLoading(true);
     try {
-      const data = await deleteUser(token, dispatch);
+      const data = await deleteUser();
       dispatch(showToast(data.data.message));
       await logout({});
       router.push("/");

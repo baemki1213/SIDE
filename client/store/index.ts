@@ -5,18 +5,9 @@ import {
   ThunkAction,
   Action,
 } from "@reduxjs/toolkit";
-import { createWrapper, HYDRATE } from "next-redux-wrapper";
+import { createWrapper } from "next-redux-wrapper";
 import { authSlice } from "./authSlice";
-import {
-  persistStore,
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
-} from "redux-persist";
+import { persistStore, persistReducer } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
 import { toastSlice } from "./toastSlice";
 import { modalSlice } from "./modalSlice";
@@ -70,6 +61,7 @@ export const wrapper = createWrapper<AppStore>(makeStore, {
 });
 export type AppStore = ReturnType<typeof makeStore>;
 export type RootState = ReturnType<typeof store.getState>;
+export const dispatch = store.dispatch;
 export type AppDispatch = typeof store.dispatch;
 export type AppThunk<ReturnType = void> = ThunkAction<
   ReturnType,

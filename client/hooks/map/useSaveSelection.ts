@@ -9,15 +9,11 @@ interface SaveSelectionParams {
 }
 
 interface UseSaveSelectionProps {
-  token: string;
-  dispatch: any;
   onSuccess?: () => void;
   onError?: (error: Error) => void;
 }
 
 const useSaveSelection = ({
-  token,
-  dispatch,
   onSuccess,
   onError,
 }: UseSaveSelectionProps): UseMutationResult<
@@ -26,8 +22,7 @@ const useSaveSelection = ({
   SaveSelectionParams
 > => {
   return useMutation<any, Error, SaveSelectionParams>({
-    mutationFn: ({ userId, place }) =>
-      saveSelection({ userId, place }, token, dispatch),
+    mutationFn: ({ userId, place }) => saveSelection({ userId, place }),
     onSuccess: () => {
       if (onSuccess) onSuccess();
     },
