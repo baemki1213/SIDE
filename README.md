@@ -37,6 +37,8 @@ store/                # Redux Toolkit 상태 관리
 types/                # TypeScript 타입 정의
 api/                  # API 통신 레이어
 utils/                # 유틸리티 함수들
+pages/                # Next.js 페이지 라우팅
+styles/               # 스타일 관련 파일
 ```
 
 ### Backend (server/)
