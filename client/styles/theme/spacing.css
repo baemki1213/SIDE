@@ -1,0 +1,17 @@
+@theme {
+  /* 🎯 지도 서비스 특화 간격 */
+  --spacing-marker: 2.25rem; /* 36px - 마커 크기 */
+  --spacing-control: 3rem; /* 48px - 컨트롤 버튼 */
+  --spacing-map-padding: 1rem; /* 16px - 지도 여백 */
+
+  /* 🌟 지도 서비스 특화 그림자 */
+  --shadow-map-control: 0 2px 10px rgba(0, 0, 0, 0.1);
+  --shadow-info-window: 0 4px 20px rgba(0, 0, 0, 0.15);
+  --shadow-floating: 0 8px 30px rgba(0, 0, 0, 0.12);
+
+  /* 📐 반응형 브레이크포인트 (필요시) */
+  --breakpoint-mobile: 480px;
+  --breakpoint-tablet: 768px;
+  --breakpoint-desktop: 1024px;
+  --breakpoint-wide: 1200px;
+}

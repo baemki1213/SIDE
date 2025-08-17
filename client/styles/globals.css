@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import "./theme/index.css";
 @import "./reset.css";
 
 body {
