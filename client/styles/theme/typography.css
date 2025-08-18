@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 @theme {
   /* 📏 폰트 크기 시스템 */
   --text-xxs: 10px;
@@ -31,7 +33,8 @@
   --font-weight-900: 900;
 
   /* 📖 폰트 패밀리 */
-  --font-family-sans: "Pretendard", -apple-system, BlinkMacSystemFont,
-    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
-    "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-family-sans:
+    "Pretendard", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans",
+    "Helvetica Neue", sans-serif;
 }

@@ -1,19 +1,21 @@
 import { useCallback } from "react";
+
 import styled from "styled-components";
 
 import useSaveSelection from "@/hooks/map/useSaveSelection";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
 import Gap from "@/components/common/Gap";
-import StyledText from "@/components/common/StyledText";
 import StyledButton from "@/components/common/StyledButton";
-import PlaceInfoContent from "./PlaceInfoContent";
+import StyledText from "@/components/common/StyledText";
 
+import { selectAuthState } from "@/store/authSlice";
+import { openModal } from "@/store/modalSlice";
+import { showToast } from "@/store/toastSlice";
 import { colors } from "@/styles/assets";
 import { PlaceInfo } from "@/types/map";
-import { openModal } from "@/store/modalSlice";
-import { selectAuthState } from "@/store/authSlice";
-import { showToast } from "@/store/toastSlice";
+
+import PlaceInfoContent from "./PlaceInfoContent";
 
 interface Props {
   place: PlaceInfo;
@@ -38,8 +40,8 @@ const PlaceInfoCard = ({ place }: Props) => {
             fontColor="black47"
             fontWeight="semiBold"
           />
-        </>
-      )
+        </>,
+      ),
     );
   }, [dispatch]);
 
@@ -47,7 +49,7 @@ const PlaceInfoCard = ({ place }: Props) => {
     (error: any) => {
       dispatch(showToast(error.response.data.message));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const { mutate: saveSelection } = useSaveSelection({
@@ -60,7 +62,7 @@ const PlaceInfoCard = ({ place }: Props) => {
       e.stopPropagation();
       saveSelection({ userId, place });
     },
-    [saveSelection, userId]
+    [saveSelection, userId],
   );
 
   return (
@@ -70,7 +72,7 @@ const PlaceInfoCard = ({ place }: Props) => {
       <StyledButton
         buttonType="primary"
         text="선택하기"
-        onClick={e => handleSelectClick(e, place)}
+        onClick={(e) => handleSelectClick(e, place)}
         size="medium"
       />
     </CardWrapper>

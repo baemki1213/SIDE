@@ -1,9 +1,11 @@
-import { useRouter } from "next/router";
 import { ChangeEvent } from "react";
+
+import { useRouter } from "next/router";
+
 import styled from "styled-components";
 
-import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
 import { useLogin } from "@/hooks/user/login/useLogin";
+import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
 import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
 import Gap from "@/components/common/Gap";
@@ -15,7 +17,7 @@ interface IProps {
   email: string;
   password: string;
   handleChange: (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => void;
 }
 
@@ -24,7 +26,7 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
   const { isValid: EmailIsValid } = useEmailValidation(email);
   const { isPassword1Valid: passwordIsValid } = usePasswordValidation(
     password,
-    password
+    password,
   );
   const { mutate: login, isPending: loginIsLoading } = useLogin();
   const loginIsValid = EmailIsValid && passwordIsValid;

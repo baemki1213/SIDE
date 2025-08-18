@@ -1,6 +1,7 @@
-import { checkNickname } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError, AxiosResponse } from "axios";
+
+import { checkNickname } from "@/api/user";
 
 interface NicknameVerificationError {
   response: {
@@ -13,7 +14,7 @@ interface NicknameVerificationError {
 
 export const useNicknameVerification = (
   setIsNicknameValid: (value: boolean) => void,
-  setErrorMessage: (value: any) => void
+  setErrorMessage: (value: any) => void,
 ) => {
   const {
     mutate: verifyName,

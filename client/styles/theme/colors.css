@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 @theme {
   /* 🎨 메인 브랜드 색상 */
   --color-point: #1e4083;

@@ -6,7 +6,7 @@ const slideUp = keyframes`
 `;
 
 export const BottomSheetBackdrop = styled.div<{ isShowing: boolean }>`
-  display: ${props => (props.isShowing ? "block" : "none")};
+  display: ${(props) => (props.isShowing ? "block" : "none")};
   position: fixed;
   z-index: 1;
   left: 0;

@@ -2,12 +2,12 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "@/hooks/reduxHook";
 
+import { selectAuthState } from "@/store/authSlice";
+
+import StyledText from "../../StyledText";
 import StyledTextButton from "../../StyledTextButton";
 import Sidebar from "../Sidebar";
-import StyledText from "../../StyledText";
-
 import * as S from "./styles";
-import { selectAuthState } from "@/store/authSlice";
 
 const Header = () => {
   const router = useRouter();

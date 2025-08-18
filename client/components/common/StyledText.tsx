@@ -1,11 +1,11 @@
 import styled from "styled-components";
 
 import {
-  colors,
   ColorKeyTypes,
-  fontSize,
   FontSizeKeyTypes,
   FontWeightKeyTypes,
+  colors,
+  fontSize,
   fontWeight,
 } from "../../styles/assets";
 
@@ -61,8 +61,8 @@ const Wrapper = styled.div<{
   width?: string;
   textAlign?: "left" | "right" | "center" | "justify" | "initial" | "inherit";
 }>`
-  width: ${props => props.width};
-  text-align: ${props => props.textAlign};
+  width: ${(props) => props.width};
+  text-align: ${(props) => props.textAlign};
 `;
 
 const Text = styled.p<{
@@ -81,19 +81,20 @@ const Text = styled.p<{
   whiteSpace?: "normal" | "nowrap";
 }>`
   overflow: hidden;
-  display: ${props => (props.numberOfLines ? "-webkit-box" : "inherit")};
-  text-overflow: ${props => (props.numberOfLines ? "ellipsis" : "inherit")};
-  -webkit-box-orient: ${props =>
+  display: ${(props) => (props.numberOfLines ? "-webkit-box" : "inherit")};
+  text-overflow: ${(props) => (props.numberOfLines ? "ellipsis" : "inherit")};
+  -webkit-box-orient: ${(props) =>
     props.numberOfLines ? "vertical" : "inherit"};
-  -webkit-line-clamp: ${props =>
+  -webkit-line-clamp: ${(props) =>
     props.numberOfLines ? props.numberOfLines : "inherit"};
-  font-size: ${props => fontSize[props?.fontSize as FontSizeKeyTypes].size};
-  line-height: ${props =>
+  font-size: ${(props) => fontSize[props?.fontSize as FontSizeKeyTypes].size};
+  line-height: ${(props) =>
     fontSize[props?.fontSize as FontSizeKeyTypes]?.height};
-  font-weight: ${props => fontWeight[props?.fontWeight as FontWeightKeyTypes]};
-  color: ${props => colors[props?.fontColor as ColorKeyTypes]};
-  text-decoration: ${props => props.textDecoration};
-  white-space: ${props => props.whiteSpace};
-  word-break: ${props => props.wordBreak};
+  font-weight: ${(props) =>
+    fontWeight[props?.fontWeight as FontWeightKeyTypes]};
+  color: ${(props) => colors[props?.fontColor as ColorKeyTypes]};
+  text-decoration: ${(props) => props.textDecoration};
+  white-space: ${(props) => props.whiteSpace};
+  word-break: ${(props) => props.wordBreak};
   transition: all 0.3s ease;
 `;

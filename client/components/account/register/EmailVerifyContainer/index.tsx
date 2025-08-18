@@ -6,15 +6,15 @@ import {
   useState,
 } from "react";
 
+import Gap from "@/components/common/Gap";
+import StyledButton from "@/components/common/StyledButton";
+import StyledText from "@/components/common/StyledText";
+import TextInput from "@/components/common/TextInput";
+
+import { sendVerificationEmail, verifyEmailCode } from "@/api/user";
 import { createNumRegex } from "@/utils/validations/account";
 
-import StyledText from "@/components/common/StyledText";
-import StyledButton from "@/components/common/StyledButton";
-import TextInput from "@/components/common/TextInput";
-import Gap from "@/components/common/Gap";
-
 import * as S from "./styles";
-import { sendVerificationEmail, verifyEmailCode } from "@/api/user";
 
 interface IProps {
   email: string;
@@ -47,7 +47,7 @@ export default function EmailVerifyContainer({
   }, [time]);
 
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const filteredValue = e.target.value
       .replace(/[^0-9]/g, "")

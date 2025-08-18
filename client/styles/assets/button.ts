@@ -1,4 +1,4 @@
-import { FontSizeKeyTypes, FontWeightKeyTypes, ColorKeyTypes } from ".";
+import { ColorKeyTypes, FontSizeKeyTypes, FontWeightKeyTypes } from ".";
 
 interface IButtonStyle {
   [key: string]: IButtonStyleDetail;

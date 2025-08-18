@@ -1,28 +1,30 @@
-import { createRoot } from "react-dom/client";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { createRoot } from "react-dom/client";
+
 import { useRouter } from "next/router";
 
 import useLatLng from "@/hooks/map/useLatLng";
-import useSearchAddress from "@/hooks/map/useSearchAddress";
 import useSaveSelection from "@/hooks/map/useSaveSelection";
+import useSearchAddress from "@/hooks/map/useSearchAddress";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
-import * as S from "../../../styles/service/map";
-import FilterButton from "@/components/service/map/FilterButton";
-import CurrentLocationButton from "@/components/service/map/CurrentLocationButton";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
-import CenterMarkerButton from "@/components/service/map/CenterMarkerButton";
-import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
-import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
-import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
 import StyledText from "@/components/common/StyledText";
+import CenterMarkerButton from "@/components/service/map/CenterMarkerButton";
+import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
 import BattleModal from "@/components/service/map/CenterMarkerButton/BattleModal";
+import RandomPickButton from "@/components/service/map/CenterMarkerButton/RandomPickButton";
+import CurrentLocationButton from "@/components/service/map/CurrentLocationButton";
+import FilterButton from "@/components/service/map/FilterButton";
+import InfoWindowContent from "@/components/service/map/InfoWindowContainer";
 
-import { colors } from "@/styles/assets";
-import { FilterInfo, PlaceInfo } from "@/types/map";
+import { selectAuthState } from "@/store/authSlice";
 import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
-import { selectAuthState } from "@/store/authSlice";
+import { colors } from "@/styles/assets";
+import { FilterInfo, PlaceInfo } from "@/types/map";
+
+import * as S from "../../../styles/service/map";
 
 const Maps: React.FC = () => {
   const router = useRouter();
@@ -45,7 +47,7 @@ const Maps: React.FC = () => {
   const { data: searchData, refetch } = useSearchAddress(
     filterInfo,
     position.latitude,
-    position.longitude
+    position.longitude,
   );
 
   const closeInfoWindow = useCallback(() => {
@@ -68,8 +70,8 @@ const Maps: React.FC = () => {
             fontColor="black47"
             fontWeight="semiBold"
           />
-        </>
-      )
+        </>,
+      ),
     );
   }, [dispatch]);
 
@@ -77,7 +79,7 @@ const Maps: React.FC = () => {
     (error: any) => {
       dispatch(showToast(error.response.data.message));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const { mutate: saveSelection } = useSaveSelection({
@@ -94,15 +96,15 @@ const Maps: React.FC = () => {
         alert("로그인 해주세요!");
       }
     },
-    [saveSelection, userId, isLogin]
+    [saveSelection, userId, isLogin],
   );
 
   const handleBattleClick = (places: PlaceInfo[]) => {
     if (isLogin) {
       dispatch(
         openModal(
-          <BattleModal places={places} onFinalSelection={handleSelectClick} />
-        )
+          <BattleModal places={places} onFinalSelection={handleSelectClick} />,
+        ),
       );
     } else {
       alert("로그인 해주세요!");
@@ -114,7 +116,7 @@ const Maps: React.FC = () => {
       map: naver.maps.Map,
       latitude: number,
       longitude: number,
-      radius: number
+      radius: number,
     ) => {
       if (currentCircleRef.current) {
         currentCircleRef.current.setMap(null);
@@ -130,15 +132,15 @@ const Maps: React.FC = () => {
         fillOpacity: 0.3,
       });
     },
-    []
+    [],
   );
 
   const addMarkersToMap = useCallback(
     (map: naver.maps.Map, places: PlaceInfo[]) => {
-      markersRef.current.forEach(marker => marker.setMap(null));
+      markersRef.current.forEach((marker) => marker.setMap(null));
       markersRef.current = [];
 
-      places.forEach(place => {
+      places.forEach((place) => {
         const marker = new naver.maps.Marker({
           position: new naver.maps.LatLng(Number(place.y), Number(place.x)),
           map,
@@ -174,13 +176,13 @@ const Maps: React.FC = () => {
         markersRef.current.push(marker);
       });
     },
-    [closeInfoWindow, handleSelectClick]
+    [closeInfoWindow, handleSelectClick],
   );
 
   const handleCurrentLocationClick = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
-        position => {
+        (position) => {
           const { latitude, longitude } = position.coords;
           const newCenter = new naver.maps.LatLng(latitude, longitude);
 
@@ -204,9 +206,9 @@ const Maps: React.FC = () => {
             }
           }
         },
-        error => {
+        (error) => {
           console.error("Error fetching current location:", error);
-        }
+        },
       );
     }
   };
@@ -258,7 +260,7 @@ const Maps: React.FC = () => {
         mapRef.current,
         position.latitude,
         position.longitude,
-        filterInfo.radius
+        filterInfo.radius,
       );
     }
   }, [
@@ -276,7 +278,7 @@ const Maps: React.FC = () => {
         mapRef.current,
         position.latitude,
         position.longitude,
-        filterInfo.radius
+        filterInfo.radius,
       );
       refetch();
     }
@@ -298,7 +300,7 @@ const Maps: React.FC = () => {
     if (mapRef.current) {
       const handleResize = () => {
         mapRef.current?.setSize(
-          new naver.maps.Size(window.innerWidth, window.innerHeight)
+          new naver.maps.Size(window.innerWidth, window.innerHeight),
         );
       };
 

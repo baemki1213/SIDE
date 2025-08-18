@@ -1,8 +1,10 @@
-import { HYDRATE } from "next-redux-wrapper";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { RootState } from "./index";
+import { HYDRATE } from "next-redux-wrapper";
+
 import { IUserInfo } from "@/types/user";
+
+import { RootState } from "./index";
 
 // Type for our state
 export interface AuthState {
@@ -36,7 +38,7 @@ export const authSlice = createSlice({
     },
   },
 
-  extraReducers: builder => {
+  extraReducers: (builder) => {
     builder.addCase(HYDRATE, (state, action) => {
       return {
         ...state,

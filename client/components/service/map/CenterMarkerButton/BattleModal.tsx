@@ -1,15 +1,16 @@
-import styled from "styled-components";
 import React, { useState } from "react";
 
-import createBrackets from "@/utils/functions/map/createBrackets";
+import styled from "styled-components";
 
-import StyledText from "@/components/common/StyledText";
-import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
-import PlaceInfoContent from "../PlaceInfoCard/PlaceInfoContent";
+import StyledButton from "@/components/common/StyledButton";
+import StyledText from "@/components/common/StyledText";
 
 import { colors } from "@/styles/assets";
 import { PlaceInfo } from "@/types/map";
+import createBrackets from "@/utils/functions/map/createBrackets";
+
+import PlaceInfoContent from "../PlaceInfoCard/PlaceInfoContent";
 
 interface BattleModalProps {
   places: PlaceInfo[];
@@ -28,7 +29,7 @@ const BattleModal: React.FC<BattleModalProps> = ({
 
   const handleSelect = (place: PlaceInfo) => {
     const selectedPlace = currentRound.filter(
-      (roundPlace: PlaceInfo) => roundPlace === place
+      (roundPlace: PlaceInfo) => roundPlace === place,
     );
 
     setRounds((prev: PlaceInfo[]) => {

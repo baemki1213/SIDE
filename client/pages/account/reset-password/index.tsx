@@ -1,17 +1,19 @@
-import { useRouter } from "next/router";
 import { useState } from "react";
 
-import { resetPassword } from "@/api/user";
+import { useRouter } from "next/router";
+
 import { useAppDispatch } from "@/hooks/reduxHook";
+import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
-import * as S from "../../../styles/account/reset-password";
-
-import { showToast } from "@/store/toastSlice";
-import StyledText from "@/components/common/StyledText";
-import TextInput from "@/components/common/TextInput";
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
-import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
+import StyledText from "@/components/common/StyledText";
+import TextInput from "@/components/common/TextInput";
+
+import { resetPassword } from "@/api/user";
+import { showToast } from "@/store/toastSlice";
+
+import * as S from "../../../styles/account/reset-password";
 
 const ResetPassword = () => {
   const dispatch = useAppDispatch();
@@ -23,7 +25,7 @@ const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const { isPassword1Valid, isPassword2Valid } = usePasswordValidation(
     newPassword,
-    newPassword
+    newPassword,
   );
 
   const handleSubmit = async (event: React.FormEvent) => {
@@ -51,7 +53,7 @@ const ResetPassword = () => {
             name="newPassword"
             type="password"
             value={newPassword}
-            onChange={e => setNewPassword(e.target.value)}
+            onChange={(e) => setNewPassword(e.target.value)}
             isValid={newPassword ? isPassword1Valid : true}
           />
         </S.LabelContainer>

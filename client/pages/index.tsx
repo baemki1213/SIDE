@@ -1,15 +1,17 @@
-import styled from "styled-components";
 import { useSelector } from "react-redux";
 
-import StyledText from "@/components/common/StyledText";
-import StyledButton from "@/components/common/StyledButton";
+import { useRouter } from "next/router";
+
+import styled from "styled-components";
+
 import Gap from "@/components/common/Gap";
+import StyledButton from "@/components/common/StyledButton";
+import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 
 import { wrapper } from "@/store";
 import { selectAuthState, setIsLogin } from "@/store/authSlice";
 import { colors } from "@/styles/assets";
-import { useRouter } from "next/router";
-import Text from "@/components/common/Text";
 
 if (process.env.NEXT_PUBLIC_API_MOCKING === "true") {
   import("../mocks").then(({ setUpMocks }) => {
@@ -103,19 +105,19 @@ export default function Home() {
 }
 
 export const getServerSideProps = wrapper.getServerSideProps(
-  store =>
+  (store) =>
     async ({ params }) => {
       store.dispatch(setIsLogin(false));
       console.log("State on server", store.getState());
       return {
         props: {},
       };
-    }
+    },
 );
 
 const Container = styled.div`
   width: 100%;
-  background-color: ${props => props.theme.colors.mainColor};
+  background-color: ${(props) => props.theme.colors.mainColor};
   overflow-y: auto;
 `;
 

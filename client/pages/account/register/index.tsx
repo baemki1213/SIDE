@@ -1,26 +1,28 @@
 import { ChangeEvent, useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
-import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
-import useNicknameValidation from "@/hooks/user/register/formValidation/useNicknameValidation";
+import { useAppDispatch } from "@/hooks/reduxHook";
 import {
   useEmailVerification,
   useNicknameVerification,
 } from "@/hooks/user/register/authentication";
 import { useSignUp } from "@/hooks/user/register/authentication/useSignUp";
-import { useAppDispatch } from "@/hooks/reduxHook";
+import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
+import useNicknameValidation from "@/hooks/user/register/formValidation/useNicknameValidation";
+import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
-import * as S from "../../../styles/account/register";
-import StyledText from "@/components/common/StyledText";
-import TextInput from "@/components/common/TextInput";
+import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
+import Gap from "@/components/common/Gap";
 // import SocialButtons from "@/components/account/SocialButtons";
 import StyledButton from "@/components/common/StyledButton";
-import Gap from "@/components/common/Gap";
-import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
+import StyledText from "@/components/common/StyledText";
+import TextInput from "@/components/common/TextInput";
 
 import { openModal } from "@/store/modalSlice";
+
+import * as S from "../../../styles/account/register";
 
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
@@ -42,7 +44,7 @@ export default function RegisterPage() {
     useEmailValidation(email);
   const { isPassword1Valid, isPassword2Valid } = usePasswordValidation(
     password,
-    password2
+    password2,
   );
   const { isValid: isNicknameValid, setIsValid: setIsNicknameValid } =
     useNicknameValidation(nickname);
@@ -54,7 +56,7 @@ export default function RegisterPage() {
   const { verifyEmail, isLoading: isVerifyEmailLoading } = useEmailVerification(
     setIsVerificationEmailSent,
     setErrorMessage,
-    setEmailIsValid
+    setEmailIsValid,
   );
   const {
     verifyName,
@@ -70,8 +72,8 @@ export default function RegisterPage() {
           fontColor="black47"
           fontSize="lg"
           fontWeight="semiBold"
-        />
-      )
+        />,
+      ),
     );
     router.push("/account/login");
   };
@@ -83,8 +85,8 @@ export default function RegisterPage() {
           fontColor="black47"
           fontSize="lg"
           fontWeight="semiBold"
-        />
-      )
+        />,
+      ),
     );
   };
 
@@ -103,7 +105,7 @@ export default function RegisterPage() {
   };
 
   const handleOnChange = (
-    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     e.preventDefault();
     switch (e.target.name) {

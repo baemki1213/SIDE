@@ -1,4 +1,5 @@
 import React from "react";
+
 import { cn } from "@/utils/styles/style-utils";
 
 interface TextProps {
@@ -18,7 +19,7 @@ export default function Text({
       className={cn(
         // 기본 스타일만 최소한으로
         "text-main transition-colors duration-200",
-        className
+        className,
       )}
       {...props}
     >

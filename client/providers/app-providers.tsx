@@ -1,18 +1,22 @@
 import {
-  useQuery,
-  useMutation,
-  useQueryClient,
   QueryClient,
   QueryClientProvider,
+  useMutation,
+  useQuery,
+  useQueryClient,
 } from "@tanstack/react-query";
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-import { persistor, store } from "../store";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
-import { ThemeProvider } from "styled-components";
-import { lightTheme, darkTheme } from "../styles/assets";
+import { PersistGate } from "redux-persist/integration/react";
+
 import { useState } from "react";
+import { Provider } from "react-redux";
+
+import { ThemeProvider } from "styled-components";
+
 import { RouteProvider } from "@/context/RouteContext";
+
+import { persistor, store } from "../store";
+import { darkTheme, lightTheme } from "../styles/assets";
 
 const queryClient = new QueryClient();
 

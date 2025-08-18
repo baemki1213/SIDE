@@ -1,9 +1,9 @@
 import { AxiosError, AxiosResponse } from "axios";
 
-import { instance } from "../api/Core";
 import { refreshToken } from "@/api/auth";
-
 import { dispatch } from "@/store";
+
+import { instance } from "../api/Core";
 
 interface IRequestOptions {
   method?: "get" | "post" | "patch" | "delete" | "put";

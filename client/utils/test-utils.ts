@@ -1,20 +1,22 @@
-import { ReactElement } from "react";
 import {
-  render,
-  renderHook as rtlRenderHook,
   RenderHookOptions,
   RenderOptions,
+  render,
+  renderHook as rtlRenderHook,
 } from "@testing-library/react";
+
+import { ReactElement } from "react";
+
 import { AppProviders } from "../providers/app-providers";
 
 const customRender = (
   ui: ReactElement,
-  options?: Omit<RenderOptions, "wrapper">
+  options?: Omit<RenderOptions, "wrapper">,
 ) => render(ui, { wrapper: AppProviders, ...options });
 
 const customRenderHook = <TProps, TResult>(
   callback: (props: TProps) => TResult,
-  options?: Omit<RenderHookOptions<TProps>, "wrapper">
+  options?: Omit<RenderHookOptions<TProps>, "wrapper">,
 ) => {
   return rtlRenderHook(callback, { wrapper: AppProviders, ...options });
 };

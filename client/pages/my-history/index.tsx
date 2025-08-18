@@ -1,19 +1,22 @@
 import { format } from "date-fns";
 import { ko } from "date-fns/locale";
-import { useRouter } from "next/router";
+
 import { useEffect, useState } from "react";
+
+import { useRouter } from "next/router";
 
 import useUserPlaces from "@/hooks/map/useUserPlaces";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
-import { getLastCategory } from "@/utils/string";
 
-import * as S from "../../styles/my-history/my-history";
+import Gap from "@/components/common/Gap";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
 import StyledText from "@/components/common/StyledText";
-import Gap from "@/components/common/Gap";
 
 import { selectAuthState } from "@/store/authSlice";
 import { PlaceInfo } from "@/types/map";
+import { getLastCategory } from "@/utils/string";
+
+import * as S from "../../styles/my-history/my-history";
 
 const MyHistory = () => {
   const router = useRouter();
@@ -30,14 +33,17 @@ const MyHistory = () => {
   const { data, isLoading, isError } = useUserPlaces(userInfo.id, page);
 
   const groupPlacesByDate = (places: PlaceInfo[]) => {
-    return places.reduce((acc, place) => {
-      const date = format(new Date(place.created_at), "yyyy-MM-dd", {
-        locale: ko,
-      });
-      if (!acc[date]) acc[date] = [];
-      acc[date].push(place);
-      return acc;
-    }, {} as { [key: string]: PlaceInfo[] });
+    return places.reduce(
+      (acc, place) => {
+        const date = format(new Date(place.created_at), "yyyy-MM-dd", {
+          locale: ko,
+        });
+        if (!acc[date]) acc[date] = [];
+        acc[date].push(place);
+        return acc;
+      },
+      {} as { [key: string]: PlaceInfo[] },
+    );
   };
 
   if (isLoading || isError) return <FullPageLoadingIndicator />;
@@ -47,7 +53,7 @@ const MyHistory = () => {
   return (
     <S.Wrapper>
       <S.PlacesContainer>
-        {Object.keys(groupedPlaces).map(date => (
+        {Object.keys(groupedPlaces).map((date) => (
           <S.DateGroup key={date}>
             <StyledText text={date} fontColor="black47" fontWeight="bold" />
             <Gap side={10} />
@@ -108,7 +114,7 @@ const MyHistory = () => {
                     "yyyy-MM-dd HH:mm:ss",
                     {
                       locale: ko,
-                    }
+                    },
                   )}
                   fontSize="xs"
                   fontWeight="regular"
@@ -122,7 +128,7 @@ const MyHistory = () => {
 
       <S.Pagination>
         <S.Button
-          onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
         >
           이전
@@ -132,7 +138,7 @@ const MyHistory = () => {
           fontWeight="bold"
         />
         <S.Button
-          onClick={() => setPage(prev => prev + 1)}
+          onClick={() => setPage((prev) => prev + 1)}
           disabled={page >= data.meta.totalPages}
         >
           다음

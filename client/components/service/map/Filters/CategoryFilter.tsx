@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 
-import * as S from "./styles";
-import StyledText from "@/components/common/StyledText";
 import StyledButton from "@/components/common/StyledButton";
+import StyledText from "@/components/common/StyledText";
 
 import { FilterInfo } from "@/types/map";
+
+import * as S from "./styles";
 
 interface Props {
   filterInfo: FilterInfo;
@@ -21,7 +22,7 @@ const CategoryOptionsMap: { label: string; value: string }[] = [
 
 const CategoryFilter = ({ filterInfo, setFilterInfo }: Props) => {
   const handleCategoryButtonClick = (category: string) => {
-    setFilterInfo(prev => ({ ...prev, category }));
+    setFilterInfo((prev) => ({ ...prev, category }));
   };
 
   return (

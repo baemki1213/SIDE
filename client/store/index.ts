@@ -1,16 +1,18 @@
 import {
-  combineReducers,
-  configureStore,
+  Action,
   PayloadAction,
   ThunkAction,
-  Action,
+  combineReducers,
+  configureStore,
 } from "@reduxjs/toolkit";
-import { createWrapper } from "next-redux-wrapper";
-import { authSlice } from "./authSlice";
-import { persistStore, persistReducer } from "redux-persist";
+import { persistReducer, persistStore } from "redux-persist";
 import createWebStorage from "redux-persist/lib/storage/createWebStorage";
-import { toastSlice } from "./toastSlice";
+
+import { createWrapper } from "next-redux-wrapper";
+
+import { authSlice } from "./authSlice";
 import { modalSlice } from "./modalSlice";
+import { toastSlice } from "./toastSlice";
 
 const createNoopStorage = () => {
   return {
@@ -48,7 +50,7 @@ const persistedReducer = persistReducer(persistConfig, reducer);
 const makeStore = () =>
   configureStore({
     reducer: persistedReducer,
-    middleware: getDefaultMiddleware =>
+    middleware: (getDefaultMiddleware) =>
       getDefaultMiddleware({
         serializableCheck: false,
       }).concat(),

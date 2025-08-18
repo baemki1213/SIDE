@@ -1,14 +1,14 @@
 import React from "react";
+
 import styled from "styled-components";
 
-import { getLastCategory } from "@/utils/string";
-
-import StyledText from "@/components/common/StyledText";
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
+import StyledText from "@/components/common/StyledText";
 
-import { PlaceInfo } from "@/types/map";
 import { colors } from "@/styles/assets";
+import { PlaceInfo } from "@/types/map";
+import { getLastCategory } from "@/utils/string";
 
 interface InfoWindowContentProps {
   place: PlaceInfo;
@@ -59,7 +59,7 @@ const InfoWindowContent: React.FC<InfoWindowContentProps> = ({
         buttonType="primary"
         text="저장하기"
         size="xSmall"
-        onClick={e => {
+        onClick={(e) => {
           handleSelectClick(e, place);
           closeInfoWindow();
         }}

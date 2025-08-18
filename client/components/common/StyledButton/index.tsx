@@ -1,14 +1,15 @@
 import { ReactNode } from "react";
+
 import {
   ButtonSizeKey,
   ButtonStyleKey,
   buttonSizeTheme,
   buttonStyle,
 } from "@/styles/assets/button";
-import * as S from "./styles";
 
-import StyledText from "../StyledText";
 import { DotSpinner } from "../LoadingIndicator";
+import StyledText from "../StyledText";
+import * as S from "./styles";
 
 interface IProps {
   children?: ReactNode;

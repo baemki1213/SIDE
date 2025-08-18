@@ -5,9 +5,9 @@ import { setUserInfo } from "@/store/authSlice";
 export const fetchUserInfoAndUpdateRedux = (
   data: {},
   token: string,
-  dispatch: any
+  dispatch: any,
 ) => {
-  getUserInfo(data, token, dispatch).then(data => {
+  getUserInfo(data, token, dispatch).then((data) => {
     dispatch(setUserInfo(data.user));
   });
 };

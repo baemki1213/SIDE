@@ -1,6 +1,7 @@
-import { sendVerificationEmail } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+
+import { sendVerificationEmail } from "@/api/user";
 
 interface EmailVerificationError {
   response: {
@@ -13,7 +14,7 @@ interface EmailVerificationError {
 export const useEmailVerification = (
   setIsVerificationEmailSent: (value: boolean) => void,
   setErrorMessage: (value: any) => void,
-  setEmailIsValid: (value: boolean) => void
+  setEmailIsValid: (value: boolean) => void,
 ) => {
   const {
     mutate: verifyEmail,

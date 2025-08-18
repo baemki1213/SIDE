@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
+import StyledText from "@/components/common/StyledText";
+
 import { colors } from "@/styles/assets";
 
-import StyledText from "@/components/common/StyledText";
 import GoogleLoginButton from "./GoogleLoginButton";
 import KakaoLoginButton from "./KakaoLoginButton";
 import NaverLoginButton from "./NaverLoginButton";

@@ -1,11 +1,11 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import * as S from "./styles";
-
 import { RootState } from "@/store";
 import { hideToast } from "@/store/toastSlice";
+
 import StyledText from "../StyledText";
+import * as S from "./styles";
 
 const ToastComponent = () => {
   const dispatch = useDispatch();

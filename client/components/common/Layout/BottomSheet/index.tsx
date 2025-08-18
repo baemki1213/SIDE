@@ -1,8 +1,9 @@
-import { FaTimes } from "react-icons/fa";
 import { Dispatch, ReactNode, SetStateAction } from "react";
+import { FaTimes } from "react-icons/fa";
+
+import { colors } from "@/styles/assets";
 
 import * as S from "./styles";
-import { colors } from "@/styles/assets";
 
 interface Props {
   isShowing: boolean;

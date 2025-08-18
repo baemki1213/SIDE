@@ -1,5 +1,6 @@
-import { emailValidationRegex } from "@/utils/validations/account";
 import { useEffect, useState } from "react";
+
+import { emailValidationRegex } from "@/utils/validations/account";
 
 const useEmailValidation = (email: string) => {
   const [isValid, setIsValid] = useState(false);

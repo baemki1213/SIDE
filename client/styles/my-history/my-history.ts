@@ -1,5 +1,6 @@
-import { colors } from "@/styles/assets";
 import styled from "styled-components";
+
+import { colors } from "@/styles/assets";
 
 export const Wrapper = styled.div`
   padding: 20px 60px;

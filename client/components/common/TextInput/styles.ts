@@ -1,5 +1,6 @@
-import { colors } from "@/styles/assets";
 import styled from "styled-components";
+
+import { colors } from "@/styles/assets";
 
 export const TextInputContainer = styled.div`
   display: flex;
@@ -12,9 +13,9 @@ export const TextInputTextBox = styled.input<{
   height?: number;
 }>`
   width: 100%;
-  height: ${props => (props.height ? props.height : 38)}px;
+  height: ${(props) => (props.height ? props.height : 38)}px;
   padding: 0 15px;
-  border: 1px solid ${props => (props.isValid ? colors.grayDb : colors.redFF)};
+  border: 1px solid ${(props) => (props.isValid ? colors.grayDb : colors.redFF)};
   border-radius: 4px;
 `;
 

@@ -1,7 +1,8 @@
+import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
+
 import Gap from "../Gap";
 import StyledText from "../StyledText";
 import * as S from "./styles";
-import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
 
 interface IProps {
   disabled?: boolean;

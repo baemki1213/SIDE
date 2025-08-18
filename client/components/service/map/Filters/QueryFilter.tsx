@@ -1,10 +1,11 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-import * as S from "./styles";
 import StyledText from "@/components/common/StyledText";
 import TextInput from "@/components/common/TextInput";
 
 import { FilterInfo } from "@/types/map";
+
+import * as S from "./styles";
 
 interface Props {
   filterInfo: FilterInfo;
@@ -13,11 +14,11 @@ interface Props {
 
 const QueryFilter = ({ filterInfo, setFilterInfo }: Props) => {
   const handleKeywordChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const query = e.target.value;
 
-    setFilterInfo(prev => ({ ...prev, query }));
+    setFilterInfo((prev) => ({ ...prev, query }));
   };
 
   return (

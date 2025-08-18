@@ -1,8 +1,10 @@
 import React, { FC } from "react";
-import * as S from "./styles";
 
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
+
 import { closeModal, selectModalState } from "@/store/modalSlice";
+
+import * as S from "./styles";
 
 const Modal: FC = () => {
   const dispatch = useAppDispatch();
@@ -16,7 +18,7 @@ const Modal: FC = () => {
   else
     return (
       <S.ModalBackdrop isShowing={isModalOpen} onClick={handleClose}>
-        <S.ModalContainer onClick={e => e.stopPropagation()}>
+        <S.ModalContainer onClick={(e) => e.stopPropagation()}>
           <S.CloseButton onClick={handleClose}>&times;</S.CloseButton>
           {children}
         </S.ModalContainer>
