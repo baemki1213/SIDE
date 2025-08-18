@@ -1,6 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import type { TypedUseSelectorHook } from "react-redux";
-import type { RootState, AppDispatch } from "../store";
+
+import type { AppDispatch, RootState } from "../store";
 
 /** useDispatch는 thunkAction에 대해서 타입에러를 발생시키므로 커스터 마이징해서 사용합니다. */
 export const useAppDispatch: () => AppDispatch = useDispatch;

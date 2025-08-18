@@ -1,6 +1,7 @@
-import { createUser } from "@/api/user";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
+
+import { createUser } from "@/api/user";
 
 interface SignUpError {
   response: {

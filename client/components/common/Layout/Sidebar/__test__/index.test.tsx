@@ -1,9 +1,12 @@
-import { fireEvent, render, screen, waitFor } from "@/utils/test-utils";
-import Sidebar from "..";
 import { useRouter } from "next/router";
+
 import { useAppDispatch } from "@/hooks/reduxHook";
+
 import { clearLoginInfo } from "@/store/authSlice";
 import { showToast } from "@/store/toastSlice";
+import { fireEvent, render, screen, waitFor } from "@/utils/test-utils";
+
+import Sidebar from "..";
 
 jest.mock("../../../../../hooks/reduxHook.ts", () => ({
   ...jest.requireActual("../../../../../hooks/reduxHook.ts"),
@@ -48,7 +51,7 @@ describe("sidebar", () => {
       const sidebarContainer = screen.getByTestId("sidebar-container");
       expect(sidebarContainer).toBeInTheDocument();
       expect(sidebarContainer).toHaveStyle(
-        "opacity: 0; top: 80px; left: -240px;"
+        "opacity: 0; top: 80px; left: -240px;",
       );
     });
   });
@@ -60,7 +63,7 @@ describe("sidebar", () => {
       const sidebarContainer = screen.getByTestId("sidebar-container");
       expect(sidebarContainer).toBeInTheDocument();
       expect(sidebarContainer).toHaveStyle(
-        "top: 0px; max-height: 100vh; left: 0px; opacity: 1;"
+        "top: 0px; max-height: 100vh; left: 0px; opacity: 1;",
       );
     });
     fireEvent.click(hamburgerIcon);
@@ -68,7 +71,7 @@ describe("sidebar", () => {
       const sidebarContainer = screen.getByTestId("sidebar-container");
       expect(sidebarContainer).toBeInTheDocument();
       expect(sidebarContainer).toHaveStyle(
-        "top: 80px; max-height: calc(100vh - 120px); left: -240px; opacity: 0;"
+        "top: 80px; max-height: calc(100vh - 120px); left: -240px; opacity: 0;",
       );
     });
   });
@@ -100,7 +103,7 @@ describe("sidebar", () => {
     await waitFor(() => {
       expect(mockDispatch).toHaveBeenCalledWith(clearLoginInfo());
       expect(mockDispatch).toHaveBeenCalledWith(
-        showToast("로그아웃 되었습니다.")
+        showToast("로그아웃 되었습니다."),
       );
     });
   });

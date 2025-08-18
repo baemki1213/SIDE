@@ -1,7 +1,10 @@
 import React from "react";
-import * as S from "./styles";
+
 import StyledButton from "@/components/common/StyledButton";
+
 import { PlaceInfo } from "@/types/map";
+
+import * as S from "./styles";
 
 interface Props {
   places: PlaceInfo[];

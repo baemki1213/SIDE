@@ -1,12 +1,13 @@
 import type { AppProps } from "next/app";
 
+import { createGlobalStyle } from "styled-components";
+
 import Layout from "@/components/common/Layout/Layout";
-import ToastComponent from "@/components/common/Toast";
 import Modal from "@/components/common/Modal";
+import ToastComponent from "@/components/common/Toast";
 
 import { AppProviders } from "@/providers/app-providers";
 import "@/styles/globals.css";
-import { createGlobalStyle } from "styled-components";
 
 export default function App({ Component, pageProps }: AppProps) {
   return (

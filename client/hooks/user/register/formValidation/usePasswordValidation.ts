@@ -12,7 +12,7 @@ const usePasswordValidation = (password1: string, password2: string) => {
 
   useEffect(() => {
     setIsPassword2Valid(
-      passwordValidationRegex.test(password2) && password1 === password2
+      passwordValidationRegex.test(password2) && password1 === password2,
     );
   }, [password1, password2]);
 

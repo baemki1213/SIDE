@@ -1,6 +1,7 @@
+import styled, { keyframes } from "styled-components";
+
 import { colors } from "@/styles/assets";
 import { ButtonStyleKey } from "@/styles/assets/button";
-import styled, { keyframes } from "styled-components";
 
 const bounce = keyframes`
   0%, 80%, 100% { transform: scale(0); }
@@ -14,8 +15,8 @@ export const Dot = styled.div<{ size?: string; buttonType?: ButtonStyleKey }>`
     buttonType === "primary"
       ? colors.grayEd
       : buttonType === "secondary"
-      ? colors.mainColor
-      : colors.grayEd};
+        ? colors.mainColor
+        : colors.grayEd};
   border-radius: 50%;
   display: inline-block;
   animation: ${bounce} 1.4s infinite ease-in-out both;

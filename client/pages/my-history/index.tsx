@@ -1,23 +1,25 @@
-import { format } from "date-fns";
-import { ko } from "date-fns/locale";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
-import useUserPlaces from "@/hooks/map/useUserPlaces";
-import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
-import { getLastCategory } from "@/utils/string";
+import { useRouter } from "next/router";
 
-import * as S from "../../styles/my-history/my-history";
-import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
-import StyledText from "@/components/common/StyledText";
+import { format } from "date-fns";
+import { ko } from "date-fns/locale";
+
+import useUserPlaces from "@/hooks/map/useUserPlaces";
+import { useAppSelector } from "@/hooks/reduxHook";
+
 import Gap from "@/components/common/Gap";
+import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
+import Text from "@/components/common/Text";
 
 import { selectAuthState } from "@/store/authSlice";
 import { PlaceInfo } from "@/types/map";
+import { getLastCategory } from "@/utils/string";
+
+import * as S from "../../styles/my-history/my-history";
 
 const MyHistory = () => {
   const router = useRouter();
-
   const [page, setPage] = useState(1);
   const { isLogin, userInfo } = useAppSelector(selectAuthState);
 
@@ -30,14 +32,17 @@ const MyHistory = () => {
   const { data, isLoading, isError } = useUserPlaces(userInfo.id, page);
 
   const groupPlacesByDate = (places: PlaceInfo[]) => {
-    return places.reduce((acc, place) => {
-      const date = format(new Date(place.created_at), "yyyy-MM-dd", {
-        locale: ko,
-      });
-      if (!acc[date]) acc[date] = [];
-      acc[date].push(place);
-      return acc;
-    }, {} as { [key: string]: PlaceInfo[] });
+    return places.reduce(
+      (acc, place) => {
+        const date = format(new Date(place.created_at), "yyyy-MM-dd", {
+          locale: ko,
+        });
+        if (!acc[date]) acc[date] = [];
+        acc[date].push(place);
+        return acc;
+      },
+      {} as { [key: string]: PlaceInfo[] },
+    );
   };
 
   if (isLoading || isError) return <FullPageLoadingIndicator />;
@@ -47,44 +52,26 @@ const MyHistory = () => {
   return (
     <S.Wrapper>
       <S.PlacesContainer>
-        {Object.keys(groupedPlaces).map(date => (
+        {Object.keys(groupedPlaces).map((date) => (
           <S.DateGroup key={date}>
-            <StyledText text={date} fontColor="black47" fontWeight="bold" />
+            <Text className="text-black-47 text-lg font-bold">{date}</Text>
             <Gap side={10} />
             {groupedPlaces[date].map((place, index) => (
               <S.PlaceCard key={index}>
-                <StyledText
-                  text={place.place_name}
-                  fontColor="black47"
-                  fontSize="lg"
-                  fontWeight="bold"
-                  textAlign="center"
-                />
+                <Text className="text-black-47 text-lg font-bold text-center">
+                  {place.place_name}
+                </Text>
                 <Gap side={5} />
-                <StyledText
-                  text={getLastCategory(place.category_name)}
-                  fontSize="xs"
-                  fontColor="black47"
-                  fontWeight="regular"
-                  numberOfLines={1}
-                  textAlign="center"
-                />
+                <Text className="text-black-47 text-xs font-normal truncate text-center">
+                  {getLastCategory(place.category_name)}
+                </Text>
                 <Gap side={5} />
-                <StyledText
-                  text={place.road_address_name}
-                  fontSize="xs"
-                  fontColor="gray130"
-                  fontWeight="regular"
-                  numberOfLines={1}
-                  textAlign="center"
-                />
-                <StyledText
-                  text={place.phone ? place.phone : "-"}
-                  fontSize="xs"
-                  fontColor="gray130"
-                  numberOfLines={1}
-                  textAlign="center"
-                />
+                <Text className="text-gray130 text-xs font-normal truncate text-center">
+                  {place.road_address_name}
+                </Text>
+                <Text className="text-gray130 text-xs font-normal truncate text-center">
+                  {place.phone ? place.phone : "-"}
+                </Text>
                 <Gap side={5} />
                 {place.place_url && (
                   <S.Link
@@ -92,28 +79,16 @@ const MyHistory = () => {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <StyledText
-                      text="카카오 맵에서 자세히 보기"
-                      fontSize="xs"
-                      fontColor="pointColor"
-                      fontWeight="bold"
-                      numberOfLines={1}
-                      textAlign="center"
-                    />
+                    <Text className="text-pointColor text-xs font-bold truncate text-center">
+                      카카오 맵에서 자세히 보기
+                    </Text>
                   </S.Link>
                 )}
-                <StyledText
-                  text={format(
-                    new Date(place.created_at),
-                    "yyyy-MM-dd HH:mm:ss",
-                    {
-                      locale: ko,
-                    }
-                  )}
-                  fontSize="xs"
-                  fontWeight="regular"
-                  textAlign="center"
-                />
+                <Text className="text-xs font-normal text-center">
+                  {format(new Date(place.created_at), "yyyy-MM-dd HH:mm:ss", {
+                    locale: ko,
+                  })}
+                </Text>
               </S.PlaceCard>
             ))}
           </S.DateGroup>
@@ -122,17 +97,14 @@ const MyHistory = () => {
 
       <S.Pagination>
         <S.Button
-          onClick={() => setPage(prev => Math.max(prev - 1, 1))}
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
         >
           이전
         </S.Button>
-        <StyledText
-          text={`${page} of ${data.meta.totalPages}`}
-          fontWeight="bold"
-        />
+        <Text className="font-bold">{`${page} of ${data.meta.totalPages}`}</Text>
         <S.Button
-          onClick={() => setPage(prev => prev + 1)}
+          onClick={() => setPage((prev) => prev + 1)}
           disabled={page >= data.meta.totalPages}
         >
           다음

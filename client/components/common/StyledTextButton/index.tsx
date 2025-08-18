@@ -1,11 +1,11 @@
-import * as S from "./styles";
-import StyledText from "../StyledText";
-
 import {
   ColorKeyTypes,
   FontSizeKeyTypes,
   FontWeightKeyTypes,
 } from "@/styles/assets";
+
+import StyledText from "../StyledText";
+import * as S from "./styles";
 
 interface StyledTextIProps {
   text?: string;

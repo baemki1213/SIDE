@@ -1,8 +1,10 @@
-import { logout } from "@/api/user";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+
 import { useAppDispatch } from "@/hooks/reduxHook";
+
+import { logout } from "@/api/user";
 import { clearLoginInfo } from "@/store/authSlice";
 import { showToast } from "@/store/toastSlice";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useLogout = () => {
   const dispatch = useAppDispatch();

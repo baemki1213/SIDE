@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+
 import { RootState } from ".";
 
 interface ToastState {
@@ -19,7 +20,7 @@ export const toastSlice = createSlice({
       state.message = action.payload;
       state.isVisible = true;
     },
-    hideToast: state => {
+    hideToast: (state) => {
       state.message = "";
       state.isVisible = false;
     },

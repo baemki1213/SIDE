@@ -1,26 +1,28 @@
 import { ChangeEvent, useState } from "react";
+
 import Link from "next/link";
 import { useRouter } from "next/router";
 
-import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
-import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
-import useNicknameValidation from "@/hooks/user/register/formValidation/useNicknameValidation";
+import { useAppDispatch } from "@/hooks/reduxHook";
 import {
   useEmailVerification,
   useNicknameVerification,
 } from "@/hooks/user/register/authentication";
 import { useSignUp } from "@/hooks/user/register/authentication/useSignUp";
-import { useAppDispatch } from "@/hooks/reduxHook";
+import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
+import useNicknameValidation from "@/hooks/user/register/formValidation/useNicknameValidation";
+import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
-import * as S from "../../../styles/account/register";
-import StyledText from "@/components/common/StyledText";
-import TextInput from "@/components/common/TextInput";
+import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
+import Gap from "@/components/common/Gap";
 // import SocialButtons from "@/components/account/SocialButtons";
 import StyledButton from "@/components/common/StyledButton";
-import Gap from "@/components/common/Gap";
-import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
+import Text from "@/components/common/Text";
+import TextInput from "@/components/common/TextInput";
 
 import { openModal } from "@/store/modalSlice";
+
+import * as S from "../../../styles/account/register";
 
 export default function RegisterPage() {
   const dispatch = useAppDispatch();
@@ -42,7 +44,7 @@ export default function RegisterPage() {
     useEmailValidation(email);
   const { isPassword1Valid, isPassword2Valid } = usePasswordValidation(
     password,
-    password2
+    password2,
   );
   const { isValid: isNicknameValid, setIsValid: setIsNicknameValid } =
     useNicknameValidation(nickname);
@@ -54,7 +56,7 @@ export default function RegisterPage() {
   const { verifyEmail, isLoading: isVerifyEmailLoading } = useEmailVerification(
     setIsVerificationEmailSent,
     setErrorMessage,
-    setEmailIsValid
+    setEmailIsValid,
   );
   const {
     verifyName,
@@ -65,26 +67,20 @@ export default function RegisterPage() {
   const handleSignUpSuccess = () => {
     dispatch(
       openModal(
-        <StyledText
-          text="회원가입이 완료되었습니다!"
-          fontColor="black47"
-          fontSize="lg"
-          fontWeight="semiBold"
-        />
-      )
+        <Text className="text-black-47 text-lg font-semibold">
+          회원가입이 완료되었습니다!
+        </Text>,
+      ),
     );
     router.push("/account/login");
   };
   const handleSignUpError = (error: any) => {
     dispatch(
       openModal(
-        <StyledText
-          text={`오류 발생: ${error.response.data.message}`}
-          fontColor="black47"
-          fontSize="lg"
-          fontWeight="semiBold"
-        />
-      )
+        <Text className="text-black-47 text-lg font-semibold">
+          오류 발생: {error.response.data.message}
+        </Text>,
+      ),
     );
   };
 
@@ -103,7 +99,7 @@ export default function RegisterPage() {
   };
 
   const handleOnChange = (
-    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
+    e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>,
   ) => {
     e.preventDefault();
     switch (e.target.name) {
@@ -158,12 +154,7 @@ export default function RegisterPage() {
   return (
     <S.Container>
       <S.Wrapper>
-        <StyledText
-          text="회원가입"
-          fontColor="black47"
-          fontWeight="bold"
-          fontSize="xl"
-        />
+        <Text className="text-black-47 text-xl font-bold">회원가입</Text>
 
         {/* <SocialButtons /> */}
         <Gap side={30} />
@@ -249,10 +240,14 @@ export default function RegisterPage() {
           />
           <Gap side={30} />
           <S.SignInWrapper>
-            <StyledText text="이미 아이디가 있다면?" />
+            <Text className="text-black-47 text-base font-normal">
+              이미 아이디가 있다면?
+            </Text>
             <Gap side={10} />
             <Link href={"/account/login/"}>
-              <StyledText text="로그인" textDecoration="underline" />
+              <Text className="text-black-47 text-base font-normal underline">
+                로그인
+              </Text>
             </Link>
           </S.SignInWrapper>
         </S.Form>

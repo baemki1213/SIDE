@@ -1,12 +1,12 @@
 import styled from "styled-components";
 
+import { colors } from "@/styles/assets";
 import {
   ButtonSizeKey,
   ButtonStyleKey,
   buttonSizeTheme,
   buttonStyle,
 } from "@/styles/assets/button";
-import { colors } from "@/styles/assets";
 
 export const LoadingContainer = styled.div`
   width: 100%;

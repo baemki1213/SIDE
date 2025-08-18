@@ -1,15 +1,16 @@
 import React, { useState } from "react";
 
-import { requestResetPassword } from "@/api/user";
 import { useAppDispatch } from "@/hooks/reduxHook";
 
-import * as S from "../../../styles/account/request-reset";
-
-import { showToast } from "@/store/toastSlice";
-import StyledText from "@/components/common/StyledText";
-import TextInput from "@/components/common/TextInput";
-import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
+import StyledButton from "@/components/common/StyledButton";
+import Text from "@/components/common/Text";
+import TextInput from "@/components/common/TextInput";
+
+import { requestResetPassword } from "@/api/user";
+import { showToast } from "@/store/toastSlice";
+
+import * as S from "../../../styles/account/request-reset";
 
 const RequestResetPassword: React.FC = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -25,17 +26,12 @@ const RequestResetPassword: React.FC = () => {
     } catch (error: any) {
       dispatch(showToast(error.response.data.message));
     }
-
     setIsLoading(false);
   };
 
   return (
     <S.Container>
-      <StyledText
-        text="비밀번호 재설정 요청"
-        fontSize="xl2"
-        fontWeight="bold"
-      />
+      <Text className="text-xl2 font-bold">비밀번호 재설정 요청</Text>
       <Gap side={50} />
       <S.FormContainer onSubmit={handleSubmit}>
         <S.LabelContainer>
@@ -44,7 +40,7 @@ const RequestResetPassword: React.FC = () => {
             name="email"
             type="email"
             value={email}
-            onChange={e => setEmail(e.target.value)}
+            onChange={(e) => setEmail(e.target.value)}
           />
         </S.LabelContainer>
         <Gap side={20} />

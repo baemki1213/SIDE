@@ -1,5 +1,6 @@
-import { colors } from "@/styles/assets";
 import styled, { keyframes } from "styled-components";
+
+import { colors } from "@/styles/assets";
 
 // 페이드 인 애니메이션 효과 정의
 const fadeIn = keyframes`
@@ -34,5 +35,7 @@ export const Toast = styled.div`
   padding: 10px 20px;
   border-radius: 5px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-  animation: ${fadeIn} 0.5s ease-in, ${fadeOut} 0.5s ease-out 2.5s;
+  animation:
+    ${fadeIn} 0.5s ease-in,
+    ${fadeOut} 0.5s ease-out 2.5s;
 `;

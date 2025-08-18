@@ -1,5 +1,6 @@
 // TypeScript를 사용한 MUI 스타일의 그리드 시스템 구현
 import React, { ReactNode } from "react";
+
 import styled from "styled-components";
 
 // 컨테이너 스타일 정의

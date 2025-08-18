@@ -1,42 +1,20 @@
-import styled from "styled-components";
+import Text from "@/components/common/Text";
 
-import { colors } from "@/styles/assets";
-
-import StyledText from "@/components/common/StyledText";
 import GoogleLoginButton from "./GoogleLoginButton";
 import KakaoLoginButton from "./KakaoLoginButton";
 import NaverLoginButton from "./NaverLoginButton";
 
 export default function SocialButtons() {
   return (
-    <ButtonsContainer>
-      <StyledText
-        text="SNS계정으로 간편가입"
-        fontColor="gray75"
-        fontSize="xs"
-        textAlign="center"
-      />
-      <ButtonsWrapper>
+    <div className="flex flex-col items-center border-b border-gray-ed pb-[30px] my-[30px]">
+      <Text className="text-gray-75 text-xs font-normal text-center">
+        SNS계정으로 간편가입
+      </Text>
+      <div className="w-[357px] flex justify-center mt-[15px]">
         <GoogleLoginButton />
         <KakaoLoginButton />
         <NaverLoginButton />
-      </ButtonsWrapper>
-    </ButtonsContainer>
+      </div>
+    </div>
   );
 }
-
-const ButtonsContainer = styled.div`
-  display: flex;
-  align-content: center;
-  flex-direction: column;
-  border-bottom: 1px solid ${colors.grayEd};
-  padding-bottom: 30px;
-  margin: 30px 0;
-`;
-
-const ButtonsWrapper = styled.div`
-  width: 357px;
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-`;

@@ -1,10 +1,11 @@
 import { Dispatch, SetStateAction } from "react";
 
-import * as S from "./styles";
-import StyledText from "@/components/common/StyledText";
 import StyledButton from "@/components/common/StyledButton";
+import Text from "@/components/common/Text";
 
 import { FilterInfo } from "@/types/map";
+
+import * as S from "./styles";
 
 interface Props {
   filterInfo: FilterInfo;
@@ -21,12 +22,12 @@ const CategoryOptionsMap: { label: string; value: string }[] = [
 
 const CategoryFilter = ({ filterInfo, setFilterInfo }: Props) => {
   const handleCategoryButtonClick = (category: string) => {
-    setFilterInfo(prev => ({ ...prev, category }));
+    setFilterInfo((prev) => ({ ...prev, category }));
   };
 
   return (
     <S.FilterContainer>
-      <StyledText text="카테고리" fontColor="black47" fontWeight="semiBold" />
+      <Text className="text-black-47 text-lg font-semibold">카테고리</Text>
       <S.FilterWrapper>
         {CategoryOptionsMap.map((categoryOption, index) => (
           <StyledButton

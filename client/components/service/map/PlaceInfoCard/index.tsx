@@ -1,19 +1,18 @@
 import { useCallback } from "react";
-import styled from "styled-components";
 
 import useSaveSelection from "@/hooks/map/useSaveSelection";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
 import Gap from "@/components/common/Gap";
-import StyledText from "@/components/common/StyledText";
 import StyledButton from "@/components/common/StyledButton";
-import PlaceInfoContent from "./PlaceInfoContent";
+import Text from "@/components/common/Text";
 
-import { colors } from "@/styles/assets";
-import { PlaceInfo } from "@/types/map";
-import { openModal } from "@/store/modalSlice";
 import { selectAuthState } from "@/store/authSlice";
+import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
+import { PlaceInfo } from "@/types/map";
+
+import PlaceInfoContent from "./PlaceInfoContent";
 
 interface Props {
   place: PlaceInfo;
@@ -21,25 +20,22 @@ interface Props {
 
 const PlaceInfoCard = ({ place }: Props) => {
   const { userInfo } = useAppSelector(selectAuthState);
-
   const userId = userInfo.id;
+
   const dispatch = useAppDispatch();
+
   const handleSuccess = useCallback(() => {
     dispatch(
       openModal(
         <>
-          <StyledText
-            text="✅ 탁월한 선택입니다!"
-            fontColor="black47"
-            fontWeight="semiBold"
-          />
-          <StyledText
-            text="선택한 장소들은 나의 기록에서 확인할 수 있어요!"
-            fontColor="black47"
-            fontWeight="semiBold"
-          />
-        </>
-      )
+          <Text className="text-black-47 font-semibold">
+            ✅ 탁월한 선택입니다!
+          </Text>
+          <Text className="text-black-47 font-semibold">
+            선택한 장소들은 나의 기록에서 확인할 수 있어요!
+          </Text>
+        </>,
+      ),
     );
   }, [dispatch]);
 
@@ -47,7 +43,7 @@ const PlaceInfoCard = ({ place }: Props) => {
     (error: any) => {
       dispatch(showToast(error.response.data.message));
     },
-    [dispatch]
+    [dispatch],
   );
 
   const { mutate: saveSelection } = useSaveSelection({
@@ -60,32 +56,21 @@ const PlaceInfoCard = ({ place }: Props) => {
       e.stopPropagation();
       saveSelection({ userId, place });
     },
-    [saveSelection, userId]
+    [saveSelection, userId],
   );
 
   return (
-    <CardWrapper>
+    <div className="min-h-[200px] border border-point rounded-[10px] p-[20px] flex flex-col items-center justify-center">
       <PlaceInfoContent place={place} />
       <Gap side={10} />
       <StyledButton
         buttonType="primary"
         text="선택하기"
-        onClick={e => handleSelectClick(e, place)}
+        onClick={(e) => handleSelectClick(e, place)}
         size="medium"
       />
-    </CardWrapper>
+    </div>
   );
 };
 
 export default PlaceInfoCard;
-
-const CardWrapper = styled.div`
-  min-height: 200px;
-  border: 1px solid ${colors.pointColor};
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border-radius: 10px;
-`;

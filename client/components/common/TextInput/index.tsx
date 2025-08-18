@@ -1,7 +1,8 @@
+import { ChangeEvent, HTMLInputTypeAttribute } from "react";
+
 import Gap from "../Gap";
-import StyledText from "../StyledText";
+import Text from "../Text";
 import * as S from "./styles";
-import { ChangeEvent, HTMLInputTypeAttribute, useState } from "react";
 
 interface IProps {
   disabled?: boolean;
@@ -38,17 +39,14 @@ export default function TextInput({
   return (
     <S.TextInputContainer>
       {labelText && (
-        <StyledText
-          text={labelText}
-          fontColor="black47"
-          fontWeight="bold"
-          fontSize="xl"
-        />
+        <Text className="text-black-47 text-xl font-bold">{labelText}</Text>
       )}
       <Gap side={12} />
       {infoText && (
         <S.TextInfoWRapper>
-          <StyledText text={infoText} fontColor="gray130" />
+          <Text className="text-gray-130 text-base font-normal">
+            {infoText}
+          </Text>
         </S.TextInfoWRapper>
       )}
       <S.InputWrapper>
@@ -71,7 +69,9 @@ export default function TextInput({
       {!isValid && errorMessage && (
         <>
           <Gap side={10} />
-          <StyledText text={errorMessage} fontColor="redFF" fontSize="sm" />
+          <Text className="text-red-ff text-sm font-normal">
+            {errorMessage}
+          </Text>
         </>
       )}
     </S.TextInputContainer>

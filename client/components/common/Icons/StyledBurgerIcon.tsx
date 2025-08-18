@@ -1,5 +1,6 @@
-import { colors } from "@/styles/assets";
 import styled from "styled-components";
+
+import { colors } from "@/styles/assets";
 
 interface Props {
   handleClick: () => void;

@@ -1,13 +1,15 @@
 import { useRouter } from "next/router";
+
 import styled from "styled-components";
 
-import StyledButton from "@/components/common/StyledButton";
 import Gap from "@/components/common/Gap";
-import PlaceInfoCard from "../PlaceInfoCard";
+import StyledButton from "@/components/common/StyledButton";
 
-import { openModal } from "@/store/modalSlice";
 import { AppDispatch } from "@/store";
+import { openModal } from "@/store/modalSlice";
 import { PlaceInfo } from "@/types/map";
+
+import PlaceInfoCard from "../PlaceInfoCard";
 
 interface Props {
   items: PlaceInfo[];
@@ -44,8 +46,8 @@ const RandomPickButton = ({ items, isLogin, router, dispatch }: Props) => {
               buttonType="primary"
               size="small"
             />
-          </ModalInnerWrapper>
-        )
+          </ModalInnerWrapper>,
+        ),
       );
     } else {
       alert("로그인 해주세요!");

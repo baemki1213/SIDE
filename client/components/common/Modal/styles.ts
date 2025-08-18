@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const ModalBackdrop = styled.div<{ isShowing: boolean }>`
-  display: ${props => (props.isShowing ? "block" : "none")};
+  display: ${(props) => (props.isShowing ? "block" : "none")};
   position: fixed;
   z-index: 1000;
   left: 0;

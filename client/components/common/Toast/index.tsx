@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-
-import * as S from "./styles";
 
 import { RootState } from "@/store";
 import { hideToast } from "@/store/toastSlice";
-import StyledText from "../StyledText";
+
+import Text from "../Text";
+import * as S from "./styles";
 
 const ToastComponent = () => {
   const dispatch = useDispatch();
@@ -23,11 +23,9 @@ const ToastComponent = () => {
 
   return (
     <S.Toast>
-      <StyledText
-        text={toast.message}
-        fontColor="mainWhite"
-        fontWeight="semiBold"
-      />
+      <Text className="text-white text-base font-semibold">
+        {toast.message}
+      </Text>
     </S.Toast>
   );
 };

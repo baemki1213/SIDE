@@ -1,13 +1,13 @@
-import { useRouter } from "next/router";
 import { useMutation } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 
-import { login } from "@/api/user";
+import { useRouter } from "next/router";
 
-import { showToast } from "@/store/toastSlice";
-import { setLoginInfo } from "@/store/authSlice";
-import { IUserInfo } from "@/types/user";
+import { login } from "@/api/user";
 import { dispatch } from "@/store";
+import { setLoginInfo } from "@/store/authSlice";
+import { showToast } from "@/store/toastSlice";
+import { IUserInfo } from "@/types/user";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -31,12 +31,12 @@ export const useLogin = () => {
           setLoginInfo({
             isLogin: true,
             userInfo: user,
-          })
+          }),
         );
         dispatch(showToast("환영합니다."));
         router.push("/");
       },
-      onError: err => {
+      onError: (err) => {
         dispatch(showToast(err.response.data.message));
       },
     });

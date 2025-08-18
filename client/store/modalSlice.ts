@@ -1,5 +1,7 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+
 import { ReactNode } from "react";
+
 import { RootState } from ".";
 
 const initialState = {
@@ -15,7 +17,7 @@ export const modalSlice = createSlice({
       state.isModalOpen = true;
       state.children = action.payload;
     },
-    closeModal: state => {
+    closeModal: (state) => {
       state.isModalOpen = false;
       state.children = null;
     },

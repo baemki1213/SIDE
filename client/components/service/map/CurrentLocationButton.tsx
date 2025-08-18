@@ -1,5 +1,6 @@
-import styled from "styled-components";
 import { FaMapMarkerAlt } from "react-icons/fa";
+
+import styled from "styled-components";
 
 import { colors } from "@/styles/assets";
 

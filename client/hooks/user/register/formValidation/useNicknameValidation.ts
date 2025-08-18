@@ -1,5 +1,6 @@
-import { nicknameValidationRegex } from "@/utils/validations/account";
 import { useEffect, useState } from "react";
+
+import { nicknameValidationRegex } from "@/utils/validations/account";
 
 const useNicknameValidation = (nickname: string) => {
   const [isValid, setIsValid] = useState(false);

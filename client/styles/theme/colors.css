@@ -1,0 +1,31 @@
+@import "tailwindcss";
+
+@theme {
+  /* 🎨 메인 브랜드 색상 */
+  --color-point: #1e4083;
+  --color-main: #0d0d0d;
+  --color-main-white: #ffffff;
+
+  /* 🎨 그레이스케일 */
+  --color-gray-26: #262626;
+  --color-gray-59: #595959;
+  --color-gray-8c: #8c8c8c;
+  --color-gray-75: #757575;
+  --color-gray-130: rgb(130, 140, 148);
+  --color-gray-db: #dbdbdb;
+  --color-gray-ed: #ededed;
+
+  /* 🎨 시스템 색상 */
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-black-47: rgb(47, 52, 56);
+  --color-transparent: transparent;
+
+  /* 🎨 포인트 색상 */
+  --color-red-ff: #ff7777;
+
+  /* 🎨 비활성 상태 색상 */
+  --color-gray-disabled-back: rgb(247, 248, 250);
+  --color-gray-disabled-color: rgb(194, 200, 204);
+  --color-gray-disabled-border: rgb(218, 220, 224);
+}

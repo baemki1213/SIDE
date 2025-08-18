@@ -1,13 +1,14 @@
 import { Dispatch, SetStateAction, useState } from "react";
 import { FaFilter } from "react-icons/fa";
 
-import * as S from "./styles";
 import BottomSheet from "@/components/common/Layout/BottomSheet";
-import QueryFilter from "../Filters/QueryFilter";
-import RadiusFilter from "../Filters/RadiusFilter";
-import CategoryFilter from "../Filters/CategoryFilter";
 
 import { FilterInfo } from "@/types/map";
+
+import CategoryFilter from "../Filters/CategoryFilter";
+import QueryFilter from "../Filters/QueryFilter";
+import RadiusFilter from "../Filters/RadiusFilter";
+import * as S from "./styles";
 
 interface Props {
   filterInfo: FilterInfo;

@@ -11,12 +11,12 @@ export default function LoginPage() {
     password: "",
   });
   const handleChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     e.preventDefault();
     switch (e.target.name) {
       default:
-        setLoginInfo(prev => ({ ...prev, [e.target.name]: e.target.value }));
+        setLoginInfo((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     }
   };
   return (

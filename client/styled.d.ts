@@ -1,4 +1,5 @@
 import "styled-components";
+
 import { ColorTypes, FontSizeTypes, FontWeightTypes } from "./styles/assets";
 
 declare module "styled-components" {

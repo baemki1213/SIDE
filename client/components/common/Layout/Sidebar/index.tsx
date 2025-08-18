@@ -1,26 +1,26 @@
 import { useState } from "react";
-import { useRouter } from "next/router";
 import {
-  FaMapMarkerAlt,
   FaHistory,
-  FaStar,
-  FaSignOutAlt,
   FaHome,
+  FaMapMarkerAlt,
+  FaSignOutAlt,
 } from "react-icons/fa";
 
+import { useRouter } from "next/router";
+
+import { useAppDispatch } from "@/hooks/reduxHook";
 import { useLogout } from "@/hooks/user/login/useLogout";
 
-import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
-import StyledText from "../../StyledText";
-import StyledTextButton from "../../StyledTextButton";
-import Gap from "../../Gap";
-
-import * as S from "./styles";
-import { useAppDispatch } from "@/hooks/reduxHook";
-import { openModal } from "@/store/modalSlice";
-import StyledButton from "../../StyledButton";
 import { deleteUser } from "@/api/user";
+import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
+
+import Gap from "../../Gap";
+import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
+import StyledButton from "../../StyledButton";
+import StyledTextButton from "../../StyledTextButton";
+import Text from "../../Text";
+import * as S from "./styles";
 
 interface Props {
   isLogin: boolean;
@@ -70,12 +70,9 @@ const Sidebar = ({ isLogin }: Props) => {
     dispatch(
       openModal(
         <>
-          <StyledText
-            text="정말 탈퇴하시겠습니까?"
-            fontColor="black47"
-            fontSize="lg"
-            fontWeight="semiBold"
-          />
+          <Text className="text-black-47 text-lg font-semibold">
+            정말 탈퇴하시겠습니까?
+          </Text>
           <Gap side={20} />
           <StyledButton
             buttonType="secondary"
@@ -83,8 +80,8 @@ const Sidebar = ({ isLogin }: Props) => {
             onClick={handleSignOut}
             isLoading={isLoading}
           />
-        </>
-      )
+        </>,
+      ),
     );
   };
 
@@ -115,7 +112,7 @@ const Sidebar = ({ isLogin }: Props) => {
       >
         <S.SidebarInner>
           <S.SidebarBody>
-            {navData.map(data => {
+            {navData.map((data) => {
               return (
                 <S.SidebarMenu
                   onClick={() => handleNavIconClick(data.id)}
@@ -124,7 +121,9 @@ const Sidebar = ({ isLogin }: Props) => {
                 >
                   {data.icon}
                   <Gap side={5} />
-                  <StyledText text={data.text} />
+                  <Text className="text-main text-base font-bold">
+                    {data.text}
+                  </Text>
                 </S.SidebarMenu>
               );
             })}

@@ -67,11 +67,17 @@ export const SidebarContainer = styled.div<{
   left: ${({ isClickOpen, isHoverOpen }) =>
     isClickOpen || isHoverOpen ? "0" : "-240px"};
   background-color: ${colors.mainWhite};
-  transition: width 270ms ease, opacity 270ms ease, transform 270ms ease,
-    left 0.3s ease, top 0.3s ease;
+  transition:
+    width 270ms ease,
+    opacity 270ms ease,
+    transform 270ms ease,
+    left 0.3s ease,
+    top 0.3s ease;
   z-index: 100;
-  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
-    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  box-shadow:
+    rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 3px 6px,
+    rgba(15, 15, 15, 0.2) 0px 9px 24px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 4px;
 `;

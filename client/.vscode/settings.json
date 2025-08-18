@@ -1,3 +1,14 @@
 {
-  "cSpell.words": ["latlng"]
+  "cSpell.words": ["latlng"],
+  "css.customData": [".vscode/tailwind.json"], // ✅ Tailwind 자동완성 확장용 (잘 넣으셨습니다)
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "explicit"
+  },
+  "tailwindCSS.experimental.configFile": "styles/theme/index.css", // ✅ Tailwind v4 @theme 자동완성 위해 필요
+  "tailwindCSS.includeLanguages": {
+    "typescript": "javascript",
+    "typescriptreact": "javascript"
+  }
 }

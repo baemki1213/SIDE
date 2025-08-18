@@ -1,7 +1,7 @@
-import { useMutation, UseMutationResult } from "@tanstack/react-query";
+import { UseMutationResult, useMutation } from "@tanstack/react-query";
 
-import { PlaceInfo } from "@/types/map";
 import { saveSelection } from "@/api/map";
+import { PlaceInfo } from "@/types/map";
 
 interface SaveSelectionParams {
   userId: number;
