@@ -17,7 +17,7 @@ import EmailVerifyContainer from "@/components/account/register/EmailVerifyConta
 import Gap from "@/components/common/Gap";
 // import SocialButtons from "@/components/account/SocialButtons";
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
 import { openModal } from "@/store/modalSlice";
@@ -67,12 +67,9 @@ export default function RegisterPage() {
   const handleSignUpSuccess = () => {
     dispatch(
       openModal(
-        <StyledText
-          text="회원가입이 완료되었습니다!"
-          fontColor="black47"
-          fontSize="lg"
-          fontWeight="semiBold"
-        />,
+        <Text className="text-black-47 text-lg font-semibold">
+          회원가입이 완료되었습니다!
+        </Text>,
       ),
     );
     router.push("/account/login");
@@ -80,12 +77,9 @@ export default function RegisterPage() {
   const handleSignUpError = (error: any) => {
     dispatch(
       openModal(
-        <StyledText
-          text={`오류 발생: ${error.response.data.message}`}
-          fontColor="black47"
-          fontSize="lg"
-          fontWeight="semiBold"
-        />,
+        <Text className="text-black-47 text-lg font-semibold">
+          오류 발생: {error.response.data.message}
+        </Text>,
       ),
     );
   };
@@ -160,12 +154,7 @@ export default function RegisterPage() {
   return (
     <S.Container>
       <S.Wrapper>
-        <StyledText
-          text="회원가입"
-          fontColor="black47"
-          fontWeight="bold"
-          fontSize="xl"
-        />
+        <Text className="text-black-47 text-xl font-bold">회원가입</Text>
 
         {/* <SocialButtons /> */}
         <Gap side={30} />
@@ -251,10 +240,14 @@ export default function RegisterPage() {
           />
           <Gap side={30} />
           <S.SignInWrapper>
-            <StyledText text="이미 아이디가 있다면?" />
+            <Text className="text-black-47 text-base font-normal">
+              이미 아이디가 있다면?
+            </Text>
             <Gap side={10} />
             <Link href={"/account/login/"}>
-              <StyledText text="로그인" textDecoration="underline" />
+              <Text className="text-black-47 text-base font-normal underline">
+                로그인
+              </Text>
             </Link>
           </S.SignInWrapper>
         </S.Form>

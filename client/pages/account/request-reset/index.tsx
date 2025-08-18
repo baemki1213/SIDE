@@ -4,7 +4,7 @@ import { useAppDispatch } from "@/hooks/reduxHook";
 
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
 import { requestResetPassword } from "@/api/user";
@@ -26,17 +26,12 @@ const RequestResetPassword: React.FC = () => {
     } catch (error: any) {
       dispatch(showToast(error.response.data.message));
     }
-
     setIsLoading(false);
   };
 
   return (
     <S.Container>
-      <StyledText
-        text="비밀번호 재설정 요청"
-        fontSize="xl2"
-        fontWeight="bold"
-      />
+      <Text className="text-xl2 font-bold">비밀번호 재설정 요청</Text>
       <Gap side={50} />
       <S.FormContainer onSubmit={handleSubmit}>
         <S.LabelContainer>

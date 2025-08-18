@@ -7,7 +7,7 @@ import usePasswordValidation from "@/hooks/user/register/formValidation/usePassw
 
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
 import { resetPassword } from "@/api/user";
@@ -43,7 +43,7 @@ const ResetPassword = () => {
 
   return (
     <S.Container>
-      <StyledText text="비밀번호 재설정" fontSize="xl2" fontWeight="bold" />
+      <Text className="text-xl2 font-bold">비밀번호 재설정</Text>
 
       <S.FormContainer onSubmit={handleSubmit}>
         <S.LabelContainer>

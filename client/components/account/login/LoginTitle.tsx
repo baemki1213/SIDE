@@ -1,36 +1,19 @@
 import Image from "next/image";
 
-import styled from "styled-components";
-
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 
 import logoImage from "@/asset/Logo.png";
 
 export default function LoginTitle() {
   return (
-    <TitleContainer data-testid="logo-container">
-      <LogoContainer>
+    <div
+      className="flex w-full items-center justify-center"
+      data-testid="logo-container"
+    >
+      <div className="w-[70px] h-[70px] relative">
         <Image src={logoImage} alt="Mapack logo" width={70} height={70} />
-      </LogoContainer>
-      <StyledText
-        text="Mapack"
-        fontSize="xl4"
-        fontColor="pointColor"
-        fontWeight="bold"
-      />
-    </TitleContainer>
+      </div>
+      <Text className="text-point text-4xl font-bold">Mapack</Text>
+    </div>
   );
 }
-
-const TitleContainer = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-`;
-
-const LogoContainer = styled.div`
-  width: 70px;
-  height: 70px;
-  position: relative;
-`;

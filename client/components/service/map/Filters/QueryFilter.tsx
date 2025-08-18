@@ -1,6 +1,6 @@
 import { ChangeEvent, Dispatch, SetStateAction } from "react";
 
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
 import { FilterInfo } from "@/types/map";
@@ -23,12 +23,10 @@ const QueryFilter = ({ filterInfo, setFilterInfo }: Props) => {
 
   return (
     <S.FilterContainer>
-      <StyledText
-        text="키워드 (선택사항)"
-        fontColor="black47"
-        fontWeight="semiBold"
-        fontSize="lg"
-      />
+      <Text className="text-black-47 text-lg font-semibold">
+        키워드 (선택사항)
+      </Text>
+
       <S.FilterWrapper>
         <TextInput
           name="query"

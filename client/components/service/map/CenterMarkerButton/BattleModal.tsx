@@ -1,12 +1,9 @@
 import React, { useState } from "react";
 
-import styled from "styled-components";
-
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 
-import { colors } from "@/styles/assets";
 import { PlaceInfo } from "@/types/map";
 import createBrackets from "@/utils/functions/map/createBrackets";
 
@@ -46,82 +43,57 @@ const BattleModal: React.FC<BattleModalProps> = ({
     setCurrentRoundIndex(0);
     setRounds(createBrackets(rounds.flat()));
   };
+
   const handleFinish = (e: React.MouseEvent, round: PlaceInfo) => {
     onFinalSelection(e, round);
   };
 
   return (
-    <Container>
-      <TextWrapper>
-        <StyledText
-          fontColor="black47"
-          fontWeight="bold"
-          fontSize="lg"
-          text={`🏟️ ${isFinal ? "마지막" : "이번"} 라운드 ${
-            currentRoundIndex + 1
-          }/${rounds.length}`}
-        />
+    <div>
+      <div className="flex items-center">
+        <Text className="text-black-47 font-bold text-lg">
+          🏟️ {isFinal ? "마지막" : "이번"} 라운드 {currentRoundIndex + 1}/
+          {rounds.length}
+        </Text>
         <Gap side={5} />
-        <StyledText
-          text={`(최종 선택까지 계속 반복됩니다.)`}
-          fontColor="gray59"
-        />
-      </TextWrapper>
+        <Text className="text-gray-59 text-sm">
+          (최종 선택까지 계속 반복됩니다.)
+        </Text>
+      </div>
+
       <Gap side={10} />
-      <MatchContainer>
-        {currentRound.map((round: PlaceInfo, index: number) => {
-          return (
-            <CardWrapper key={index}>
-              <PlaceInfoContent place={round} />
-              <Gap side={10} />
-              <StyledButton
-                buttonType="primary"
-                size="medium"
-                text={
-                  isLastRound
-                    ? isFinal
-                      ? "최종선택 🏆"
-                      : "선택하고 다음 라운드 진행"
-                    : "선택"
-                }
-                onClick={
-                  isLastRound
-                    ? isFinal
-                      ? (e: React.MouseEvent) => handleFinish(e, round)
-                      : () => handleLast(round)
-                    : () => handleSelect(round)
-                }
-              />
-            </CardWrapper>
-          );
-        })}
-      </MatchContainer>
-    </Container>
+
+      <div className="flex items-center gap-[20px]">
+        {currentRound.map((round: PlaceInfo, index: number) => (
+          <div
+            key={index}
+            className="min-h-[200px] border border-point rounded-[10px] p-[20px] flex flex-col items-center justify-center"
+          >
+            <PlaceInfoContent place={round} />
+            <Gap side={10} />
+            <StyledButton
+              buttonType="primary"
+              size="medium"
+              text={
+                isLastRound
+                  ? isFinal
+                    ? "최종선택 🏆"
+                    : "선택하고 다음 라운드 진행"
+                  : "선택"
+              }
+              onClick={
+                isLastRound
+                  ? isFinal
+                    ? (e: React.MouseEvent) => handleFinish(e, round)
+                    : () => handleLast(round)
+                  : () => handleSelect(round)
+              }
+            />
+          </div>
+        ))}
+      </div>
+    </div>
   );
 };
 
 export default BattleModal;
-
-const Container = styled.div``;
-
-const MatchContainer = styled.div`
-  display: flex;
-  align-items: center;
-  column-gap: 20px;
-`;
-
-const CardWrapper = styled.div`
-  min-height: 200px;
-  border: 1px solid ${colors.pointColor};
-  align-items: center;
-  justify-content: center;
-  display: flex;
-  flex-direction: column;
-  padding: 20px;
-  border-radius: 10px;
-`;
-
-const TextWrapper = styled.div`
-  display: flex;
-  align-items: center;
-`;

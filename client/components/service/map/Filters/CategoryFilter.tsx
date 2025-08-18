@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 
 import { FilterInfo } from "@/types/map";
 
@@ -27,7 +27,7 @@ const CategoryFilter = ({ filterInfo, setFilterInfo }: Props) => {
 
   return (
     <S.FilterContainer>
-      <StyledText text="카테고리" fontColor="black47" fontWeight="semiBold" />
+      <Text className="text-black-47 text-lg font-semibold">카테고리</Text>
       <S.FilterWrapper>
         {CategoryOptionsMap.map((categoryOption, index) => (
           <StyledButton

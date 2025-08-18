@@ -4,8 +4,8 @@ import { useAppSelector } from "@/hooks/reduxHook";
 
 import { selectAuthState } from "@/store/authSlice";
 
-import StyledText from "../../StyledText";
 import StyledTextButton from "../../StyledTextButton";
+import Text from "../../Text";
 import Sidebar from "../Sidebar";
 import * as S from "./styles";
 
@@ -28,18 +28,15 @@ const Header = () => {
               />
             ) : (
               <S.HeaderDefaultAvatar data-testid="header-defaultAvatar">
-                <StyledText
-                  text={userInfo.nickname.slice(0, 1)}
-                  fontColor="mainWhite"
-                  fontWeight="bold"
-                />
+                <Text className="text-white text-base font-bold">
+                  {userInfo.nickname.slice(0, 1)}
+                </Text>
               </S.HeaderDefaultAvatar>
             )}
 
-            <StyledText
-              text={`${userInfo?.nickname}님 환영합니다.`}
-              fontWeight="semiBold"
-            />
+            <Text className="text-black-47 text-base font-semibold">
+              {`${userInfo?.nickname}님 환영합니다.`}
+            </Text>
           </>
         ) : (
           <>

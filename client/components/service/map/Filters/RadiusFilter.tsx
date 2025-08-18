@@ -1,7 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 
 import { FilterInfo } from "@/types/map";
 
@@ -21,7 +21,7 @@ const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
 
   return (
     <S.FilterContainer>
-      <StyledText text="거리" fontColor="black47" fontWeight="semiBold" />
+      <Text className="text-black-47 text-lg font-semibold">거리</Text>
       <S.FilterWrapper>
         {radiusOptions.map((option, index) => (
           <StyledButton

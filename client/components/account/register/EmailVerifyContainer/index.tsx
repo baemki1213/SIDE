@@ -8,7 +8,7 @@ import {
 
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
+import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
 import { sendVerificationEmail, verifyEmailCode } from "@/api/user";
@@ -100,7 +100,10 @@ export default function EmailVerifyContainer({
 
   return (
     <S.Container>
-      <StyledText text="이메일로 전송된 인증코드를 입력해주세요." />
+      <Text className="text-black">
+        이메일로 전송된 인증코드를 입력해주세요.
+      </Text>
+
       <TextInput
         name="verifyToken"
         value={verifyCode}
@@ -120,28 +123,18 @@ export default function EmailVerifyContainer({
       />
       <Gap side={12} />
       <S.FooterContainer>
-        <StyledText
-          text={`유효시간: ${formatTime()}`}
-          fontColor="redFF"
-          fontSize="xs"
-          fontWeight="semiBold"
-        />
+        <Text className="text-red-FF text-xs font-semibold">
+          유효시간: {formatTime()}
+        </Text>
         <S.FooterTextWrapper>
-          <StyledText
-            fontColor="gray130"
-            text="이메일을 받지 못하셨나요?"
-            fontSize="xs"
-            fontWeight="regular"
-          />
+          <Text className="text-gray-130 text-xs font-normal">
+            이메일을 받지 못하셨나요?
+          </Text>
           <Gap side={4} />
           <S.TextButton type="button" onClick={handleResend}>
-            <StyledText
-              fontColor="gray130"
-              textDecoration="underline"
-              text="이메일 재전송하기"
-              fontSize="xs"
-              fontWeight="regular"
-            />
+            <Text className="text-gray-130 text-xs font-normal underline">
+              이메일 재전송하기
+            </Text>
           </S.TextButton>
         </S.FooterTextWrapper>
       </S.FooterContainer>

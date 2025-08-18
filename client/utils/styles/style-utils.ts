@@ -29,5 +29,4 @@ export const backgroundColorMap = {
   mainColor: "bg-main",
   mainWhite: "bg-white",
   gray26: "bg-gray-26",
-  // ... 필요에 따라 확장
 } as const;

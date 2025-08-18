@@ -9,7 +9,7 @@ import useSearchAddress from "@/hooks/map/useSearchAddress";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
-import StyledText from "@/components/common/StyledText";
+import { Text } from "@/components/common/StyledText";
 import CenterMarkerButton from "@/components/service/map/CenterMarkerButton";
 import BattleButton from "@/components/service/map/CenterMarkerButton/BattleButton";
 import BattleModal from "@/components/service/map/CenterMarkerButton/BattleModal";
@@ -60,16 +60,12 @@ const Maps: React.FC = () => {
     dispatch(
       openModal(
         <>
-          <StyledText
-            text="✅ 탁월한 선택입니다!"
-            fontColor="black47"
-            fontWeight="semiBold"
-          />
-          <StyledText
-            text="선택한 장소들은 나의 기록에서 확인할 수 있어요!"
-            fontColor="black47"
-            fontWeight="semiBold"
-          />
+          <Text fontColor="black47" fontWeight="semiBold">
+            ✅ 탁월한 선택입니다!
+          </Text>
+          <Text fontColor="black47" fontWeight="semiBold">
+            선택한 장소들은 나의 기록에서 확인할 수 있어요!
+          </Text>
         </>,
       ),
     );
