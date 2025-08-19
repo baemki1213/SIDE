@@ -8,9 +8,9 @@ import { useLogin } from "@/hooks/user/login/useLogin";
 import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
 import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
+import TextButton from "@/components/client/common/TextButton";
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
-import StyledTextButton from "@/components/common/StyledTextButton";
 import TextInput from "@/components/common/TextInput";
 
 interface IProps {
@@ -72,24 +72,16 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
         />
       </ButtonWrapper>
       <TextButtonWrapper data-testid="form-footer">
-        <StyledTextButton
-          buttonType="button"
-          handleClick={handleResetClick}
-          styleProps={{
-            text: "비밀번호 재설정",
-            fontWeight: "regular",
-            fontColor: "gray8c",
-          }}
+        <TextButton
+          text="비밀번호 재설정"
+          onClick={handleResetClick}
+          className="text-sm font-normal text-gray-8c hover:text-primary transition-colors"
         />
         <Gap side={20} />
-        <StyledTextButton
-          buttonType="button"
-          handleClick={handleSignUpClick}
-          styleProps={{
-            text: "회원가입",
-            fontWeight: "regular",
-            fontColor: "gray8c",
-          }}
+        <TextButton
+          text="회원가입"
+          onClick={handleSignUpClick}
+          className="text-sm font-normal text-gray-8c hover:text-primary transition-colors"
         />
       </TextButtonWrapper>
     </Form>

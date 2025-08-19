@@ -11,6 +11,8 @@ import { useRouter } from "next/router";
 import { useAppDispatch } from "@/hooks/reduxHook";
 import { useLogout } from "@/hooks/user/login/useLogout";
 
+import TextButton from "@/components/client/common/TextButton";
+
 import { deleteUser } from "@/api/user";
 import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
@@ -18,7 +20,6 @@ import { showToast } from "@/store/toastSlice";
 import Gap from "../../Gap";
 import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
 import StyledButton from "../../StyledButton";
-import StyledTextButton from "../../StyledTextButton";
 import Text from "../../Text";
 import * as S from "./styles";
 
@@ -136,17 +137,17 @@ const Sidebar = ({ isLogin }: Props) => {
               <S.SidebarFooter>
                 <FaSignOutAlt />
                 <Gap side={5} />
-                <StyledTextButton
-                  buttonType="button"
-                  styleProps={{ text: "로그아웃" }}
-                  handleClick={handleLogout}
+                <TextButton
+                  text="로그아웃"
+                  onClick={handleLogout}
+                  className="text-base font-medium text-main"
                 />
               </S.SidebarFooter>
               <S.SidebarFooter>
-                <StyledTextButton
-                  buttonType="button"
-                  styleProps={{ text: "회원탈퇴" }}
-                  handleClick={handleSignOutModalOpen}
+                <TextButton
+                  text="회원탈퇴"
+                  onClick={handleSignOutModalOpen}
+                  className="text-base font-medium text-main"
                 />
               </S.SidebarFooter>
             </>

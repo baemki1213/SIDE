@@ -2,9 +2,10 @@ import { useRouter } from "next/router";
 
 import { useAppSelector } from "@/hooks/reduxHook";
 
+import TextButton from "@/components/client/common/TextButton";
+
 import { selectAuthState } from "@/store/authSlice";
 
-import StyledTextButton from "../../StyledTextButton";
 import Text from "../../Text";
 import Sidebar from "../Sidebar";
 import * as S from "./styles";
@@ -40,16 +41,16 @@ const Header = () => {
           </>
         ) : (
           <>
-            <StyledTextButton
-              buttonType="button"
-              styleProps={{ text: "회원가입", fontColor: "black47" }}
-              handleClick={() => router.push("/account/register")}
+            <TextButton
+              text="회원가입"
+              onClick={() => router.push("/account/register")}
+              className="text-base font-medium text-black-47 hover:text-primary transition-colors"
             />
             <S.HeaderColumn />
-            <StyledTextButton
-              buttonType="button"
-              styleProps={{ text: "로그인", fontColor: "black47" }}
-              handleClick={() => router.push("/account/login")}
+            <TextButton
+              text="로그인"
+              onClick={() => router.push("/account/login")}
+              className="text-base font-medium text-black-47 hover:text-primary transition-colors"
             />
           </>
         )}
