@@ -6,7 +6,6 @@ import styled from "styled-components";
 
 import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
-import StyledText from "@/components/common/StyledText";
 import Text from "@/components/common/Text";
 
 import { wrapper } from "@/store";
@@ -76,11 +75,9 @@ export default function Home() {
         </Features>
       </FeatureSection>
       <Footer>
-        <StyledText
-          text="&copy; 2024 Mapack. All rights reserved."
-          textAlign="center"
-          fontSize="xs"
-        />
+        <Text className="text-center font-normal text-xs">
+          &copy; Mapack. All rights reserved.
+        </Text>
       </Footer>
     </Container>
   );
