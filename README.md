@@ -75,19 +75,19 @@ src/
 ## 🛠️ 기술 스택
 
 ### Frontend
-- **Next.js 15** - SSR/SSG 지원하는 React 프레임워크
-- **TypeScript** - 타입 안전성 확보
-- **Redux Toolkit** - 예측 가능한 상태 관리
-- **React Query** - 서버 상태 캐싱 및 동기화
-- **Styled-components** - CSS-in-JS 스타일링
-- **Naver Maps API** - 한국 지역에 최적화된 지도 서비스
+- **Next.js 15**
+- **TypeScript**
+- **Redux Toolkit**
+- **React Query**
+- **Styled-components**
+- **Naver, Kakao API** 
 
 ### Backend  
-- **Node.js + Express** - 빠른 개발이 가능한 서버 프레임워크
-- **MySQL + Sequelize** - 관계형 데이터베이스와 ORM
-- **JWT** - 토큰 기반 인증 시스템
-- **bcrypt** - 안전한 비밀번호 해싱
-- **Nodemailer** - 이메일 인증 발송
+- **Node.js + Express**
+- **MySQL + Sequelize**
+- **JWT**
+- **bcrypt**
+- **Nodemailer**
 
 **📖 더 자세한 기능 설명과 화면은 [프로젝트 노션](https://mesquite-rake-aae.notion.site/SIDE1-Mapack-252d1d9d58e38044876eef74d404d3ac)에서 확인하실 수 있습니다.**
 
