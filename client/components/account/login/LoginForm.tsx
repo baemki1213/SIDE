@@ -6,11 +6,10 @@ import styled from "styled-components";
 
 import { useLogin } from "@/hooks/user/login/useLogin";
 import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
-import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
 import TextButton from "@/components/client/common/TextButton";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
+import Button from "@/components/common/StyledButton";
 import TextInput from "@/components/common/TextInput";
 
 interface IProps {
@@ -24,12 +23,9 @@ interface IProps {
 export default function LoginForm({ email, password, handleChange }: IProps) {
   const router = useRouter();
   const { isValid: EmailIsValid } = useEmailValidation(email);
-  const { isPassword1Valid: passwordIsValid } = usePasswordValidation(
-    password,
-    password,
-  );
+
   const { mutate: login, isPending: loginIsLoading } = useLogin();
-  const loginIsValid = EmailIsValid && passwordIsValid;
+  const loginIsValid = EmailIsValid;
 
   const handleLoginClick = async () => {
     login({ email, password });
@@ -57,15 +53,13 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
         name="password"
         placeholder="비밀번호"
         onChange={handleChange}
-        isValid={password ? passwordIsValid : true}
         value={password}
-        errorMessage="비밀번호 형식이 올바르지 않습니다."
         type="password"
       />
       <ButtonWrapper>
-        <StyledButton
+        <Button
           text="로그인"
-          buttonType={loginIsValid ? "primary" : "ghost"}
+          variant="primary"
           onClick={handleLoginClick}
           disabled={!loginIsValid}
           isLoading={loginIsLoading}
