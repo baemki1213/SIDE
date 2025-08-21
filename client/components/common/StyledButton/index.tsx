@@ -8,7 +8,7 @@ import {
 } from "@/styles/assets/button";
 
 import { DotSpinner } from "../LoadingIndicator";
-import StyledText from "../StyledText";
+import Text from "../Text";
 import * as S from "./styles";
 
 interface IProps {
@@ -26,6 +26,7 @@ interface IProps {
   isLoading?: boolean;
   opacity?: number;
 }
+
 interface IIconButtonProps {
   iconPosition?: "left" | "right";
   icon?: ReactNode;
@@ -66,6 +67,7 @@ export default function StyledButton({
     }
     return <>{children}</>;
   };
+
   return (
     <S.Container
       opacity={opacity}
@@ -85,13 +87,11 @@ export default function StyledButton({
         <IconButton iconPosition={iconPosition} icon={icon}>
           {children}
           {text && (
-            <StyledText
-              text={text}
-              fontColor={buttonStyle[buttonType].fontColor}
-              fontWeight={buttonSizeTheme[size].fontWeight}
-              fontSize={buttonSizeTheme[size].fontSize}
-              textAlign="center"
-            />
+            <Text
+              className={`text-center text-${buttonSizeTheme[size].fontSize} font-${buttonSizeTheme[size].fontWeight === "semiBold" ? "semibold" : buttonSizeTheme[size].fontWeight} text-${buttonStyle[buttonType].fontColor === "mainWhite" ? "white" : buttonStyle[buttonType].fontColor === "pointColor" ? "point" : "gray-disabled-color"}`}
+            >
+              {text}
+            </Text>
           )}
         </IconButton>
       )}
