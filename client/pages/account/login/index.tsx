@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 
-import LoginForm from "@/components/account/login/LoginForm";
-import LoginTitle from "@/components/account/login/LoginTitle";
+import LoginForm from "@/components/account/login/LoginForm.client";
+import LoginTitle from "@/components/account/login/LoginTitle.server";
 
 import * as S from "../../../styles/account/login";
 

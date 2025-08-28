@@ -1,8 +1,8 @@
+"use client";
+
 import { ChangeEvent } from "react";
 
 import { useRouter } from "next/router";
-
-import styled from "styled-components";
 
 import { useLogin } from "@/hooks/user/login/useLogin";
 import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
@@ -12,6 +12,8 @@ import Gap from "@/components/common/Gap";
 import StyledButton from "@/components/common/StyledButton";
 import StyledTextButton from "@/components/common/StyledTextButton";
 import TextInput from "@/components/common/TextInput";
+
+import * as styles from "./LoginForm.css";
 
 interface IProps {
   email: string;
@@ -42,7 +44,7 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
   };
 
   return (
-    <Form>
+    <form className={styles.form}>
       <TextInput
         height={48}
         name="email"
@@ -62,7 +64,7 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
         errorMessage="비밀번호 형식이 올바르지 않습니다."
         type="password"
       />
-      <ButtonWrapper>
+      <div className={styles.buttonWrapper}>
         <StyledButton
           text="로그인"
           buttonType={loginIsValid ? "primary" : "ghost"}
@@ -70,8 +72,8 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
           disabled={!loginIsValid}
           isLoading={loginIsLoading}
         />
-      </ButtonWrapper>
-      <TextButtonWrapper data-testid="form-footer">
+      </div>
+      <div className={styles.textButtonWrapper} data-testid="form-footer">
         <StyledTextButton
           buttonType="button"
           handleClick={handleResetClick}
@@ -91,22 +93,7 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
             fontColor: "gray8c",
           }}
         />
-      </TextButtonWrapper>
-    </Form>
+      </div>
+    </form>
   );
 }
-
-const Form = styled.form`
-  width: 100%;
-  height: 100%;
-`;
-
-const ButtonWrapper = styled.div`
-  margin: 20px 0;
-`;
-const TextButtonWrapper = styled.div`
-  display: flex;
-  width: 100%;
-  align-items: center;
-  justify-content: center;
-`;
