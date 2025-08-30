@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import styled from "styled-components";
 
 import Button from "@/components/common/Button";
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import StyledText from "@/components/common/StyledText";
 import Text from "@/components/common/Text";
 

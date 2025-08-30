@@ -9,7 +9,7 @@ import useEmailValidation from "@/hooks/user/register/formValidation/useEmailVal
 import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
 import Button from "@/components/common/Button";
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import StyledTextButton from "@/components/common/StyledTextButton";
 import TextInput from "@/components/common/TextInput";
 

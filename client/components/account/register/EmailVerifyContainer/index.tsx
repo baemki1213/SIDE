@@ -7,7 +7,7 @@ import {
 } from "react";
 
 import Button from "@/components/common/Button";
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 

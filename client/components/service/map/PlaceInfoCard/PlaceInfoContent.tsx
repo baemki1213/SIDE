@@ -1,4 +1,4 @@
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import Text from "@/components/common/Text";
 
 import { PlaceInfo } from "@/types/map";

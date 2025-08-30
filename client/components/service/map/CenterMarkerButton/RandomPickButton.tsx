@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 import Button from "@/components/common/Button";
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 
 import { AppDispatch } from "@/store";
 import { openModal } from "@/store/modalSlice";

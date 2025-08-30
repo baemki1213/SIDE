@@ -16,8 +16,7 @@ import usePasswordValidation from "@/hooks/user/register/formValidation/usePassw
 import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
 import Button from "@/components/common/Button";
 // import SocialButtons from "@/components/account/SocialButtons";
-
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 

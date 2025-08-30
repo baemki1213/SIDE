@@ -4,7 +4,7 @@ import useSaveSelection from "@/hooks/map/useSaveSelection";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
 import Button from "@/components/common/Button";
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import Text from "@/components/common/Text";
 
 import { selectAuthState } from "@/store/authSlice";

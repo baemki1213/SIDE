@@ -8,7 +8,7 @@ import { ko } from "date-fns/locale";
 import useUserPlaces from "@/hooks/map/useUserPlaces";
 import { useAppSelector } from "@/hooks/reduxHook";
 
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import { FullPageLoadingIndicator } from "@/components/common/LoadingIndicator";
 import Text from "@/components/common/Text";
 

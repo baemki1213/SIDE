@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 import Button from "@/components/common/Button";
-import Gap from "@/components/common/Gap";
+import Gap from "@/components/common/Layout/Gap";
 import Text from "@/components/common/Text";
 
 import { PlaceInfo } from "@/types/map";
