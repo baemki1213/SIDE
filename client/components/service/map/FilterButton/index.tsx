@@ -36,7 +36,6 @@ const FilterButton = ({ filterInfo, setFilterInfo, fetchData }: Props) => {
           <BottomSheet
             isShowing={isBottomSheetOpen}
             setIsShowing={setIsBottomSheetOpen}
-            toggleBottomSheet={toggleBottomSheet}
           >
             <QueryFilter
               filterInfo={filterInfo}

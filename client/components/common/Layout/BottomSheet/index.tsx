@@ -3,33 +3,42 @@ import { FaTimes } from "react-icons/fa";
 
 import { colors } from "@/styles/assets";
 
-import * as S from "./styles";
+import {
+  backdropRecipe,
+  bottomSheet,
+  closeButton,
+  contentWrapper,
+} from "./styles.css";
 
-interface Props {
+interface BottomSheetProps {
   isShowing: boolean;
   setIsShowing: Dispatch<SetStateAction<boolean>>;
-  toggleBottomSheet: () => void;
+
   children: ReactNode;
+  className?: string;
 }
 
 const BottomSheet = ({
   isShowing,
   setIsShowing,
-  toggleBottomSheet,
   children,
-}: Props) => {
+  className,
+}: BottomSheetProps) => {
+  const handleBottomSheetClick = () => {
+    setIsShowing(!isShowing);
+  };
   return (
     <>
-      <S.BottomSheetBackdrop
-        isShowing={isShowing}
-        onClick={toggleBottomSheet}
+      <div
+        className={backdropRecipe({ isShowing })}
+        onClick={handleBottomSheetClick}
       />
-      <S.BottomSheet>
-        <S.BottomSheetCloseButton onClick={toggleBottomSheet}>
+      <div className={`${bottomSheet} ${className || ""}`}>
+        <button className={closeButton} onClick={handleBottomSheetClick}>
           <FaTimes color={colors.black47} />
-        </S.BottomSheetCloseButton>
-        <S.BottomSheetContentWrapper>{children}</S.BottomSheetContentWrapper>
-      </S.BottomSheet>
+        </button>
+        <div className={contentWrapper}>{children}</div>
+      </div>
     </>
   );
 };
