@@ -1,6 +1,6 @@
 import { ChangeEvent, HTMLInputTypeAttribute } from "react";
 
-import Gap from "../Gap";
+import Gap from "../Layout/Gap";
 import Text from "../Text";
 import * as S from "./styles";
 

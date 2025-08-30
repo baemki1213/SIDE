@@ -16,10 +16,10 @@ import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
 
 import Button from "../../Button";
-import Gap from "../../Gap";
 import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
 import StyledTextButton from "../../StyledTextButton";
 import Text from "../../Text";
+import Gap from "../Gap";
 import * as S from "./styles";
 
 interface Props {
