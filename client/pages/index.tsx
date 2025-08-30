@@ -4,8 +4,8 @@ import { useRouter } from "next/router";
 
 import styled from "styled-components";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import StyledText from "@/components/common/StyledText";
 import Text from "@/components/common/Text";
 
@@ -43,8 +43,8 @@ export default function Home() {
           </Text>
 
           <Gap side={10} />
-          <StyledButton
-            buttonType="primary"
+          <Button
+            variant="primary"
             text="시작하기"
             onClick={handleStartClick}
           />

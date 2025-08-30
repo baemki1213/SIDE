@@ -5,8 +5,8 @@ import { useRouter } from "next/router";
 import { useAppDispatch } from "@/hooks/reduxHook";
 import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
@@ -58,11 +58,11 @@ const ResetPassword = () => {
           />
         </S.LabelContainer>
         <Gap side={20} />
-        <StyledButton
+        <Button
           text="재설정"
           type="submit"
           onClick={handleSubmit}
-          buttonType={!isPassword1Valid ? "disabled" : "primary"}
+          variant={!isPassword1Valid ? "disabled" : "primary"}
           isLoading={isLoading}
           disabled={!isPassword1Valid}
         />

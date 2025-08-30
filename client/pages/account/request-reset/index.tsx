@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 import { useAppDispatch } from "@/hooks/reduxHook";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
@@ -44,11 +44,11 @@ const RequestResetPassword: React.FC = () => {
           />
         </S.LabelContainer>
         <Gap side={20} />
-        <StyledButton
+        <Button
           text="재설정 링크 보내기"
           type="submit"
           onClick={handleSubmit}
-          buttonType="primary"
+          variant="primary"
           isLoading={isLoading}
         />
       </S.FormContainer>

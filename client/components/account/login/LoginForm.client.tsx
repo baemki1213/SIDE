@@ -8,8 +8,8 @@ import { useLogin } from "@/hooks/user/login/useLogin";
 import useEmailValidation from "@/hooks/user/register/formValidation/useEmailValidation";
 import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import StyledTextButton from "@/components/common/StyledTextButton";
 import TextInput from "@/components/common/TextInput";
 
@@ -65,9 +65,9 @@ export default function LoginForm({ email, password, handleChange }: IProps) {
         type="password"
       />
       <div className={styles.buttonWrapper}>
-        <StyledButton
+        <Button
           text="로그인"
-          buttonType={loginIsValid ? "primary" : "ghost"}
+          variant={loginIsValid ? "primary" : "ghost"}
           onClick={handleLoginClick}
           disabled={!loginIsValid}
           isLoading={loginIsLoading}

@@ -1,6 +1,6 @@
 import React from "react";
 
-import StyledButton from "@/components/common/StyledButton";
+import Button from "@/components/common/Button";
 
 import { PlaceInfo } from "@/types/map";
 
@@ -14,9 +14,8 @@ interface Props {
 const BattleButton: React.FC<Props> = ({ places, handleBattleClick }) => {
   return (
     <S.ButtonContainer>
-      <StyledButton
-        width="120px"
-        buttonType="secondary"
+      <Button
+        variant="secondary"
         text="대진표 만들기"
         size="small"
         onClick={() => handleBattleClick(places)}

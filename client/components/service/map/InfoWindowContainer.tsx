@@ -1,7 +1,7 @@
 import { FC, MouseEvent } from "react";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import Text from "@/components/common/Text";
 
 import { PlaceInfo } from "@/types/map";
@@ -47,8 +47,8 @@ const InfoWindowContent: FC<InfoWindowContentProps> = ({
         </a>
       )}
       <Gap side={5} />
-      <StyledButton
-        buttonType="primary"
+      <Button
+        variant="primary"
         text="저장하기"
         size="xSmall"
         onClick={(e) => {

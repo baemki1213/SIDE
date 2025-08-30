@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import StyledButton from "@/components/common/StyledButton";
+import Button from "@/components/common/Button";
 import Text from "@/components/common/Text";
 
 import { FilterInfo } from "@/types/map";
@@ -24,14 +24,13 @@ const RadiusFilter = ({ filterInfo, setFilterInfo }: Props) => {
       <Text className="text-black-47 text-lg font-semibold">거리</Text>
       <S.FilterWrapper>
         {radiusOptions.map((option, index) => (
-          <StyledButton
+          <Button
             key={index}
             text={`${option === 20000 ? "최대" : `${option}m`}`}
-            width="80px"
+            variant={filterInfo.radius === option ? "primary" : "secondary"}
             size="small"
             borderRadius="25px"
             onClick={() => handleRadiusButtonClick(option)}
-            buttonType={filterInfo.radius === option ? "primary" : "secondary"}
             opacity={filterInfo.radius === option ? 1 : 0.7}
           />
         ))}

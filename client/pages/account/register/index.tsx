@@ -14,9 +14,10 @@ import useNicknameValidation from "@/hooks/user/register/formValidation/useNickn
 import usePasswordValidation from "@/hooks/user/register/formValidation/usePasswordValidation";
 
 import EmailVerifyContainer from "@/components/account/register/EmailVerifyContainer";
-import Gap from "@/components/common/Gap";
+import Button from "@/components/common/Button";
 // import SocialButtons from "@/components/account/SocialButtons";
-import StyledButton from "@/components/common/StyledButton";
+
+import Gap from "@/components/common/Gap";
 import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
@@ -172,11 +173,11 @@ export default function RegisterPage() {
             isValid={email ? emailIsValid : true}
           />
           <Gap side={12} />
-          <StyledButton
+          <Button
             isLoading={isVerifyEmailLoading}
             text={isVerifiedEmailCode ? "이메일 인증 완료" : "이메일 인증하기"}
             onClick={handleEmailVerifyClick}
-            buttonType={verifyButtonIsDisabled ? "disabled" : "primary"}
+            variant={verifyButtonIsDisabled ? "disabled" : "primary"}
             disabled={verifyButtonIsDisabled}
           />
           <Gap side={30} />
@@ -219,9 +220,8 @@ export default function RegisterPage() {
             errorMessage={errorMessage.nickname}
             placeholder="닉네임 (2~10자)"
             buttonComponent={
-              <StyledButton
-                width="80px"
-                buttonType={nicknameIsSuccess ? "disabled" : "primary"}
+              <Button
+                variant={nicknameIsSuccess ? "disabled" : "primary"}
                 disabled={nicknameIsSuccess}
                 onClick={handleNickNameCheck}
                 text={nicknameIsSuccess ? "OK!" : "중복확인"}
@@ -231,11 +231,11 @@ export default function RegisterPage() {
             }
           />
           <Gap side={30} />
-          <StyledButton
+          <Button
             type="button"
             text="회원가입하기"
             onClick={handleSignUpClick}
-            buttonType={!signUpButtonIsValid ? "disabled" : "primary"}
+            variant={!signUpButtonIsValid ? "disabled" : "primary"}
             disabled={!signUpButtonIsValid}
           />
           <Gap side={30} />

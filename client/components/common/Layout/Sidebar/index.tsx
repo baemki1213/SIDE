@@ -15,9 +15,9 @@ import { deleteUser } from "@/api/user";
 import { openModal } from "@/store/modalSlice";
 import { showToast } from "@/store/toastSlice";
 
+import Button from "../../Button";
 import Gap from "../../Gap";
 import { StyledBurgerIcon } from "../../Icons/StyledBurgerIcon";
-import StyledButton from "../../StyledButton";
 import StyledTextButton from "../../StyledTextButton";
 import Text from "../../Text";
 import * as S from "./styles";
@@ -74,8 +74,8 @@ const Sidebar = ({ isLogin }: Props) => {
             정말 탈퇴하시겠습니까?
           </Text>
           <Gap side={20} />
-          <StyledButton
-            buttonType="secondary"
+          <Button
+            variant="secondary"
             text="네"
             onClick={handleSignOut}
             isLoading={isLoading}

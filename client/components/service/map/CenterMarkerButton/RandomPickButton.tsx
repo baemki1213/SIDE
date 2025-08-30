@@ -1,9 +1,7 @@
-import { useRouter } from "next/router";
-
 import styled from "styled-components";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 
 import { AppDispatch } from "@/store";
 import { openModal } from "@/store/modalSlice";
@@ -39,11 +37,10 @@ const RandomPickButton = ({ items, isLogin, router, dispatch }: Props) => {
               ))}
             </CardWrapper>
             <Gap side={20} />
-            <StyledButton
-              width="200px"
+            <Button
               text="다시 추천 받기"
               onClick={handleRandomPick}
-              buttonType="primary"
+              variant="primary"
               size="small"
             />
           </ModalInnerWrapper>,
@@ -55,9 +52,8 @@ const RandomPickButton = ({ items, isLogin, router, dispatch }: Props) => {
   };
 
   return (
-    <StyledButton
-      width="120px"
-      buttonType="secondary"
+    <Button
+      variant="secondary"
       text="랜덤 추천 받기"
       size="small"
       onClick={handleRandomPick}

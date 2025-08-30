@@ -1,6 +1,6 @@
 import { Dispatch, SetStateAction } from "react";
 
-import StyledButton from "@/components/common/StyledButton";
+import Button from "@/components/common/Button";
 import Text from "@/components/common/Text";
 
 import { FilterInfo } from "@/types/map";
@@ -30,14 +30,13 @@ const CategoryFilter = ({ filterInfo, setFilterInfo }: Props) => {
       <Text className="text-black-47 text-lg font-semibold">카테고리</Text>
       <S.FilterWrapper>
         {CategoryOptionsMap.map((categoryOption, index) => (
-          <StyledButton
+          <Button
             key={index}
             text={categoryOption.label || "무작위"}
-            width="80px"
             size="small"
             borderRadius="25px"
             onClick={() => handleCategoryButtonClick(categoryOption.value)}
-            buttonType={
+            variant={
               filterInfo.category === categoryOption.value
                 ? "primary"
                 : "secondary"

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import Text from "@/components/common/Text";
 
 import { PlaceInfo } from "@/types/map";
@@ -71,8 +71,8 @@ const BattleModal: React.FC<BattleModalProps> = ({
           >
             <PlaceInfoContent place={round} />
             <Gap side={10} />
-            <StyledButton
-              buttonType="primary"
+            <Button
+              variant="primary"
               size="medium"
               text={
                 isLastRound

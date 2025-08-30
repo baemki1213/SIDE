@@ -6,8 +6,8 @@ import {
   useState,
 } from "react";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import Text from "@/components/common/Text";
 import TextInput from "@/components/common/TextInput";
 
@@ -111,13 +111,12 @@ export default function EmailVerifyContainer({
         placeholder="인증코드 6자리 입력"
         maxLength={6}
         buttonComponent={
-          <StyledButton
-            width="48px"
-            buttonType={!isValid ? "disabled" : "primary"}
+          <Button
+            size="medium"
+            variant={!isValid ? "disabled" : "primary"}
             onClick={handleVerification}
             text="확인"
             disabled={!isValid}
-            size="small"
           />
         }
       />

@@ -3,8 +3,8 @@ import { useCallback } from "react";
 import useSaveSelection from "@/hooks/map/useSaveSelection";
 import { useAppDispatch, useAppSelector } from "@/hooks/reduxHook";
 
+import Button from "@/components/common/Button";
 import Gap from "@/components/common/Gap";
-import StyledButton from "@/components/common/StyledButton";
 import Text from "@/components/common/Text";
 
 import { selectAuthState } from "@/store/authSlice";
@@ -63,8 +63,8 @@ const PlaceInfoCard = ({ place }: Props) => {
     <div className="min-h-[200px] border border-point rounded-[10px] p-[20px] flex flex-col items-center justify-center">
       <PlaceInfoContent place={place} />
       <Gap side={10} />
-      <StyledButton
-        buttonType="primary"
+      <Button
+        variant="primary"
         text="선택하기"
         onClick={(e) => handleSelectClick(e, place)}
         size="medium"
