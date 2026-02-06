@@ -22,7 +22,7 @@
     "date-fns": "^3.6.0",
     "eslint": "8.39.0",
     "eslint-config-next": "13.3.2",
-    "next": "^15.4.6",
+    "next": "15.4.10",
     "next-redux-wrapper": "^8.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
